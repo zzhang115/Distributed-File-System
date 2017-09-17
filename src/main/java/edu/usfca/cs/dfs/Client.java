@@ -1,7 +1,10 @@
 package edu.usfca.cs.dfs;
 
 
+import com.google.protobuf.ByteString;
+
 import java.io.*;
+import java.net.Socket;
 import java.nio.file.Files;
 import java.util.logging.Logger;
 
@@ -9,6 +12,8 @@ public class Client {
     private static Logger logger = Logger.getLogger("Log");
     private static String filePath = "client.files/file/pig.txt";
     private static String chunkPath = "client.files/chunks";
+    private static Socket socket;
+    private static final int SIZEOFCHUNK = 1024 * 18;
 
     public static void main(String[] args) throws IOException {
         logger.info("Client: Start break file to chunks.");
@@ -17,12 +22,32 @@ public class Client {
     }
 
     public static void clientInit() throws IOException {
-//        Socket socket = new Socket("localhost", 8080);
+//      socket = new Socket("localhost", 8080);
         breakFiletoChunks(new File(filePath));
     }
 
+    public static void sendRequestToController() throws IOException {
+        ByteString data = ByteString.copyFromUtf8("Hello World!");
+
+        StorageMessages.StoreChunk storeChunkMsg
+                = StorageMessages.StoreChunk.newBuilder()
+                .setFileName("my_file.txt")
+                .setChunkId(3)
+                .setData(data)
+                .build();
+
+        StorageMessages.StorageMessageWrapper msgWrapper =
+                StorageMessages.StorageMessageWrapper.newBuilder()
+                        .setStoreChunkMsg(storeChunkMsg)
+                        .build();
+
+            msgWrapper.writeDelimitedTo(socket.getOutputStream());
+
+            socket.close();
+    }
+
     public static void breakFiletoChunks(File file) throws IOException {
-        int sizeOfChunk = 1024; // 1kB per chunk
+        int sizeOfChunk = SIZEOFCHUNK; // 1kB per chunk
         byte[] buffer = new byte[sizeOfChunk];
         String fileName = file.getName();
         try (FileInputStream fileInputStream = new FileInputStream(file);
@@ -47,4 +72,5 @@ public class Client {
             logger.info("Client: Chunk " + chunk.getName() + " removed.");
         }
     }
+
 }
