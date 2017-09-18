@@ -49,5 +49,4 @@ public class StorageNode {
     throws UnknownHostException {
         return InetAddress.getLocalHost().getHostName();
     }
-
 }

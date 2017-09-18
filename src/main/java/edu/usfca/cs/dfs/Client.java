@@ -25,7 +25,6 @@ public class Client {
         breakFiletoChunks(new File(filePath));
         File chunks = new File(chunkPath);
         for (File chunk : chunks.listFiles()) {
-//            System.out.println(chunkPath + "/" + chunk.getName());
             sendRequestToController(chunk.getName());
         }
     }
@@ -39,6 +38,7 @@ public class Client {
 
         socket = new Socket("localhost", 8080);
         BufferedReader bufferedReader = new BufferedReader(new FileReader(chunkPath + "/" + chunkName));
+
         String line;
         StringBuffer stringBuffer = new StringBuffer();
         while ((line = bufferedReader.readLine()) != null) {
@@ -65,7 +65,7 @@ public class Client {
     }
 
     public static void breakFiletoChunks(File file) throws IOException {
-        int sizeOfChunk = SIZEOFCHUNK; // 1kB per chunk
+        int sizeOfChunk = SIZEOFCHUNK; // 18kB per chunk
         byte[] buffer = new byte[sizeOfChunk];
         String fileName = file.getName();
         try (FileInputStream fileInputStream = new FileInputStream(file);
