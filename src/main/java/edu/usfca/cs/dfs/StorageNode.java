@@ -19,7 +19,7 @@ public class StorageNode {
 
     public static void storageNodeInit() throws IOException {
 
-    serverSocket = new ServerSocket(8080);
+    serverSocket = new ServerSocket(9090);
         System.out.println("Listening...");
         while (true) {
             Socket socket = serverSocket.accept();
