@@ -2,6 +2,8 @@ package edu.usfca.cs.dfs;
 
 import com.google.protobuf.ByteString;
 
+import java.util.Scanner;
+
 /**
  * Created by zzc on 9/18/17.
  */

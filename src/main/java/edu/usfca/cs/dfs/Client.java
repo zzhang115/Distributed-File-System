@@ -5,8 +5,7 @@ import com.google.protobuf.ByteString;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class Client {
@@ -14,7 +13,7 @@ public class Client {
     private static String filePath = "client.file/pig.txt";
     private static long fileSize;
     private static Socket socket;
-    private static final int SIZEOFCHUNK = 10;
+    private static final int SIZEOFCHUNK = 20;
     private static List<DFSChunk> chunks= new ArrayList<DFSChunk>();
 
     public static void main(String[] args) throws IOException {
@@ -27,7 +26,7 @@ public class Client {
         File file = new File(filePath);
         fileSize = file.length();
         breakFiletoChunks(file);
-//        sendRequestToController(fileSize);
+        sendRequestToController(fileSize);
 //        for (DFSChunk chunk : chunks) {
 //            sendRequestToStorageNode(chunk);
 //        }
@@ -38,6 +37,7 @@ public class Client {
 
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         String request = "StoreFile:" + fileSize;
+//        StorageMessages.StorageMessageWrapper.newBuilder().
 
         writer.println(request); // send the message to the server via the
         writer.flush();
@@ -72,12 +72,14 @@ public class Client {
         try (FileInputStream fileInputStream = new FileInputStream(file);
              BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream)) {
             int chunksId = 0;
-            while (bufferedInputStream.read(buffer) > 0) {
-                ByteString data = ByteString.copyFromUtf8(new String(buffer));
+            int length;
+            while ((length = bufferedInputStream.read(buffer)) > 0) {
+                ByteString data = ByteString.copyFromUtf8(new String(buffer).substring(0, length));
                 DFSChunk dfsChunk = new DFSChunk(fileName, chunksId++, data);
+                chunks.add(new DFSChunk(fileName, chunksId++, data));
                 System.out.println(dfsChunk.getData().toStringUtf8());
-//                chunks.add(new DFSChunk(fileName, chunksId++, data));
             }
+//            DataOutputStream
         }
     }
 
