@@ -1,5 +1,7 @@
 package edu.usfca.cs.dfs;
 
+import com.google.protobuf.ByteString;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,12 +20,15 @@ public class Controller {
         controllerInit();
         while (true) {
             Socket socket = controllerSocket.accept();
-            System.out.println("Controller: " + socket.getChannel() + " connected.");
-            String line;
-            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            while ((line = reader.readLine()) != null) {
-                String receivedRequest = line;
-                System.out.println(receivedRequest);
+            StorageMessages.StorageMessageWrapper msgWrapper
+                    = StorageMessages.StorageMessageWrapper.parseDelimitedFrom(
+                    socket.getInputStream());
+
+            if (msgWrapper.hasStoreChunkRequestMsg()) {
+                StorageMessages.StoreChunkRequest storeChunkRequestMsg
+                        = msgWrapper.getStoreChunkRequestMsg();
+                System.out.println("Storing file size: "
+                        + storeChunkRequestMsg.getFileSize());
             }
         }
     }

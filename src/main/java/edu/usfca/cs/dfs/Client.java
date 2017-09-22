@@ -37,11 +37,16 @@ public class Client {
 
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         String request = "StoreFile:" + fileSize;
-//        StorageMessages.StorageMessageWrapper.newBuilder().
+        StorageMessages.StoreChunkRequest storeChunkRequestMsg
+                = StorageMessages.StoreChunkRequest.newBuilder()
+                .setFileSize(fileSize)
+                .build();
+        StorageMessages.StorageMessageWrapper msgWrapper =
+                StorageMessages.StorageMessageWrapper.newBuilder()
+                        .setStoreChunkRequestMsg(storeChunkRequestMsg)
+                        .build();
+        msgWrapper.writeDelimitedTo(socket.getOutputStream());
 
-        writer.println(request); // send the message to the server via the
-        writer.flush();
-        writer.close();
         socket.close();
     }
 
