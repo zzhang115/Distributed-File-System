@@ -2405,17 +2405,17 @@ public final class StorageMessages {
     edu.usfca.cs.dfs.StorageMessages.StoreChunkRequestOrBuilder getStoreChunkRequestMsgOrBuilder();
 
     /**
-     * <code>.HeartBeatSignal heartBeatSignal = 4;</code>
+     * <code>.HeartBeatSignal heartBeatSignalMsg = 4;</code>
      */
-    boolean hasHeartBeatSignal();
+    boolean hasHeartBeatSignalMsg();
     /**
-     * <code>.HeartBeatSignal heartBeatSignal = 4;</code>
+     * <code>.HeartBeatSignal heartBeatSignalMsg = 4;</code>
      */
-    edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal getHeartBeatSignal();
+    edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal getHeartBeatSignalMsg();
     /**
-     * <code>.HeartBeatSignal heartBeatSignal = 4;</code>
+     * <code>.HeartBeatSignal heartBeatSignalMsg = 4;</code>
      */
-    edu.usfca.cs.dfs.StorageMessages.HeartBeatSignalOrBuilder getHeartBeatSignalOrBuilder();
+    edu.usfca.cs.dfs.StorageMessages.HeartBeatSignalOrBuilder getHeartBeatSignalMsgOrBuilder();
 
     public edu.usfca.cs.dfs.StorageMessages.StorageMessageWrapper.MsgCase getMsgCase();
   }
@@ -2549,7 +2549,7 @@ public final class StorageMessages {
       STORECHUNKMSG(1),
       RETRIEVEFILEMSG(2),
       STORECHUNKREQUESTMSG(3),
-      HEARTBEATSIGNAL(4),
+      HEARTBEATSIGNALMSG(4),
       MSG_NOT_SET(0);
       private final int value;
       private MsgCase(int value) {
@@ -2568,7 +2568,7 @@ public final class StorageMessages {
           case 1: return STORECHUNKMSG;
           case 2: return RETRIEVEFILEMSG;
           case 3: return STORECHUNKREQUESTMSG;
-          case 4: return HEARTBEATSIGNAL;
+          case 4: return HEARTBEATSIGNALMSG;
           case 0: return MSG_NOT_SET;
           default: return null;
         }
@@ -2662,26 +2662,26 @@ public final class StorageMessages {
       return edu.usfca.cs.dfs.StorageMessages.StoreChunkRequest.getDefaultInstance();
     }
 
-    public static final int HEARTBEATSIGNAL_FIELD_NUMBER = 4;
+    public static final int HEARTBEATSIGNALMSG_FIELD_NUMBER = 4;
     /**
-     * <code>.HeartBeatSignal heartBeatSignal = 4;</code>
+     * <code>.HeartBeatSignal heartBeatSignalMsg = 4;</code>
      */
-    public boolean hasHeartBeatSignal() {
+    public boolean hasHeartBeatSignalMsg() {
       return msgCase_ == 4;
     }
     /**
-     * <code>.HeartBeatSignal heartBeatSignal = 4;</code>
+     * <code>.HeartBeatSignal heartBeatSignalMsg = 4;</code>
      */
-    public edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal getHeartBeatSignal() {
+    public edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal getHeartBeatSignalMsg() {
       if (msgCase_ == 4) {
          return (edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal) msg_;
       }
       return edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal.getDefaultInstance();
     }
     /**
-     * <code>.HeartBeatSignal heartBeatSignal = 4;</code>
+     * <code>.HeartBeatSignal heartBeatSignalMsg = 4;</code>
      */
-    public edu.usfca.cs.dfs.StorageMessages.HeartBeatSignalOrBuilder getHeartBeatSignalOrBuilder() {
+    public edu.usfca.cs.dfs.StorageMessages.HeartBeatSignalOrBuilder getHeartBeatSignalMsgOrBuilder() {
       if (msgCase_ == 4) {
          return (edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal) msg_;
       }
@@ -2769,8 +2769,8 @@ public final class StorageMessages {
               .equals(other.getStoreChunkRequestMsg());
           break;
         case 4:
-          result = result && getHeartBeatSignal()
-              .equals(other.getHeartBeatSignal());
+          result = result && getHeartBeatSignalMsg()
+              .equals(other.getHeartBeatSignalMsg());
           break;
         case 0:
         default:
@@ -2800,8 +2800,8 @@ public final class StorageMessages {
           hash = (53 * hash) + getStoreChunkRequestMsg().hashCode();
           break;
         case 4:
-          hash = (37 * hash) + HEARTBEATSIGNAL_FIELD_NUMBER;
-          hash = (53 * hash) + getHeartBeatSignal().hashCode();
+          hash = (37 * hash) + HEARTBEATSIGNALMSG_FIELD_NUMBER;
+          hash = (53 * hash) + getHeartBeatSignalMsg().hashCode();
           break;
         case 0:
         default:
@@ -2981,10 +2981,10 @@ public final class StorageMessages {
           }
         }
         if (msgCase_ == 4) {
-          if (heartBeatSignalBuilder_ == null) {
+          if (heartBeatSignalMsgBuilder_ == null) {
             result.msg_ = msg_;
           } else {
-            result.msg_ = heartBeatSignalBuilder_.build();
+            result.msg_ = heartBeatSignalMsgBuilder_.build();
           }
         }
         result.msgCase_ = msgCase_;
@@ -3042,8 +3042,8 @@ public final class StorageMessages {
             mergeStoreChunkRequestMsg(other.getStoreChunkRequestMsg());
             break;
           }
-          case HEARTBEATSIGNAL: {
-            mergeHeartBeatSignal(other.getHeartBeatSignal());
+          case HEARTBEATSIGNALMSG: {
+            mergeHeartBeatSignalMsg(other.getHeartBeatSignalMsg());
             break;
           }
           case MSG_NOT_SET: {
@@ -3501,64 +3501,64 @@ public final class StorageMessages {
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
-          edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal, edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal.Builder, edu.usfca.cs.dfs.StorageMessages.HeartBeatSignalOrBuilder> heartBeatSignalBuilder_;
+          edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal, edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal.Builder, edu.usfca.cs.dfs.StorageMessages.HeartBeatSignalOrBuilder> heartBeatSignalMsgBuilder_;
       /**
-       * <code>.HeartBeatSignal heartBeatSignal = 4;</code>
+       * <code>.HeartBeatSignal heartBeatSignalMsg = 4;</code>
        */
-      public boolean hasHeartBeatSignal() {
+      public boolean hasHeartBeatSignalMsg() {
         return msgCase_ == 4;
       }
       /**
-       * <code>.HeartBeatSignal heartBeatSignal = 4;</code>
+       * <code>.HeartBeatSignal heartBeatSignalMsg = 4;</code>
        */
-      public edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal getHeartBeatSignal() {
-        if (heartBeatSignalBuilder_ == null) {
+      public edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal getHeartBeatSignalMsg() {
+        if (heartBeatSignalMsgBuilder_ == null) {
           if (msgCase_ == 4) {
             return (edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal) msg_;
           }
           return edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal.getDefaultInstance();
         } else {
           if (msgCase_ == 4) {
-            return heartBeatSignalBuilder_.getMessage();
+            return heartBeatSignalMsgBuilder_.getMessage();
           }
           return edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal.getDefaultInstance();
         }
       }
       /**
-       * <code>.HeartBeatSignal heartBeatSignal = 4;</code>
+       * <code>.HeartBeatSignal heartBeatSignalMsg = 4;</code>
        */
-      public Builder setHeartBeatSignal(edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal value) {
-        if (heartBeatSignalBuilder_ == null) {
+      public Builder setHeartBeatSignalMsg(edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal value) {
+        if (heartBeatSignalMsgBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
           msg_ = value;
           onChanged();
         } else {
-          heartBeatSignalBuilder_.setMessage(value);
+          heartBeatSignalMsgBuilder_.setMessage(value);
         }
         msgCase_ = 4;
         return this;
       }
       /**
-       * <code>.HeartBeatSignal heartBeatSignal = 4;</code>
+       * <code>.HeartBeatSignal heartBeatSignalMsg = 4;</code>
        */
-      public Builder setHeartBeatSignal(
+      public Builder setHeartBeatSignalMsg(
           edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal.Builder builderForValue) {
-        if (heartBeatSignalBuilder_ == null) {
+        if (heartBeatSignalMsgBuilder_ == null) {
           msg_ = builderForValue.build();
           onChanged();
         } else {
-          heartBeatSignalBuilder_.setMessage(builderForValue.build());
+          heartBeatSignalMsgBuilder_.setMessage(builderForValue.build());
         }
         msgCase_ = 4;
         return this;
       }
       /**
-       * <code>.HeartBeatSignal heartBeatSignal = 4;</code>
+       * <code>.HeartBeatSignal heartBeatSignalMsg = 4;</code>
        */
-      public Builder mergeHeartBeatSignal(edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal value) {
-        if (heartBeatSignalBuilder_ == null) {
+      public Builder mergeHeartBeatSignalMsg(edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal value) {
+        if (heartBeatSignalMsgBuilder_ == null) {
           if (msgCase_ == 4 &&
               msg_ != edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal.getDefaultInstance()) {
             msg_ = edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal.newBuilder((edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal) msg_)
@@ -3569,18 +3569,18 @@ public final class StorageMessages {
           onChanged();
         } else {
           if (msgCase_ == 4) {
-            heartBeatSignalBuilder_.mergeFrom(value);
+            heartBeatSignalMsgBuilder_.mergeFrom(value);
           }
-          heartBeatSignalBuilder_.setMessage(value);
+          heartBeatSignalMsgBuilder_.setMessage(value);
         }
         msgCase_ = 4;
         return this;
       }
       /**
-       * <code>.HeartBeatSignal heartBeatSignal = 4;</code>
+       * <code>.HeartBeatSignal heartBeatSignalMsg = 4;</code>
        */
-      public Builder clearHeartBeatSignal() {
-        if (heartBeatSignalBuilder_ == null) {
+      public Builder clearHeartBeatSignalMsg() {
+        if (heartBeatSignalMsgBuilder_ == null) {
           if (msgCase_ == 4) {
             msgCase_ = 0;
             msg_ = null;
@@ -3591,22 +3591,22 @@ public final class StorageMessages {
             msgCase_ = 0;
             msg_ = null;
           }
-          heartBeatSignalBuilder_.clear();
+          heartBeatSignalMsgBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>.HeartBeatSignal heartBeatSignal = 4;</code>
+       * <code>.HeartBeatSignal heartBeatSignalMsg = 4;</code>
        */
-      public edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal.Builder getHeartBeatSignalBuilder() {
-        return getHeartBeatSignalFieldBuilder().getBuilder();
+      public edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal.Builder getHeartBeatSignalMsgBuilder() {
+        return getHeartBeatSignalMsgFieldBuilder().getBuilder();
       }
       /**
-       * <code>.HeartBeatSignal heartBeatSignal = 4;</code>
+       * <code>.HeartBeatSignal heartBeatSignalMsg = 4;</code>
        */
-      public edu.usfca.cs.dfs.StorageMessages.HeartBeatSignalOrBuilder getHeartBeatSignalOrBuilder() {
-        if ((msgCase_ == 4) && (heartBeatSignalBuilder_ != null)) {
-          return heartBeatSignalBuilder_.getMessageOrBuilder();
+      public edu.usfca.cs.dfs.StorageMessages.HeartBeatSignalOrBuilder getHeartBeatSignalMsgOrBuilder() {
+        if ((msgCase_ == 4) && (heartBeatSignalMsgBuilder_ != null)) {
+          return heartBeatSignalMsgBuilder_.getMessageOrBuilder();
         } else {
           if (msgCase_ == 4) {
             return (edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal) msg_;
@@ -3615,16 +3615,16 @@ public final class StorageMessages {
         }
       }
       /**
-       * <code>.HeartBeatSignal heartBeatSignal = 4;</code>
+       * <code>.HeartBeatSignal heartBeatSignalMsg = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal, edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal.Builder, edu.usfca.cs.dfs.StorageMessages.HeartBeatSignalOrBuilder> 
-          getHeartBeatSignalFieldBuilder() {
-        if (heartBeatSignalBuilder_ == null) {
+          getHeartBeatSignalMsgFieldBuilder() {
+        if (heartBeatSignalMsgBuilder_ == null) {
           if (!(msgCase_ == 4)) {
             msg_ = edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal.getDefaultInstance();
           }
-          heartBeatSignalBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          heartBeatSignalMsgBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
               edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal, edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal.Builder, edu.usfca.cs.dfs.StorageMessages.HeartBeatSignalOrBuilder>(
                   (edu.usfca.cs.dfs.StorageMessages.HeartBeatSignal) msg_,
                   getParentForChildren(),
@@ -3633,7 +3633,7 @@ public final class StorageMessages {
         }
         msgCase_ = 4;
         onChanged();;
-        return heartBeatSignalBuilder_;
+        return heartBeatSignalMsgBuilder_;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -3723,13 +3723,13 @@ public final class StorageMessages {
       "a\030\003 \001(\014\" \n\014RetrieveFile\022\020\n\010fileName\030\001 \001(" +
       "\t\"%\n\021StoreChunkRequest\022\020\n\010fileSize\030\001 \001(\003" +
       "\"I\n\017HeartBeatSignal\022\020\n\010metaData\030\001 \001(\t\022\021\n" +
-      "\tfreeSpace\030\002 \001(\001\022\021\n\ttimestamp\030\003 \001(\t\"\317\001\n\025" +
+      "\tfreeSpace\030\002 \001(\001\022\021\n\ttimestamp\030\003 \001(\t\"\322\001\n\025" +
       "StorageMessageWrapper\022$\n\rstoreChunkMsg\030\001" +
       " \001(\0132\013.StoreChunkH\000\022(\n\017retrieveFileMsg\030\002" +
       " \001(\0132\r.RetrieveFileH\000\0222\n\024storeChunkReque" +
-      "stMsg\030\003 \001(\0132\022.StoreChunkRequestH\000\022+\n\017hea",
-      "rtBeatSignal\030\004 \001(\0132\020.HeartBeatSignalH\000B\005" +
-      "\n\003msgB\022\n\020edu.usfca.cs.dfsb\006proto3"
+      "stMsg\030\003 \001(\0132\022.StoreChunkRequestH\000\022.\n\022hea",
+      "rtBeatSignalMsg\030\004 \001(\0132\020.HeartBeatSignalH" +
+      "\000B\005\n\003msgB\022\n\020edu.usfca.cs.dfsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3772,7 +3772,7 @@ public final class StorageMessages {
     internal_static_StorageMessageWrapper_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_StorageMessageWrapper_descriptor,
-        new java.lang.String[] { "StoreChunkMsg", "RetrieveFileMsg", "StoreChunkRequestMsg", "HeartBeatSignal", "Msg", });
+        new java.lang.String[] { "StoreChunkMsg", "RetrieveFileMsg", "StoreChunkRequestMsg", "HeartBeatSignalMsg", "Msg", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

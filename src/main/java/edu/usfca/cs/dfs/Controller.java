@@ -29,8 +29,11 @@ public class Controller {
                         = msgWrapper.getStoreChunkRequestMsg();
                 System.out.println("Storing file size: "
                         + storeChunkRequestMsg.getFileSize());
-//            } else if (msgWrapper.){
-
+            } else if (msgWrapper.hasHeartBeatSignalMsg()) {
+                StorageMessages.HeartBeatSignal heartBeatSignalMsg
+                        = msgWrapper.getHeartBeatSignalMsg();
+                System.out.println("HeartBeat: " + heartBeatSignalMsg.getTimestamp() + " FreeSpace: "
+                        + heartBeatSignalMsg.getFreeSpace());
             }
         }
     }

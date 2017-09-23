@@ -79,7 +79,9 @@ public class StorageNode {
         for (Map.Entry<String, Integer> meta : metamap.entrySet()) {
             metaBuff.append(meta.getKey() + ":" + meta.getValue() + ",");
         }
-        metaBuff.deleteCharAt(metaBuff.length() - 1);
+        if (metaBuff.length() > 0) {
+            metaBuff.deleteCharAt(metaBuff.length() - 1);
+        }
 
         String curPath = System.getProperty("user.dir");
         double usableSpace = (double) new File(curPath).getUsableSpace();   // more precisely than getFreeSpace()
@@ -92,7 +94,7 @@ public class StorageNode {
                 .build();
         StorageMessages.StorageMessageWrapper msgWrapper =
                 StorageMessages.StorageMessageWrapper.newBuilder()
-                        .setHeartBeatSignal(heartBeatMsg)
+                        .setHeartBeatSignalMsg(heartBeatMsg)
                         .build();
         msgWrapper.writeDelimitedTo(nodeSocket.getOutputStream());
         nodeSocket.close();

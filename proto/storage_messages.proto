@@ -26,7 +26,7 @@ message StorageMessageWrapper {
         StoreChunk storeChunkMsg = 1;
         RetrieveFile retrieveFileMsg = 2;
         StoreChunkRequest storeChunkRequestMsg = 3;
-        HeartBeatSignal heartBeatSignal = 4;
+        HeartBeatSignal heartBeatSignalMsg = 4;
     }
 }
 
