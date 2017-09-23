@@ -29,6 +29,8 @@ public class Controller {
                         = msgWrapper.getStoreChunkRequestMsg();
                 System.out.println("Storing file size: "
                         + storeChunkRequestMsg.getFileSize());
+//            } else if (msgWrapper.){
+
             }
         }
     }

@@ -15,6 +15,17 @@ message StoreChunkRequest {
     int64 fileSize = 1;
 }
 
+message HeartBeatSignal {
+    int32 storageNodeID = 1;
+    message MetaMap {
+        string fileName = 1;
+        int32 chunkId = 2;
+    }
+    repeated MetaMap metaMap = 2;
+    double freeSpace = 3;
+    string timestamp = 4;
+}
+
 message StorageMessageWrapper {
     oneof msg {
         StoreChunk storeChunkMsg = 1;

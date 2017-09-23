@@ -7,22 +7,44 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class StorageNode {
-    private static ServerSocket serverSocket;
-    public static void main(String[] args) 
+    private static ServerSocket nodeServerSocket;
+    private static Socket nodeSocket;
+    private static DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+    public static void main(String[] args)
     throws Exception {
         String hostname = getHostname();
         System.out.println("Starting storage node on " + hostname + "...");
         storageNodeInit();
+        mainFunction();
     }
 
     public static void storageNodeInit() throws IOException {
+        nodeServerSocket = new ServerSocket(9090);
+        nodeSocket = new Socket("localhost", 8080);
 
-    serverSocket = new ServerSocket(9090);
-        System.out.println("Listening...");
+        Runnable heartBeat = new Runnable() {
+            public void run() {
+                System.out.println("Send HeartBeat! --" + dateFormat.format(new Date()));
+            }
+        };
+
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(heartBeat, 0, 3, TimeUnit.SECONDS);
+    }
+
+    public static void mainFunction() throws IOException {
         while (true) {
-            Socket socket = serverSocket.accept();
+            System.out.println("Listening...");
+            Socket socket = nodeServerSocket.accept();
             StorageMessages.StorageMessageWrapper msgWrapper
                 = StorageMessages.StorageMessageWrapper.parseDelimitedFrom(
                         socket.getInputStream());
@@ -38,6 +60,12 @@ public class StorageNode {
                 System.out.println("Storing file data: " + dataStr);
             }
         }
+    }
+
+    public static void sendHeartBeat() throws IOException {
+        StorageMessages.HeartBeatSignal heartBeatMsg
+                = StorageMessages.HeartBeatSignal.newBuilder()
+                .setStorageNodeID()
     }
 
     /**

@@ -26,16 +26,15 @@ public class Client {
         File file = new File(filePath);
         fileSize = file.length();
         breakFiletoChunks(file);
-        sendRequestToController(fileSize);
-//        for (DFSChunk chunk : chunks) {
-//            sendRequestToStorageNode(chunk);
-//        }
+//        sendRequestToController(fileSize);
+        for (DFSChunk chunk : chunks) {
+            sendRequestToStorageNode(chunk);
+        }
     }
 
     public static void sendRequestToController(long fileSize) throws IOException {
         socket = new Socket("localhost", 8080);
 
-        PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         String request = "StoreFile:" + fileSize;
         StorageMessages.StoreChunkRequest storeChunkRequestMsg
                 = StorageMessages.StoreChunkRequest.newBuilder()
