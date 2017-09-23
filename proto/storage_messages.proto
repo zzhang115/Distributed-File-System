@@ -16,14 +16,9 @@ message StoreChunkRequest {
 }
 
 message HeartBeatSignal {
-    int32 storageNodeID = 1;
-    message MetaMap {
-        string fileName = 1;
-        int32 chunkId = 2;
-    }
-    repeated MetaMap metaMap = 2;
-    double freeSpace = 3;
-    string timestamp = 4;
+    string metaData = 1;
+    double freeSpace = 2;
+    string timestamp = 3;
 }
 
 message StorageMessageWrapper {
@@ -31,6 +26,7 @@ message StorageMessageWrapper {
         StoreChunk storeChunkMsg = 1;
         RetrieveFile retrieveFileMsg = 2;
         StoreChunkRequest storeChunkRequestMsg = 3;
+        HeartBeatSignal heartBeatSignal = 4;
     }
 }
 
