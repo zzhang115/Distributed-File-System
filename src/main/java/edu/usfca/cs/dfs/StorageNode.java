@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class StorageNode {
     private static ServerSocket nodeServerSocket;
@@ -23,6 +24,7 @@ public class StorageNode {
     private static DateFormat dateFormat;
     private static Map<String, List<Integer>> updateMetaMap;
     private static Map<String, List<Integer>> fullMetaMap;
+    private static ReentrantLock lock = new ReentrantLock();
 
     public static void main(String[] args)
     throws Exception {
@@ -42,7 +44,10 @@ public class StorageNode {
             public void run() {
                 System.out.println("Send HeartBeat! --" + dateFormat.format(new Date()));
                 try {
+                    lock.lock();
                     sendHeartBeat();
+                    lock.unlock();
+                    System.out.println("unlock from heart");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -69,6 +74,7 @@ public class StorageNode {
                 System.out.println("Storing file name: " + fileName);
                 System.out.println("Storing file ID: " + chunkId);
 
+                lock.lock();
                 if (fullMetaMap.keySet().contains(fileName)) {
                     fullMetaMap.get(fileName).add(chunkId);
                 } else {
@@ -76,6 +82,7 @@ public class StorageNode {
                     chunkIdList.add(chunkId);
                     fullMetaMap.put(fileName, chunkIdList);
                 }
+                lock.unlock();
 
                 ByteString data = storeChunkMsg.getData();
                 String dataStr = data.toStringUtf8();
@@ -100,7 +107,8 @@ public class StorageNode {
                 metaBuff.append(chunkId + ",");
             }
         }
-        if (metaBuff.length() > 0) {
+        //  in order to keep metaBuff has ,
+        if (metaBuff.indexOf(",") != -1) {
             metaBuff.deleteCharAt(metaBuff.length() - 1);
         }
 
@@ -118,6 +126,7 @@ public class StorageNode {
                         .setHeartBeatSignalMsg(heartBeatMsg)
                         .build();
         msgWrapper.writeDelimitedTo(nodeSocket.getOutputStream());
+
         nodeSocket.close();
         updateMetaMap.clear();
     }
