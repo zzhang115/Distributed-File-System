@@ -2,7 +2,9 @@ package edu.usfca.cs.dfs;
 
 import com.google.protobuf.ByteString;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -10,9 +12,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -21,7 +21,8 @@ public class StorageNode {
     private static ServerSocket nodeServerSocket;
     private static Socket nodeSocket;
     private static DateFormat dateFormat;
-    private static Map<String, Integer> metamap;
+    private static Map<String, List<Integer>> updateMetaMap;
+    private static Map<String, List<Integer>> fullMetaMap;
 
     public static void main(String[] args)
     throws Exception {
@@ -34,7 +35,8 @@ public class StorageNode {
     public static void storageNodeInit() throws IOException {
         nodeServerSocket = new ServerSocket(9090);
         dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        metamap = new HashMap<String, Integer>();
+        updateMetaMap = new HashMap<String, List<Integer>>();
+        fullMetaMap = new HashMap<String, List<Integer>>();
 
         Runnable heartBeat = new Runnable() {
             public void run() {
@@ -48,7 +50,7 @@ public class StorageNode {
         };
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(heartBeat, 0, 3, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(heartBeat, 0, 5, TimeUnit.SECONDS);
     }
 
     public static void mainFunction() throws IOException {
@@ -62,12 +64,28 @@ public class StorageNode {
             if (msgWrapper.hasStoreChunkMsg()) {
                 StorageMessages.StoreChunk storeChunkMsg
                     = msgWrapper.getStoreChunkMsg();
-                System.out.println("Storing file name: "
-                        + storeChunkMsg.getFileName());
-                System.out.println("Storing file ID: " + storeChunkMsg.getChunkId());
+                String fileName = storeChunkMsg.getFileName();
+                int chunkId = storeChunkMsg.getChunkId();
+                System.out.println("Storing file name: " + fileName);
+                System.out.println("Storing file ID: " + chunkId);
+
+                if (fullMetaMap.keySet().contains(fileName)) {
+                    fullMetaMap.get(fileName).add(chunkId);
+                } else {
+                    List<Integer> chunkIdList = new ArrayList<Integer>();
+                    chunkIdList.add(chunkId);
+                    fullMetaMap.put(fileName, chunkIdList);
+                }
+
                 ByteString data = storeChunkMsg.getData();
                 String dataStr = data.toStringUtf8();
                 System.out.println("Storing file data: " + dataStr);
+
+                File chunk = new File("storage.file/" + fileName + "_Chunk" + chunkId);
+                BufferedWriter writer = new BufferedWriter(new FileWriter(chunk));
+                writer.write(dataStr);
+                writer.flush();
+                writer.close();
             }
         }
     }
@@ -76,8 +94,11 @@ public class StorageNode {
         nodeSocket = new Socket("localhost", 8080);
 
         StringBuffer metaBuff = new StringBuffer();
-        for (Map.Entry<String, Integer> meta : metamap.entrySet()) {
-            metaBuff.append(meta.getKey() + ":" + meta.getValue() + ",");
+        for (Map.Entry<String, List<Integer>> meta : updateMetaMap.entrySet()) {
+            metaBuff.append(meta.getKey() + ":");
+            for (int chunkId : meta.getValue()) {
+                metaBuff.append(chunkId + ",");
+            }
         }
         if (metaBuff.length() > 0) {
             metaBuff.deleteCharAt(metaBuff.length() - 1);
@@ -98,6 +119,7 @@ public class StorageNode {
                         .build();
         msgWrapper.writeDelimitedTo(nodeSocket.getOutputStream());
         nodeSocket.close();
+        updateMetaMap.clear();
     }
 
     /**

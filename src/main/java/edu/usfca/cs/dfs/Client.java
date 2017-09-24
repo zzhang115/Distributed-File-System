@@ -80,7 +80,7 @@ public class Client {
             while ((length = bufferedInputStream.read(buffer)) > 0) {
                 ByteString data = ByteString.copyFromUtf8(new String(buffer).substring(0, length));
                 DFSChunk dfsChunk = new DFSChunk(fileName, chunksId++, data);
-                chunks.add(new DFSChunk(fileName, chunksId++, data));
+                chunks.add(new DFSChunk(fileName, chunksId, data));
                 System.out.println(dfsChunk.getData().toStringUtf8());
             }
 //            DataOutputStream

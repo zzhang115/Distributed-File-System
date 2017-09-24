@@ -14,6 +14,7 @@ public class Controller {
     private static ArrayList<StorageNode> storageNodes;
     private static ArrayList<DFSFile> files;
     private static ServerSocket controllerSocket;
+
     public static void main(String[] args) throws IOException {
 
         System.out.println("Starting controller...");
@@ -29,10 +30,11 @@ public class Controller {
                         = msgWrapper.getStoreChunkRequestMsg();
                 System.out.println("Storing file size: "
                         + storeChunkRequestMsg.getFileSize());
-            } else if (msgWrapper.hasHeartBeatSignalMsg()) {
+            }
+            if (msgWrapper.hasHeartBeatSignalMsg()) {
                 StorageMessages.HeartBeatSignal heartBeatSignalMsg
                         = msgWrapper.getHeartBeatSignalMsg();
-                System.out.println("HeartBeat: " + heartBeatSignalMsg.getTimestamp() + " FreeSpace: "
+                System.out.println("HeartBeat: " + heartBeatSignalMsg.getMetaData() + " " + heartBeatSignalMsg.getTimestamp() + " FreeSpace: "
                         + heartBeatSignalMsg.getFreeSpace());
             }
         }
