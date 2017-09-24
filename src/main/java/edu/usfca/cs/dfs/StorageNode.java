@@ -82,6 +82,14 @@ public class StorageNode {
                     chunkIdList.add(chunkId);
                     fullMetaMap.put(fileName, chunkIdList);
                 }
+
+                if (updateMetaMap.keySet().contains(fileName)) {
+                    updateMetaMap.get(fileName).add(chunkId);
+                } else {
+                    List<Integer> chunkIdList = new ArrayList<Integer>();
+                    chunkIdList.add(chunkId);
+                    updateMetaMap.put(fileName, chunkIdList);
+                }
                 lock.unlock();
 
                 ByteString data = storeChunkMsg.getData();
@@ -107,7 +115,6 @@ public class StorageNode {
                 metaBuff.append(chunkId + ",");
             }
         }
-        //  in order to keep metaBuff has ,
         if (metaBuff.indexOf(",") != -1) {
             metaBuff.deleteCharAt(metaBuff.length() - 1);
         }
