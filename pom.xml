@@ -41,8 +41,10 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>${jdk.version}</source>
-                    <target>${jdk.version}</target>
+                    <!--<source>${jdk.version}</source>-->
+                    <!--<target>${jdk.version}</target>-->
+                    <source>1.7</source>
+                    <target>1.7</target>
 
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <compilerArgument>-Xpkginfo:always</compilerArgument>
