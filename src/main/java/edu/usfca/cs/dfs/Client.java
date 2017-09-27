@@ -13,7 +13,7 @@ public class Client {
     private static String filePath = "client.file/pig.txt";
     private static long fileSize;
     private static Socket socket;
-    private static final int SIZEOFCHUNK = 20;
+    private static final int SIZE_OF_CHUNK = 20;
     private static List<DFSChunk> chunks= new ArrayList<DFSChunk>();
 
     public static void main(String[] args) throws IOException {
@@ -70,7 +70,7 @@ public class Client {
     }
 
     public static void breakFiletoChunks(File file) throws IOException {
-        int sizeOfChunk = SIZEOFCHUNK;
+        int sizeOfChunk = SIZE_OF_CHUNK;
         byte[] buffer = new byte[sizeOfChunk];
         String fileName = file.getName();
         try (FileInputStream fileInputStream = new FileInputStream(file);

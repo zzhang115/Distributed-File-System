@@ -2,12 +2,19 @@ package edu.usfca.cs.dfs;
 
 import com.google.protobuf.ByteString;
 
+import javax.xml.crypto.Data;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Controller {
 
@@ -15,12 +22,30 @@ public class Controller {
     private static Map<String, Map<Integer, Set<String>>> metaMap; // <fileName, <chunkId, <storageHostName>>>
     private static Map<String, String> heartBeatMap;  // <storageNodeHostName, timeStamp>
     private static ServerSocket controllerSocket;
+    private static final int FAILURE_NODE_TIME = 15;
+    private static final int MILLIS_PER_SEC= 1000;
+    private static DateFormat dateFormat;
 
     public static void controllerInit() throws IOException {
         storageNodeMap = new HashMap<String, Double>();
         metaMap = new HashMap<String, Map<Integer, Set<String>>>();
         heartBeatMap = new HashMap<String, String>();
         controllerSocket = new ServerSocket(8080);
+        dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+        Runnable failureDetect = new Runnable() {
+            public void run() {
+                try {
+                    System.out.println("Detecting Failure Node...");
+                    detectFailureNode();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(failureDetect, 0, 5, TimeUnit.SECONDS);
     }
 
     public static void main(String[] args) throws IOException {
@@ -75,6 +100,19 @@ public class Controller {
                     storageHostNames.add(storageHostName);
                     chunkMap.put(chunkId, storageHostNames);
                 }
+            }
+        }
+    }
+
+    public static void detectFailureNode() throws ParseException {
+        Date currentDate = new Date();
+
+        for (String storageNodeHostName : heartBeatMap.keySet()) {
+            Date storageNodeDate = dateFormat.parse(heartBeatMap.get(storageNodeHostName));
+            long dateDiff = (currentDate.getTime() - storageNodeDate.getTime()) / MILLIS_PER_SEC;
+            System.out.println(dateDiff + " " + currentDate.getTime() +" "+ storageNodeDate.getTime());
+            if (dateDiff >= FAILURE_NODE_TIME) {
+                System.out.println(storageNodeHostName + " crashed down!");
             }
         }
     }
