@@ -122,14 +122,14 @@ public class StorageNode {
         String curPath = System.getProperty("user.dir");
         double usableSpace = (double) new File(curPath).getUsableSpace();   // more precisely than getFreeSpace()
 
-        StorageMessages.HeartBeatSignal heartBeatMsg
-                = StorageMessages.HeartBeatSignal.newBuilder()
+        ControllerMessages.HeartBeatSignal heartBeatMsg
+                = ControllerMessages.HeartBeatSignal.newBuilder()
                 .setMetaData(metaBuff.toString())
                 .setFreeSpace(usableSpace)
                 .setTimestamp(dateFormat.format(new Date()))
                 .build();
-        StorageMessages.StorageMessageWrapper msgWrapper =
-                StorageMessages.StorageMessageWrapper.newBuilder()
+        ControllerMessages.ControllerMessageWrapper msgWrapper =
+                ControllerMessages.ControllerMessageWrapper.newBuilder()
                         .setHeartBeatSignalMsg(heartBeatMsg)
                         .build();
         msgWrapper.writeDelimitedTo(nodeSocket.getOutputStream());

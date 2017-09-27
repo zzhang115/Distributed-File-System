@@ -29,18 +29,18 @@ public class Controller {
         controllerInit();
         while (true) {
             Socket socket = controllerSocket.accept();
-            StorageMessages.StorageMessageWrapper msgWrapper
-                    = StorageMessages.StorageMessageWrapper.parseDelimitedFrom(
+            ControllerMessages.ControllerMessageWrapper msgWrapper
+                    = ControllerMessages.ControllerMessageWrapper.parseDelimitedFrom(
                     socket.getInputStream());
 
             if (msgWrapper.hasStoreChunkRequestMsg()) {
-                StorageMessages.StoreChunkRequest storeChunkRequestMsg
+                ControllerMessages.StoreChunkRequest storeChunkRequestMsg
                         = msgWrapper.getStoreChunkRequestMsg();
                 System.out.println("Storing file size: "
                         + storeChunkRequestMsg.getFileSize());
             }
             if (msgWrapper.hasHeartBeatSignalMsg()) {
-                StorageMessages.HeartBeatSignal heartBeatSignalMsg
+                ControllerMessages.HeartBeatSignal heartBeatSignalMsg
                         = msgWrapper.getHeartBeatSignalMsg();
 
                 String storageHostName = socket.getInetAddress().getHostName();
@@ -76,7 +76,6 @@ public class Controller {
                     chunkMap.put(chunkId, storageHostNames);
                 }
             }
-            System.out.println("Hi");
         }
     }
 }

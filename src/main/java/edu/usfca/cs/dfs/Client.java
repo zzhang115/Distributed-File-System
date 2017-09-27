@@ -36,12 +36,12 @@ public class Client {
         socket = new Socket("localhost", 8080);
 
         String request = "StoreFile:" + fileSize;
-        StorageMessages.StoreChunkRequest storeChunkRequestMsg
-                = StorageMessages.StoreChunkRequest.newBuilder()
+        ControllerMessages.StoreChunkRequest storeChunkRequestMsg
+                = ControllerMessages.StoreChunkRequest.newBuilder()
                 .setFileSize(fileSize)
                 .build();
-        StorageMessages.StorageMessageWrapper msgWrapper =
-                StorageMessages.StorageMessageWrapper.newBuilder()
+        ControllerMessages.ControllerMessageWrapper msgWrapper =
+                ControllerMessages.ControllerMessageWrapper.newBuilder()
                         .setStoreChunkRequestMsg(storeChunkRequestMsg)
                         .build();
         msgWrapper.writeDelimitedTo(socket.getOutputStream());

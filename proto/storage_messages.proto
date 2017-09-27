@@ -11,22 +11,10 @@ message RetrieveFile {
     string fileName = 1;
 }
 
-message StoreChunkRequest {
-    int64 fileSize = 1;
-}
-
-message HeartBeatSignal {
-    string metaData = 1;
-    double freeSpace = 2;
-    string timestamp = 3;
-}
-
 message StorageMessageWrapper {
     oneof msg {
         StoreChunk storeChunkMsg = 1;
         RetrieveFile retrieveFileMsg = 2;
-        StoreChunkRequest storeChunkRequestMsg = 3;
-        HeartBeatSignal heartBeatSignalMsg = 4;
     }
 }
 

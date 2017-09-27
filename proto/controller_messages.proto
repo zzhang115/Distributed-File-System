@@ -1,0 +1,20 @@
+syntax = "proto3";
+option java_package = "edu.usfca.cs.dfs";
+
+message StoreChunkRequest {
+    int64 fileSize = 1;
+}
+
+message HeartBeatSignal {
+    string metaData = 1;
+    double freeSpace = 2;
+    string timestamp = 3;
+}
+
+message ControllerMessageWrapper {
+    oneof msg {
+        StoreChunkRequest storeChunkRequestMsg = 1;
+        HeartBeatSignal heartBeatSignalMsg = 2;
+    }
+}
+
