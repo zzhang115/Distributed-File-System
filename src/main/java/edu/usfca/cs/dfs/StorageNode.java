@@ -74,7 +74,6 @@ public class StorageNode {
                 System.out.println("Storing file name: " + fileName);
                 System.out.println("Storing file ID: " + chunkId);
 
-                lock.lock();
                 if (fullMetaMap.keySet().contains(fileName)) {
                     fullMetaMap.get(fileName).add(chunkId);
                 } else {
@@ -83,6 +82,7 @@ public class StorageNode {
                     fullMetaMap.put(fileName, chunkIdList);
                 }
 
+                lock.lock();
                 if (updateMetaMap.keySet().contains(fileName)) {
                     updateMetaMap.get(fileName).add(chunkId);
                 } else {
@@ -95,20 +95,23 @@ public class StorageNode {
                 ByteString data = storeChunkMsg.getData();
                 String dataStr = data.toStringUtf8();
                 System.out.println("Storing file data: " + dataStr);
-
-                File chunk = new File("storage.file/" + fileName + "_Chunk" + chunkId);
-                BufferedWriter writer = new BufferedWriter(new FileWriter(chunk));
-                writer.write(dataStr);
-                writer.flush();
-                writer.close();
+                writeFileToLocalMachine(fileName, chunkId, dataStr);
             }
         }
+    }
+
+    public static void writeFileToLocalMachine
+            (String fileName, int chunkId, String dataStr) throws IOException {
+        File chunk = new File("storage.file/" + fileName + "_Chunk" + chunkId);
+        BufferedWriter writer = new BufferedWriter(new FileWriter(chunk));
+        writer.write(dataStr);
+        writer.flush();
+        writer.close();
     }
 
     public static void sendHeartBeat() throws IOException {
         nodeSocket = new Socket("localhost", 8080);
         String curPath = System.getProperty("user.dir");
-        int index = 0;
 
         ControllerMessages.HeartBeatSignal.Builder heartBeatMsg =
                         ControllerMessages.HeartBeatSignal.newBuilder();
@@ -120,21 +123,13 @@ public class StorageNode {
         }
 
         double usableSpace = (double) new File(curPath).getUsableSpace();   // more precisely than getFreeSpace()
-        heartBeatMsg.setFreeSpace(usableSpace)
-                .setTimestamp(dateFormat.format(new Date()))
-                .build();
-//                ControllerMessages.HeartBeatSignal heartBeatMsg =
-//                        ControllerMessages.HeartBeatSignal.newBuilder()
-//                                .addMetaBuilder().setFilename(meta.getKey()).setChunkId(chunkId)
-//                                .setFreeSpace(usableSpace)
-//                                .setTimestamp(dateFormat.format(new Date()))
-//                                .build();
+        heartBeatMsg.setFreeSpace(usableSpace).setTimestamp(
+                dateFormat.format(new Date())).build();
         ControllerMessages.ControllerMessageWrapper msgWrapper =
                 ControllerMessages.ControllerMessageWrapper.newBuilder()
                         .setHeartBeatSignalMsg(heartBeatMsg)
                         .build();
         msgWrapper.writeDelimitedTo(nodeSocket.getOutputStream());
-
 
         nodeSocket.close();
         updateMetaMap.clear();

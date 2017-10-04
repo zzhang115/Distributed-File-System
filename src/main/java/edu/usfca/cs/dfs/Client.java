@@ -31,7 +31,7 @@ public class Client {
         breakFiletoChunks(file);
 //        sendRequestToController(fileSize);
         for (DFSChunk chunk : chunks) {
-            sendRequestToStorageNode(chunk);
+            sendStoreRequestToStorageNode(chunk);
         }
     }
 
@@ -52,7 +52,7 @@ public class Client {
         socket.close();
     }
 
-    public static void sendRequestToStorageNode(DFSChunk chunk) throws IOException {
+    public static void sendStoreRequestToStorageNode(DFSChunk chunk) throws IOException {
         socket = new Socket("localhost", 9090);
 
         StorageMessages.StoreChunk storeChunkMsg
@@ -99,16 +99,15 @@ public class Client {
             e.printStackTrace();
         }
 
-        FileInputStream fis = new FileInputStream(file);
-        //Create byte array to read data in chunks
-        byte[] byteArray = new byte[1024];
+        FileInputStream fileInputStream = new FileInputStream(file);
+        byte[] byteArray = new byte[1024]; //Create byte array to read data in chunks
         int bytesCount = 0;
 
         //Read file data and update in message digest
-        while ((bytesCount = fis.read(byteArray)) != -1) {
+        while ((bytesCount = fileInputStream.read(byteArray)) != -1) {
             md5Digest.update(byteArray, 0, bytesCount);
         };
-        fis.close();
+        fileInputStream.close();
 
         //Get the hash's bytes
         //This bytes[] has bytes in decimal format;
@@ -119,7 +118,6 @@ public class Client {
         for(int i=0; i< bytes.length ;i++) {
             sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
         }
-        //complete hash
         return sb.toString();
     }
 

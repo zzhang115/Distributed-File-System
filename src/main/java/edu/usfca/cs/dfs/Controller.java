@@ -15,16 +15,38 @@ import java.util.concurrent.TimeUnit;
 
 public class Controller {
 
-    private static Map<String, Double> storageNodeMap; // <storageNodeHostName, freeSpace>
+    private static PriorityQueue<STNode> storageNodeQueue;
     private static Map<String, Map<Integer, Set<String>>> metaMap; // <fileName, <chunkId, <storageHostName>>>
     private static Map<String, String> heartBeatMap;  // <storageNodeHostName, timeStamp>
     private static ServerSocket controllerSocket;
+    private static DateFormat dateFormat;
     private static final int FAILURE_NODE_TIME = 15;
     private static final int MILLIS_PER_SEC= 1000;
-    private static DateFormat dateFormat;
+    private static final int COPY_NUM = 3;
+
+    private static class STNode {
+        String storageNodeHostName;
+        Double freeSpace;
+        STNode(String storageNodeHostName, double freeSpace) {
+            this.storageNodeHostName = storageNodeHostName;
+            this.freeSpace = freeSpace;
+        }
+    }
+
+    private static class FreeSpaceComparator implements Comparator<STNode> {
+        public int compare(STNode a, STNode b) {
+            if (a.freeSpace > b.freeSpace) {
+                return 1;
+            } else if (a.freeSpace < b.freeSpace) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    }
 
     public static void controllerInit() throws IOException {
-        storageNodeMap = new HashMap<String, Double>();
+        storageNodeQueue = new PriorityQueue<STNode>(new FreeSpaceComparator());
         metaMap = new HashMap<String, Map<Integer, Set<String>>>();
         heartBeatMap = new HashMap<String, String>();
         controllerSocket = new ServerSocket(8080);
@@ -60,7 +82,9 @@ public class Controller {
                         = msgWrapper.getStoreChunkRequestMsg();
                 System.out.println("Storing file size: "
                         + storeChunkRequestMsg.getFileSize());
+
             }
+
             if (msgWrapper.hasHeartBeatSignalMsg()) {
                 ControllerMessages.HeartBeatSignal heartBeatSignalMsg
                         = msgWrapper.getHeartBeatSignalMsg();
@@ -77,6 +101,29 @@ public class Controller {
                 storeStorageNodeInfo(storageHostName, heartBeatSignalMsg.getFreeSpace(), heartBeatSignalMsg.getTimestamp());
 
             }
+        }
+    }
+
+    public static void sendReplyToClient(Socket socket, double fileSize) throws IOException {
+        int nodeNum = Math.min(COPY_NUM, storageNodeQueue.size());
+        List<STNode> availNodes = new ArrayList<STNode>();
+        ClientMessages.AvailStorageNode.Builder availStorageNodeMsg =
+                ClientMessages.AvailStorageNode.newBuilder();
+        for (int i = 0; i < nodeNum; i++) {
+            STNode stNode = storageNodeQueue.poll();
+            if (stNode.freeSpace < fileSize) {
+                break;
+            }
+            availNodes.add(stNode);
+            availStorageNodeMsg.addStorageNodeHostName(stNode.storageNodeHostName);
+        }
+        ClientMessages.ClientMessageWrapper msgWrapper =
+                ClientMessages.ClientMessageWrapper.newBuilder()
+                    .setAvailstorageNode(availStorageNodeMsg)
+                    .build();
+        msgWrapper.writeDelimitedTo(socket.getOutputStream());
+        for (STNode stNode : availNodes) {
+            storageNodeQueue.offer(stNode);
         }
     }
 
@@ -97,7 +144,7 @@ public class Controller {
     }
 
     public static void storeStorageNodeInfo(String storageHostName, double freeSpace, String timeStamp) {
-        storageNodeMap.put(storageHostName, freeSpace);
+        storageNodeQueue.offer(new STNode(storageHostName, freeSpace));
         heartBeatMap.put(storageHostName, timeStamp);
     }
 

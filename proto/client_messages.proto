@@ -1,3 +1,12 @@
 syntax = "proto3";
 option java_package = "edu.usfca.cs.dfs";
 
+message AvailStorageNode {
+    repeated string storageNodeHostName = 1;
+}
+
+message ClientMessageWrapper {
+    oneof msg {
+        AvailStorageNode availstorageNode = 1;
+    }
+}
