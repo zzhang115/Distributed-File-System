@@ -71,40 +71,34 @@ public class Controller {
                     String fileName = heartBeatSignalMsg.getMeta(i).getFilename();
                     int chunkId = heartBeatSignalMsg.getMeta(i).getChunkId();
                     System.out.println("i = " + i + "fileName: " + fileName + "chunkId: " + chunkId);
+                    storeFileInfo(storageHostName, fileName, chunkId);
                 }
-//                System.out.println("HeartBeat: " + heartBeatSignalMsg.getMetaData() + " "
-//                        + heartBeatSignalMsg.getTimestamp() + " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
-//                storeInfoFromHeartBeat(storageHostName, heartBeatSignalMsg.getMetaData(),
-//                        heartBeatSignalMsg.getFreeSpace(), heartBeatSignalMsg.getTimestamp());
+                System.out.println("HeartBeat: " + heartBeatSignalMsg.getTimestamp() + " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
+                storeStorageNodeInfo(storageHostName, heartBeatSignalMsg.getFreeSpace(), heartBeatSignalMsg.getTimestamp());
+
             }
         }
     }
 
-    public static void storeInfoFromHeartBeat
-            (String storageHostName, String metaData, double freeSpace, String timeStamp) {
+    public static void storeFileInfo(String storageHostName, String fileName, int chunkId) {
+        if (!metaMap.containsKey(fileName)) {
+            Map<Integer, Set<String>> chunkMap = new HashMap<Integer, Set<String>>();
+            metaMap.put(fileName, chunkMap);
+        }
+
+        Map<Integer, Set<String>> chunkMap = metaMap.get(fileName);
+        if (chunkMap.containsKey(chunkId)) {
+            chunkMap.get(chunkId).add(storageHostName);
+        } else {
+            Set<String> storageHostNames = new HashSet<String>();
+            storageHostNames.add(storageHostName);
+            chunkMap.put(chunkId, storageHostNames);
+        }
+    }
+
+    public static void storeStorageNodeInfo(String storageHostName, double freeSpace, String timeStamp) {
         storageNodeMap.put(storageHostName, freeSpace);
         heartBeatMap.put(storageHostName, timeStamp);
-        if (!metaData.equals("")) {
-            String fileName = metaData.split(":")[0];
-            String[] chunkIdStrs = metaData.split(":")[1].split(",");
-
-            if (!metaMap.containsKey(fileName)) {
-                Map<Integer, Set<String>> chunkMap = new HashMap<Integer, Set<String>>();
-                metaMap.put(fileName, chunkMap);
-            }
-
-            Map<Integer, Set<String>> chunkMap = metaMap.get(fileName);
-            for (String chunkIdStr : chunkIdStrs) {
-                int chunkId = Integer.parseInt(chunkIdStr);
-                if (chunkMap.containsKey(chunkId)) {
-                    chunkMap.get(chunkId).add(storageHostName);
-                } else {
-                    Set<String> storageHostNames = new HashSet<String>();
-                    storageHostNames.add(storageHostName);
-                    chunkMap.put(chunkId, storageHostNames);
-                }
-            }
-        }
     }
 
     public static void detectFailureNode() throws ParseException {
