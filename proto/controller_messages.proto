@@ -5,8 +5,13 @@ message StoreChunkRequest {
     int64 fileSize = 1;
 }
 
+message metaData {
+    string filename = 1;
+    int32 chunkId = 2;
+}
+
 message HeartBeatSignal {
-    string metaData = 1;
+    repeated metaData meta = 1;
     double freeSpace = 2;
     string timestamp = 3;
 }

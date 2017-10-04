@@ -107,32 +107,34 @@ public class StorageNode {
 
     public static void sendHeartBeat() throws IOException {
         nodeSocket = new Socket("localhost", 8080);
+        String curPath = System.getProperty("user.dir");
+        int index = 0;
 
-        StringBuffer metaBuff = new StringBuffer();
+        ControllerMessages.HeartBeatSignal.Builder heartBeatMsg =
+                        ControllerMessages.HeartBeatSignal.newBuilder();
+
         for (Map.Entry<String, List<Integer>> meta : updateMetaMap.entrySet()) {
-            metaBuff.append(meta.getKey() + ":");
             for (int chunkId : meta.getValue()) {
-                metaBuff.append(chunkId + ",");
+                heartBeatMsg.addMetaBuilder().setFilename(meta.getKey()).setChunkId(chunkId);
             }
         }
-        if (metaBuff.indexOf(",") != -1) {
-            metaBuff.deleteCharAt(metaBuff.length() - 1);
-        }
 
-        String curPath = System.getProperty("user.dir");
         double usableSpace = (double) new File(curPath).getUsableSpace();   // more precisely than getFreeSpace()
-
-        ControllerMessages.HeartBeatSignal heartBeatMsg
-                = ControllerMessages.HeartBeatSignal.newBuilder()
-                .setMetaData(metaBuff.toString())
-                .setFreeSpace(usableSpace)
+        heartBeatMsg.setFreeSpace(usableSpace)
                 .setTimestamp(dateFormat.format(new Date()))
                 .build();
+//                ControllerMessages.HeartBeatSignal heartBeatMsg =
+//                        ControllerMessages.HeartBeatSignal.newBuilder()
+//                                .addMetaBuilder().setFilename(meta.getKey()).setChunkId(chunkId)
+//                                .setFreeSpace(usableSpace)
+//                                .setTimestamp(dateFormat.format(new Date()))
+//                                .build();
         ControllerMessages.ControllerMessageWrapper msgWrapper =
                 ControllerMessages.ControllerMessageWrapper.newBuilder()
                         .setHeartBeatSignalMsg(heartBeatMsg)
                         .build();
         msgWrapper.writeDelimitedTo(nodeSocket.getOutputStream());
+
 
         nodeSocket.close();
         updateMetaMap.clear();

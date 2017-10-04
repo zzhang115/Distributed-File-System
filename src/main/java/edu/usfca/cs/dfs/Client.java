@@ -13,10 +13,10 @@ import java.util.logging.Logger;
 public class Client {
     private static Logger logger = Logger.getLogger("Log");
     private static String filePath = "client.file/pig.txt";
-    private static long fileSize;
     private static Socket socket;
-    private static final int SIZE_OF_CHUNK = 20;
     private static List<DFSChunk> chunks= new ArrayList<DFSChunk>();
+    private static long fileSize;
+    private static final int SIZE_OF_CHUNK = 20;
 
     public static void main(String[] args) throws IOException {
         logger.info("Client: Start break file to chunks.");
