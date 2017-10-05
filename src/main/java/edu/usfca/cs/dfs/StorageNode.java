@@ -17,19 +17,23 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Logger;
 
 public class StorageNode {
+    private static Logger logger = Logger.getLogger("Log");
     private static ServerSocket nodeServerSocket;
     private static Socket nodeSocket;
     private static DateFormat dateFormat;
     private static Map<String, List<Integer>> updateMetaMap;
     private static Map<String, List<Integer>> fullMetaMap;
     private static ReentrantLock lock = new ReentrantLock();
+    private static final int CONTROLLER_PORT = 8080;
+    private static final int STORAGENODE_PORT= 9090;
 
     public static void main(String[] args)
     throws Exception {
         String hostname = getHostname();
-        System.out.println("Starting storage node on " + hostname + "...");
+        logger.info("StorageNode Initializing.");
         storageNodeInit();
         mainFunction();
     }
@@ -42,7 +46,7 @@ public class StorageNode {
 
         Runnable heartBeat = new Runnable() {
             public void run() {
-                System.out.println("Send HeartBeat! --" + dateFormat.format(new Date()));
+                logger.info("Send HeartBeat! --" + dateFormat.format(new Date()));
                 try {
                     lock.lock();
                     sendHeartBeat();
@@ -110,7 +114,7 @@ public class StorageNode {
     }
 
     public static void sendHeartBeat() throws IOException {
-        nodeSocket = new Socket("localhost", 8080);
+        nodeSocket = new Socket("localhost", CONTROLLER_PORT);
         String curPath = System.getProperty("user.dir");
 
         ControllerMessages.HeartBeatSignal.Builder heartBeatMsg =

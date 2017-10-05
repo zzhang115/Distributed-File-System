@@ -12,9 +12,11 @@ import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 public class Controller {
 
+    private static Logger logger = Logger.getLogger("Log");
     private static PriorityQueue<STNode> storageNodeQueue;
     private static Map<String, Map<Integer, Set<String>>> metaMap; // <fileName, <chunkId, <storageHostName>>>
     private static Map<String, String> heartBeatMap;  // <storageNodeHostName, timeStamp>
@@ -68,7 +70,6 @@ public class Controller {
     }
 
     public static void main(String[] args) throws IOException {
-
         System.out.println("Starting controller...");
         controllerInit();
         while (true) {
@@ -80,24 +81,24 @@ public class Controller {
             if (msgWrapper.hasStoreChunkRequestMsg()) {
                 ControllerMessages.StoreChunkRequest storeChunkRequestMsg
                         = msgWrapper.getStoreChunkRequestMsg();
-                System.out.println("Storing file size: "
+                logger.info("Storing Request: file size is "
                         + storeChunkRequestMsg.getFileSize());
                 sendReplyToClient(socket, storeChunkRequestMsg.getFileSize());
             }
 
             if (msgWrapper.hasHeartBeatSignalMsg()) {
-                ControllerMessages.HeartBeatSignal heartBeatSignalMsg
-                        = msgWrapper.getHeartBeatSignalMsg();
+                ControllerMessages.HeartBeatSignal heartBeatSignalMsg =
+                        msgWrapper.getHeartBeatSignalMsg();
 
                 String storageHostName = socket.getInetAddress().getHostName();
-                System.out.println("size: " + heartBeatSignalMsg.getMetaCount());
                 for (int i = 0; i < heartBeatSignalMsg.getMetaCount(); i++) {
                     String fileName = heartBeatSignalMsg.getMeta(i).getFilename();
                     int chunkId = heartBeatSignalMsg.getMeta(i).getChunkId();
                     System.out.println("i = " + i + "fileName: " + fileName + "chunkId: " + chunkId);
                     storeFileInfo(storageHostName, fileName, chunkId);
                 }
-                System.out.println("HeartBeat: " + heartBeatSignalMsg.getTimestamp() + " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
+                logger.info("HeartBeat: " + heartBeatSignalMsg.getTimestamp()
+                        + " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
                 storeStorageNodeInfo(storageHostName, heartBeatSignalMsg.getFreeSpace(), heartBeatSignalMsg.getTimestamp());
 
             }

@@ -1,0 +1,95 @@
+-- Code / Program Correctness --
+
+* -1 No usage message
+* -2 Program does not quit immediately if given no arguments
+* -2 Program tries to read a file that doesn't exist (segfault)
+* -2 Does not use perror to report file errors
+* -2 Does not print a list of all states found before printing their information
+* -1 Does not handle missing files (tries to read them anyway)
+* -1 Does not move on to next file after finding a missing file
+* -1 Program outputs excessive debug information in final submission
+* -1 Program is correct but uses state ID numbers in the report instead of codes
+
+* -2 Incorrect rent calculation
+     NOTE: this one is tricky but they have an example.
+* -4 Incorrect number of records
+     NOTE: if they do this wrong, the other values will probably be wrong too.
+     Only take off 4 points if the rest of their logic is fine
+* -4 Incorrect sample population calculation
+     NOTE: same as above. If the rest of their logic is fine then only take off
+     points here.
+* -4 Incorrect average income calculation
+* -4 Incorrect average vehicles per household calculation
+* -4 Incorrect vehicles per capita calculation
+* -1 Did not convert numbers to floats before printing
+
+* -2 Does not allow multiple files to be read
+* -4 Calculations incorrect/corrupted when reading multiple files
+* -2 Overflow error; use larger data types
+     NOTE: this will happen to CA if they didn't use the right data types
+* -4 File with all zeros should print 0 and NaN for the stats (w/ 6 records)
+* -4 State split across two files differs from single-file run
+* -2 Did not use malloc/calloc/etc to allocate memory
+
+
+-- Documentation --
+* -2 No documentation header for analyze_file() function
+* -2 No documentation header for print_report() function
+* -2 No file header
+
+If they didn't include the function documentation but did comment inside
+the functions in a reasonable manner, then:
+
+* +2 Good comments inside function
+
+This way if they mistakenly thought they should just comment inside the
+function they'll only lose 2 points.
+
+
+-- Formatting / Organization --
+Skim through the file quickly and see if anything stands out:
+
+* -1 Inconsistent bracket placement
+* -1 Difficult to read code (lines XX - XX)
+* -1 Very difficult to read code (lines XX - XX)
+
+Most of them will be fine though. I'm not wanting to be **too** picky here.
+
+
+-- Short Answer Questions --
+These questions are fairly free-form, but the student should do a reasonable
+job of justifying their their answers.
+
+5 points per question:
+* If they at least try, they get 1
+* If it's a short, low-effort answer, then 2. (Like just a few words)
+* If their answer doesn't really make any sense but they at least discussed it,
+  give them a 3.
+* If they have the correct answer, but didn't explain how to do it, they get a
+  4. (Like for example, saying "resize the array" is fine, but they need to
+  actually explain how to do it for the full 5 points)
+* Correct = 5.
+
+When they get it wrong, add something about what we were actually looking for.
+
+1. I am looking for median, mode, standard deviation, min, max, variance, etc.
+If they talk about outliers that's fine too. They could also suggest reporting
+percentages, discuss income disparity, or even linking the data to geography.
+
+2. They should discuss dynamically allocating memory with malloc, reallocating
+memory with realloc, or creating a new, bigger array and copying to it. They
+could also suggest using a linked list. If they just say "use a hashmap" or
+"resize the array" without explaining how, then they get a 4.
+
+3. They should say they'd loop through the array to find the right state,
+preferably with strcmp based on the state code. They could also talk about
+using a hashmap/dictionary, but it they should provide a bit more detail than
+just "use a hashmap." (we'll call that a 4).
+
+4. This is completely free form but they have to actually put something here.
+If they say there's nothing more to add then that doesn't count (although if
+they actually *already* added stuff to the program and discuss it here then
+we'll give them a 5).
+
+5. This should be easy (one common one will probably be rent). If they say
+nothing was surprising then they should say why.

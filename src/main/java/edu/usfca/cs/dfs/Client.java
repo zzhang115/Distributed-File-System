@@ -5,7 +5,6 @@ import com.google.protobuf.ByteString;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -22,21 +21,25 @@ public class Client {
     private static long fileSize;
     private static final int SIZE_OF_CHUNK = 20;//1024 * 1024; // 1MB
     private static final int REPLY_WAITING_TIME = 10000;
+    private static final int CONTROLLER_PORT = 8080;
+    private static final int STORAGENODE_PORT = 9090;
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        logger.info("Client: Start break file to chunks.");
+        logger.info("Client Initializing.");
         clientInit();
-        logger.info("Client: Finish breaking chunks.");
     }
 
     public static void clientInit() throws IOException, InterruptedException {
-        controllerSocket = new Socket("localhost", 8080);
-        storageNodeSocket = new Socket("localhost", 9090);
+        controllerSocket = new Socket("localhost", CONTROLLER_PORT);
+        storageNodeSocket = new Socket("localhost", STORAGENODE_PORT);
         File file = new File(filePath);
         fileSize = file.length();
         System.out.println("fileSize:" + fileSize);
-//        String md5Hash = fileCheckSum(file);
+        String md5Hash = fileCheckSum(file);
+        logger.info("Client: Start break file to chunks.");
         breakFiletoChunks(file);
+        logger.info("Client: Finish breaking chunks.");
+
         sendRequestToController(fileSize);
         getReplyFromController();
 //        for (DFSChunk chunk : chunks) {
@@ -47,16 +50,12 @@ public class Client {
     }
 
     public static void sendRequestToController(long fileSize) throws IOException {
-
-        String request = "StoreFile:" + fileSize;
-        ControllerMessages.StoreChunkRequest storeChunkRequestMsg
-                = ControllerMessages.StoreChunkRequest.newBuilder()
-                .setFileSize(fileSize)
+        ControllerMessages.StoreChunkRequest storeChunkRequestMsg = ControllerMessages
+                .StoreChunkRequest.newBuilder().setFileSize(fileSize).build();
+        ControllerMessages.ControllerMessageWrapper msgWrapper = ControllerMessages
+                .ControllerMessageWrapper.newBuilder()
+                .setStoreChunkRequestMsg(storeChunkRequestMsg)
                 .build();
-        ControllerMessages.ControllerMessageWrapper msgWrapper =
-                ControllerMessages.ControllerMessageWrapper.newBuilder()
-                        .setStoreChunkRequestMsg(storeChunkRequestMsg)
-                        .build();
         msgWrapper.writeDelimitedTo(controllerSocket.getOutputStream());
     }
 
@@ -70,7 +69,9 @@ public class Client {
             if (msgWrapper.hasAvailstorageNodeMsg()) {
                 ClientMessages.AvailStorageNode availStorageNodeMsg
                         = msgWrapper.getAvailstorageNodeMsg();
-                for (int i = 0; i < availStorageNodeMsg.getStorageNodeHostNameCount(); i++) {
+                int count = availStorageNodeMsg.getStorageNodeHostNameCount();
+                for (int i = 0; i < count; i++) {
+                    logger.info("Receive StorageNode HostName: " + availStorageNodeMsg.getStorageNodeHostName(i));
                     availStorageNodeHostName.add(availStorageNodeMsg.getStorageNodeHostName(i));
                 }
                 return;
@@ -109,8 +110,7 @@ public class Client {
             while ((length = bufferedInputStream.read(buffer)) > 0) {
                 byte[] newBuffer = new byte[length];
                 System.arraycopy(buffer, 0, newBuffer, 0, length);
-                ByteString data = ByteString.copyFrom(buffer);
-                DFSChunk dfsChunk = new DFSChunk(fileName, chunksId++, data);
+                ByteString data = ByteString.copyFrom(newBuffer);
                 chunks.add(new DFSChunk(fileName, chunksId, data));
 //                System.out.println(dfsChunk.getData().toStringUtf8());
             }
@@ -120,6 +120,7 @@ public class Client {
     public static String fileCheckSum(File file) throws IOException {
         //Use MD5 algorithm
         MessageDigest md5Digest = null;
+
         try {
             md5Digest = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
@@ -129,13 +130,11 @@ public class Client {
         FileInputStream fileInputStream = new FileInputStream(file);
         byte[] byteArray = new byte[1024]; //Create byte array to read data in chunks
         int bytesCount = 0;
-
         //Read file data and update in message digest
         while ((bytesCount = fileInputStream.read(byteArray)) != -1) {
             md5Digest.update(byteArray, 0, bytesCount);
         };
         fileInputStream.close();
-
         //Get the hash's bytes
         //This bytes[] has bytes in decimal format;
         byte[] bytes = md5Digest.digest();
@@ -147,5 +146,4 @@ public class Client {
         }
         return sb.toString();
     }
-
 }
