@@ -2,10 +2,7 @@ package edu.usfca.cs.dfs;
 
 import com.google.protobuf.ByteString;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -51,7 +48,6 @@ public class StorageNode {
                     lock.lock();
                     sendHeartBeat();
                     lock.unlock();
-                    System.out.println("unlock from heart");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -97,20 +93,25 @@ public class StorageNode {
                 lock.unlock();
 
                 ByteString data = storeChunkMsg.getData();
-                String dataStr = data.toStringUtf8();
-                System.out.println("Storing file data: " + dataStr);
-                writeFileToLocalMachine(fileName, chunkId, dataStr);
+                writeFileToLocalMachine(fileName, chunkId, data);
             }
         }
     }
 
     public static void writeFileToLocalMachine
-            (String fileName, int chunkId, String dataStr) throws IOException {
-        File chunk = new File("storage.file/" + fileName + "_Chunk" + chunkId);
-        BufferedWriter writer = new BufferedWriter(new FileWriter(chunk));
-        writer.write(dataStr);
-        writer.flush();
-        writer.close();
+            (String fileName, int chunkId, ByteString data) throws IOException {
+//        File chunk = new File("storage.file/" + fileName + "_Chunk" + chunkId);
+        FileOutputStream fileOutputStream = new FileOutputStream("storage.file/" + fileName + "_Chunk" + chunkId);
+//        BufferedWriter writer = new BufferedWriter(new FileWriter(chunk));
+        System.out.println("old: "+data.size());
+        byte[] dataBytes = data.toByteArray();
+        System.out.println(dataBytes.length);
+        ByteString bytes = ByteString.copyFrom(dataBytes);
+        System.out.println("new: "+bytes.size());
+
+        fileOutputStream.write(dataBytes);
+        fileOutputStream.flush();
+        fileOutputStream.close();
     }
 
     public static void sendHeartBeat() throws IOException {

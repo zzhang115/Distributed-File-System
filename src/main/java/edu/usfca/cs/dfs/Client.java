@@ -19,7 +19,7 @@ public class Client {
     private static List<DFSChunk> chunks= new ArrayList<DFSChunk>();
     private static List<String> availStorageNodeHostName = new ArrayList<String>();
     private static long fileSize;
-    private static final int SIZE_OF_CHUNK = 20;//1024 * 1024; // 1MB
+    private static final int SIZE_OF_CHUNK = 1024 * 1024; // 1MB
     private static final int REPLY_WAITING_TIME = 10000;
     private static final int CONTROLLER_PORT = 8080;
     private static final int STORAGENODE_PORT = 9090;
@@ -30,8 +30,6 @@ public class Client {
     }
 
     public static void clientInit() throws IOException, InterruptedException {
-        controllerSocket = new Socket("localhost", CONTROLLER_PORT);
-        storageNodeSocket = new Socket("localhost", STORAGENODE_PORT);
         File file = new File(filePath);
         fileSize = file.length();
         System.out.println("fileSize:" + fileSize);
@@ -42,14 +40,11 @@ public class Client {
 
         sendRequestToController(fileSize);
         getReplyFromController();
-//        for (DFSChunk chunk : chunks) {
-//            sendStoreRequestToStorageNode(chunk);
-//        }
-        controllerSocket.close();
-        storageNodeSocket.close();
+        sendStoreRequestToStorageNode();
     }
 
     public static void sendRequestToController(long fileSize) throws IOException {
+        controllerSocket = new Socket("localhost", CONTROLLER_PORT);
         ControllerMessages.StoreChunkRequest storeChunkRequestMsg = ControllerMessages
                 .StoreChunkRequest.newBuilder().setFileSize(fileSize).build();
         ControllerMessages.ControllerMessageWrapper msgWrapper = ControllerMessages
@@ -81,23 +76,29 @@ public class Client {
         if (System.currentTimeMillis() < end) {
             System.out.println("Controller is out of service now!");
         }
+        controllerSocket.close();
     }
 
-    public static void sendStoreRequestToStorageNode(DFSChunk chunk) throws IOException {
+    public static void sendStoreRequestToStorageNode() throws IOException {
 
-        StorageMessages.StoreChunk storeChunkMsg
-                = StorageMessages.StoreChunk.newBuilder()
-                .setFileName(chunk.getChunkName())
-                .setChunkId(chunk.getChunkID())
-                .setData(chunk.getData())
-                .build();
+        for (DFSChunk chunk : chunks) {
+            storageNodeSocket = new Socket("localhost", STORAGENODE_PORT);
+            System.out.println("chunkID " + chunk.getChunkID());
+            StorageMessages.StoreChunk storeChunkMsg
+                    = StorageMessages.StoreChunk.newBuilder()
+                    .setFileName(chunk.getChunkName())
+                    .setChunkId(chunk.getChunkID())
+                    .setData(chunk.getData())
+                    .build();
 
-        StorageMessages.StorageMessageWrapper msgWrapper =
-                StorageMessages.StorageMessageWrapper.newBuilder()
-                        .setStoreChunkMsg(storeChunkMsg)
-                        .build();
+            StorageMessages.StorageMessageWrapper msgWrapper =
+                    StorageMessages.StorageMessageWrapper.newBuilder()
+                            .setStoreChunkMsg(storeChunkMsg)
+                            .build();
 
-        msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
+            msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
+            storageNodeSocket.close();
+        }
     }
 
     public static void breakFiletoChunks(File file) throws IOException {
@@ -111,9 +112,10 @@ public class Client {
                 byte[] newBuffer = new byte[length];
                 System.arraycopy(buffer, 0, newBuffer, 0, length);
                 ByteString data = ByteString.copyFrom(newBuffer);
-                chunks.add(new DFSChunk(fileName, chunksId, data));
+                chunks.add(new DFSChunk(fileName, chunksId++, data));
 //                System.out.println(dfsChunk.getData().toStringUtf8());
             }
+            System.out.println("chunks size: " + chunks.size());
         }
     }
 
