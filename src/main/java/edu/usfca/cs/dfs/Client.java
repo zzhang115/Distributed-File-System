@@ -5,6 +5,7 @@ import com.google.protobuf.ByteString;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -13,12 +14,13 @@ import java.util.logging.Logger;
 public class Client {
     private static Logger logger = Logger.getLogger("Log");
     private static String filePath = "client.file/test.pdf";
+//    private static String filePath = "client.file/data_co.csv";
     private static Socket controllerSocket;
     private static Socket storageNodeSocket;
     private static List<DFSChunk> chunks= new ArrayList<DFSChunk>();
     private static List<String> availStorageNodeHostName = new ArrayList<String>();
     private static long fileSize;
-    private static final int SIZE_OF_CHUNK = 20;
+    private static final int SIZE_OF_CHUNK = 20;//1024 * 1024; // 1MB
     private static final int REPLY_WAITING_TIME = 10000;
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -32,7 +34,8 @@ public class Client {
         storageNodeSocket = new Socket("localhost", 9090);
         File file = new File(filePath);
         fileSize = file.length();
-        String md5Hash = fileCheckSum(file);
+        System.out.println("fileSize:" + fileSize);
+//        String md5Hash = fileCheckSum(file);
         breakFiletoChunks(file);
         sendRequestToController(fileSize);
         getReplyFromController();
@@ -70,9 +73,12 @@ public class Client {
                 for (int i = 0; i < availStorageNodeMsg.getStorageNodeHostNameCount(); i++) {
                     availStorageNodeHostName.add(availStorageNodeMsg.getStorageNodeHostName(i));
                 }
-                break;
+                return;
             }
             Thread.sleep(500);
+        }
+        if (System.currentTimeMillis() < end) {
+            System.out.println("Controller is out of service now!");
         }
     }
 
@@ -94,20 +100,20 @@ public class Client {
     }
 
     public static void breakFiletoChunks(File file) throws IOException {
-        int sizeOfChunk = SIZE_OF_CHUNK;
-        byte[] buffer = new byte[sizeOfChunk];
+        byte[] buffer = new byte[SIZE_OF_CHUNK];
         String fileName = file.getName();
         try (FileInputStream fileInputStream = new FileInputStream(file);
              BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream)) {
             int chunksId = 0;
             int length;
             while ((length = bufferedInputStream.read(buffer)) > 0) {
-                ByteString data = ByteString.copyFromUtf8(new String(buffer).substring(0, length));
+                byte[] newBuffer = new byte[length];
+                System.arraycopy(buffer, 0, newBuffer, 0, length);
+                ByteString data = ByteString.copyFrom(buffer);
                 DFSChunk dfsChunk = new DFSChunk(fileName, chunksId++, data);
                 chunks.add(new DFSChunk(fileName, chunksId, data));
-                System.out.println(dfsChunk.getData().toStringUtf8());
+//                System.out.println(dfsChunk.getData().toStringUtf8());
             }
-//            DataOutputStream
         }
     }
 
