@@ -82,7 +82,7 @@ public class Controller {
                         = msgWrapper.getStoreChunkRequestMsg();
                 System.out.println("Storing file size: "
                         + storeChunkRequestMsg.getFileSize());
-
+                sendReplyToClient(socket, storeChunkRequestMsg.getFileSize());
             }
 
             if (msgWrapper.hasHeartBeatSignalMsg()) {
@@ -119,7 +119,7 @@ public class Controller {
         }
         ClientMessages.ClientMessageWrapper msgWrapper =
                 ClientMessages.ClientMessageWrapper.newBuilder()
-                    .setAvailstorageNode(availStorageNodeMsg)
+                    .setAvailstorageNodeMsg(availStorageNodeMsg)
                     .build();
         msgWrapper.writeDelimitedTo(socket.getOutputStream());
         for (STNode stNode : availNodes) {

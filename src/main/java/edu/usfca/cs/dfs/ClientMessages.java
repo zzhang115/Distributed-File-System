@@ -595,17 +595,17 @@ public final class ClientMessages {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.AvailStorageNode availstorageNode = 1;</code>
+     * <code>.AvailStorageNode availstorageNodeMsg = 1;</code>
      */
-    boolean hasAvailstorageNode();
+    boolean hasAvailstorageNodeMsg();
     /**
-     * <code>.AvailStorageNode availstorageNode = 1;</code>
+     * <code>.AvailStorageNode availstorageNodeMsg = 1;</code>
      */
-    edu.usfca.cs.dfs.ClientMessages.AvailStorageNode getAvailstorageNode();
+    edu.usfca.cs.dfs.ClientMessages.AvailStorageNode getAvailstorageNodeMsg();
     /**
-     * <code>.AvailStorageNode availstorageNode = 1;</code>
+     * <code>.AvailStorageNode availstorageNodeMsg = 1;</code>
      */
-    edu.usfca.cs.dfs.ClientMessages.AvailStorageNodeOrBuilder getAvailstorageNodeOrBuilder();
+    edu.usfca.cs.dfs.ClientMessages.AvailStorageNodeOrBuilder getAvailstorageNodeMsgOrBuilder();
 
     public edu.usfca.cs.dfs.ClientMessages.ClientMessageWrapper.MsgCase getMsgCase();
   }
@@ -694,7 +694,7 @@ public final class ClientMessages {
     private java.lang.Object msg_;
     public enum MsgCase
         implements com.google.protobuf.Internal.EnumLite {
-      AVAILSTORAGENODE(1),
+      AVAILSTORAGENODEMSG(1),
       MSG_NOT_SET(0);
       private final int value;
       private MsgCase(int value) {
@@ -710,7 +710,7 @@ public final class ClientMessages {
 
       public static MsgCase forNumber(int value) {
         switch (value) {
-          case 1: return AVAILSTORAGENODE;
+          case 1: return AVAILSTORAGENODEMSG;
           case 0: return MSG_NOT_SET;
           default: return null;
         }
@@ -726,26 +726,26 @@ public final class ClientMessages {
           msgCase_);
     }
 
-    public static final int AVAILSTORAGENODE_FIELD_NUMBER = 1;
+    public static final int AVAILSTORAGENODEMSG_FIELD_NUMBER = 1;
     /**
-     * <code>.AvailStorageNode availstorageNode = 1;</code>
+     * <code>.AvailStorageNode availstorageNodeMsg = 1;</code>
      */
-    public boolean hasAvailstorageNode() {
+    public boolean hasAvailstorageNodeMsg() {
       return msgCase_ == 1;
     }
     /**
-     * <code>.AvailStorageNode availstorageNode = 1;</code>
+     * <code>.AvailStorageNode availstorageNodeMsg = 1;</code>
      */
-    public edu.usfca.cs.dfs.ClientMessages.AvailStorageNode getAvailstorageNode() {
+    public edu.usfca.cs.dfs.ClientMessages.AvailStorageNode getAvailstorageNodeMsg() {
       if (msgCase_ == 1) {
          return (edu.usfca.cs.dfs.ClientMessages.AvailStorageNode) msg_;
       }
       return edu.usfca.cs.dfs.ClientMessages.AvailStorageNode.getDefaultInstance();
     }
     /**
-     * <code>.AvailStorageNode availstorageNode = 1;</code>
+     * <code>.AvailStorageNode availstorageNodeMsg = 1;</code>
      */
-    public edu.usfca.cs.dfs.ClientMessages.AvailStorageNodeOrBuilder getAvailstorageNodeOrBuilder() {
+    public edu.usfca.cs.dfs.ClientMessages.AvailStorageNodeOrBuilder getAvailstorageNodeMsgOrBuilder() {
       if (msgCase_ == 1) {
          return (edu.usfca.cs.dfs.ClientMessages.AvailStorageNode) msg_;
       }
@@ -800,8 +800,8 @@ public final class ClientMessages {
       if (!result) return false;
       switch (msgCase_) {
         case 1:
-          result = result && getAvailstorageNode()
-              .equals(other.getAvailstorageNode());
+          result = result && getAvailstorageNodeMsg()
+              .equals(other.getAvailstorageNodeMsg());
           break;
         case 0:
         default:
@@ -819,8 +819,8 @@ public final class ClientMessages {
       hash = (19 * hash) + getDescriptor().hashCode();
       switch (msgCase_) {
         case 1:
-          hash = (37 * hash) + AVAILSTORAGENODE_FIELD_NUMBER;
-          hash = (53 * hash) + getAvailstorageNode().hashCode();
+          hash = (37 * hash) + AVAILSTORAGENODEMSG_FIELD_NUMBER;
+          hash = (53 * hash) + getAvailstorageNodeMsg().hashCode();
           break;
         case 0:
         default:
@@ -979,10 +979,10 @@ public final class ClientMessages {
       public edu.usfca.cs.dfs.ClientMessages.ClientMessageWrapper buildPartial() {
         edu.usfca.cs.dfs.ClientMessages.ClientMessageWrapper result = new edu.usfca.cs.dfs.ClientMessages.ClientMessageWrapper(this);
         if (msgCase_ == 1) {
-          if (availstorageNodeBuilder_ == null) {
+          if (availstorageNodeMsgBuilder_ == null) {
             result.msg_ = msg_;
           } else {
-            result.msg_ = availstorageNodeBuilder_.build();
+            result.msg_ = availstorageNodeMsgBuilder_.build();
           }
         }
         result.msgCase_ = msgCase_;
@@ -1028,8 +1028,8 @@ public final class ClientMessages {
       public Builder mergeFrom(edu.usfca.cs.dfs.ClientMessages.ClientMessageWrapper other) {
         if (other == edu.usfca.cs.dfs.ClientMessages.ClientMessageWrapper.getDefaultInstance()) return this;
         switch (other.getMsgCase()) {
-          case AVAILSTORAGENODE: {
-            mergeAvailstorageNode(other.getAvailstorageNode());
+          case AVAILSTORAGENODEMSG: {
+            mergeAvailstorageNodeMsg(other.getAvailstorageNodeMsg());
             break;
           }
           case MSG_NOT_SET: {
@@ -1079,64 +1079,64 @@ public final class ClientMessages {
 
 
       private com.google.protobuf.SingleFieldBuilderV3<
-          edu.usfca.cs.dfs.ClientMessages.AvailStorageNode, edu.usfca.cs.dfs.ClientMessages.AvailStorageNode.Builder, edu.usfca.cs.dfs.ClientMessages.AvailStorageNodeOrBuilder> availstorageNodeBuilder_;
+          edu.usfca.cs.dfs.ClientMessages.AvailStorageNode, edu.usfca.cs.dfs.ClientMessages.AvailStorageNode.Builder, edu.usfca.cs.dfs.ClientMessages.AvailStorageNodeOrBuilder> availstorageNodeMsgBuilder_;
       /**
-       * <code>.AvailStorageNode availstorageNode = 1;</code>
+       * <code>.AvailStorageNode availstorageNodeMsg = 1;</code>
        */
-      public boolean hasAvailstorageNode() {
+      public boolean hasAvailstorageNodeMsg() {
         return msgCase_ == 1;
       }
       /**
-       * <code>.AvailStorageNode availstorageNode = 1;</code>
+       * <code>.AvailStorageNode availstorageNodeMsg = 1;</code>
        */
-      public edu.usfca.cs.dfs.ClientMessages.AvailStorageNode getAvailstorageNode() {
-        if (availstorageNodeBuilder_ == null) {
+      public edu.usfca.cs.dfs.ClientMessages.AvailStorageNode getAvailstorageNodeMsg() {
+        if (availstorageNodeMsgBuilder_ == null) {
           if (msgCase_ == 1) {
             return (edu.usfca.cs.dfs.ClientMessages.AvailStorageNode) msg_;
           }
           return edu.usfca.cs.dfs.ClientMessages.AvailStorageNode.getDefaultInstance();
         } else {
           if (msgCase_ == 1) {
-            return availstorageNodeBuilder_.getMessage();
+            return availstorageNodeMsgBuilder_.getMessage();
           }
           return edu.usfca.cs.dfs.ClientMessages.AvailStorageNode.getDefaultInstance();
         }
       }
       /**
-       * <code>.AvailStorageNode availstorageNode = 1;</code>
+       * <code>.AvailStorageNode availstorageNodeMsg = 1;</code>
        */
-      public Builder setAvailstorageNode(edu.usfca.cs.dfs.ClientMessages.AvailStorageNode value) {
-        if (availstorageNodeBuilder_ == null) {
+      public Builder setAvailstorageNodeMsg(edu.usfca.cs.dfs.ClientMessages.AvailStorageNode value) {
+        if (availstorageNodeMsgBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
           msg_ = value;
           onChanged();
         } else {
-          availstorageNodeBuilder_.setMessage(value);
+          availstorageNodeMsgBuilder_.setMessage(value);
         }
         msgCase_ = 1;
         return this;
       }
       /**
-       * <code>.AvailStorageNode availstorageNode = 1;</code>
+       * <code>.AvailStorageNode availstorageNodeMsg = 1;</code>
        */
-      public Builder setAvailstorageNode(
+      public Builder setAvailstorageNodeMsg(
           edu.usfca.cs.dfs.ClientMessages.AvailStorageNode.Builder builderForValue) {
-        if (availstorageNodeBuilder_ == null) {
+        if (availstorageNodeMsgBuilder_ == null) {
           msg_ = builderForValue.build();
           onChanged();
         } else {
-          availstorageNodeBuilder_.setMessage(builderForValue.build());
+          availstorageNodeMsgBuilder_.setMessage(builderForValue.build());
         }
         msgCase_ = 1;
         return this;
       }
       /**
-       * <code>.AvailStorageNode availstorageNode = 1;</code>
+       * <code>.AvailStorageNode availstorageNodeMsg = 1;</code>
        */
-      public Builder mergeAvailstorageNode(edu.usfca.cs.dfs.ClientMessages.AvailStorageNode value) {
-        if (availstorageNodeBuilder_ == null) {
+      public Builder mergeAvailstorageNodeMsg(edu.usfca.cs.dfs.ClientMessages.AvailStorageNode value) {
+        if (availstorageNodeMsgBuilder_ == null) {
           if (msgCase_ == 1 &&
               msg_ != edu.usfca.cs.dfs.ClientMessages.AvailStorageNode.getDefaultInstance()) {
             msg_ = edu.usfca.cs.dfs.ClientMessages.AvailStorageNode.newBuilder((edu.usfca.cs.dfs.ClientMessages.AvailStorageNode) msg_)
@@ -1147,18 +1147,18 @@ public final class ClientMessages {
           onChanged();
         } else {
           if (msgCase_ == 1) {
-            availstorageNodeBuilder_.mergeFrom(value);
+            availstorageNodeMsgBuilder_.mergeFrom(value);
           }
-          availstorageNodeBuilder_.setMessage(value);
+          availstorageNodeMsgBuilder_.setMessage(value);
         }
         msgCase_ = 1;
         return this;
       }
       /**
-       * <code>.AvailStorageNode availstorageNode = 1;</code>
+       * <code>.AvailStorageNode availstorageNodeMsg = 1;</code>
        */
-      public Builder clearAvailstorageNode() {
-        if (availstorageNodeBuilder_ == null) {
+      public Builder clearAvailstorageNodeMsg() {
+        if (availstorageNodeMsgBuilder_ == null) {
           if (msgCase_ == 1) {
             msgCase_ = 0;
             msg_ = null;
@@ -1169,22 +1169,22 @@ public final class ClientMessages {
             msgCase_ = 0;
             msg_ = null;
           }
-          availstorageNodeBuilder_.clear();
+          availstorageNodeMsgBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>.AvailStorageNode availstorageNode = 1;</code>
+       * <code>.AvailStorageNode availstorageNodeMsg = 1;</code>
        */
-      public edu.usfca.cs.dfs.ClientMessages.AvailStorageNode.Builder getAvailstorageNodeBuilder() {
-        return getAvailstorageNodeFieldBuilder().getBuilder();
+      public edu.usfca.cs.dfs.ClientMessages.AvailStorageNode.Builder getAvailstorageNodeMsgBuilder() {
+        return getAvailstorageNodeMsgFieldBuilder().getBuilder();
       }
       /**
-       * <code>.AvailStorageNode availstorageNode = 1;</code>
+       * <code>.AvailStorageNode availstorageNodeMsg = 1;</code>
        */
-      public edu.usfca.cs.dfs.ClientMessages.AvailStorageNodeOrBuilder getAvailstorageNodeOrBuilder() {
-        if ((msgCase_ == 1) && (availstorageNodeBuilder_ != null)) {
-          return availstorageNodeBuilder_.getMessageOrBuilder();
+      public edu.usfca.cs.dfs.ClientMessages.AvailStorageNodeOrBuilder getAvailstorageNodeMsgOrBuilder() {
+        if ((msgCase_ == 1) && (availstorageNodeMsgBuilder_ != null)) {
+          return availstorageNodeMsgBuilder_.getMessageOrBuilder();
         } else {
           if (msgCase_ == 1) {
             return (edu.usfca.cs.dfs.ClientMessages.AvailStorageNode) msg_;
@@ -1193,16 +1193,16 @@ public final class ClientMessages {
         }
       }
       /**
-       * <code>.AvailStorageNode availstorageNode = 1;</code>
+       * <code>.AvailStorageNode availstorageNodeMsg = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           edu.usfca.cs.dfs.ClientMessages.AvailStorageNode, edu.usfca.cs.dfs.ClientMessages.AvailStorageNode.Builder, edu.usfca.cs.dfs.ClientMessages.AvailStorageNodeOrBuilder> 
-          getAvailstorageNodeFieldBuilder() {
-        if (availstorageNodeBuilder_ == null) {
+          getAvailstorageNodeMsgFieldBuilder() {
+        if (availstorageNodeMsgBuilder_ == null) {
           if (!(msgCase_ == 1)) {
             msg_ = edu.usfca.cs.dfs.ClientMessages.AvailStorageNode.getDefaultInstance();
           }
-          availstorageNodeBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+          availstorageNodeMsgBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
               edu.usfca.cs.dfs.ClientMessages.AvailStorageNode, edu.usfca.cs.dfs.ClientMessages.AvailStorageNode.Builder, edu.usfca.cs.dfs.ClientMessages.AvailStorageNodeOrBuilder>(
                   (edu.usfca.cs.dfs.ClientMessages.AvailStorageNode) msg_,
                   getParentForChildren(),
@@ -1211,7 +1211,7 @@ public final class ClientMessages {
         }
         msgCase_ = 1;
         onChanged();;
-        return availstorageNodeBuilder_;
+        return availstorageNodeMsgBuilder_;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -1282,10 +1282,10 @@ public final class ClientMessages {
   static {
     java.lang.String[] descriptorData = {
       "\n\025client_messages.proto\"/\n\020AvailStorageN" +
-      "ode\022\033\n\023storageNodeHostName\030\001 \003(\t\"L\n\024Clie" +
-      "ntMessageWrapper\022-\n\020availstorageNode\030\001 \001" +
-      "(\0132\021.AvailStorageNodeH\000B\005\n\003msgB\022\n\020edu.us" +
-      "fca.cs.dfsb\006proto3"
+      "ode\022\033\n\023storageNodeHostName\030\001 \003(\t\"O\n\024Clie" +
+      "ntMessageWrapper\0220\n\023availstorageNodeMsg\030" +
+      "\001 \001(\0132\021.AvailStorageNodeH\000B\005\n\003msgB\022\n\020edu" +
+      ".usfca.cs.dfsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1310,7 +1310,7 @@ public final class ClientMessages {
     internal_static_ClientMessageWrapper_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ClientMessageWrapper_descriptor,
-        new java.lang.String[] { "AvailstorageNode", "Msg", });
+        new java.lang.String[] { "AvailstorageNodeMsg", "Msg", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

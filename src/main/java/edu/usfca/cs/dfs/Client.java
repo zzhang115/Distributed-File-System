@@ -12,31 +12,38 @@ import java.util.logging.Logger;
 
 public class Client {
     private static Logger logger = Logger.getLogger("Log");
-    private static String filePath = "client.file/pig.txt";
-    private static Socket socket;
+    private static String filePath = "client.file/test.pdf";
+    private static Socket controllerSocket;
+    private static Socket storageNodeSocket;
     private static List<DFSChunk> chunks= new ArrayList<DFSChunk>();
+    private static List<String> availStorageNodeHostName = new ArrayList<String>();
     private static long fileSize;
     private static final int SIZE_OF_CHUNK = 20;
+    private static final int REPLY_WAITING_TIME = 10000;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         logger.info("Client: Start break file to chunks.");
         clientInit();
         logger.info("Client: Finish breaking chunks.");
     }
 
-    public static void clientInit() throws IOException {
+    public static void clientInit() throws IOException, InterruptedException {
+        controllerSocket = new Socket("localhost", 8080);
+        storageNodeSocket = new Socket("localhost", 9090);
         File file = new File(filePath);
         fileSize = file.length();
         String md5Hash = fileCheckSum(file);
         breakFiletoChunks(file);
-//        sendRequestToController(fileSize);
-        for (DFSChunk chunk : chunks) {
-            sendStoreRequestToStorageNode(chunk);
-        }
+        sendRequestToController(fileSize);
+        getReplyFromController();
+//        for (DFSChunk chunk : chunks) {
+//            sendStoreRequestToStorageNode(chunk);
+//        }
+        controllerSocket.close();
+        storageNodeSocket.close();
     }
 
     public static void sendRequestToController(long fileSize) throws IOException {
-        socket = new Socket("localhost", 8080);
 
         String request = "StoreFile:" + fileSize;
         ControllerMessages.StoreChunkRequest storeChunkRequestMsg
@@ -47,13 +54,29 @@ public class Client {
                 ControllerMessages.ControllerMessageWrapper.newBuilder()
                         .setStoreChunkRequestMsg(storeChunkRequestMsg)
                         .build();
-        msgWrapper.writeDelimitedTo(socket.getOutputStream());
+        msgWrapper.writeDelimitedTo(controllerSocket.getOutputStream());
+    }
 
-        socket.close();
+    public static void getReplyFromController() throws IOException, InterruptedException {
+        long currentTime = System.currentTimeMillis();
+        long end = currentTime + REPLY_WAITING_TIME;
+        ClientMessages.ClientMessageWrapper msgWrapper
+                = ClientMessages.ClientMessageWrapper.parseDelimitedFrom(
+                        controllerSocket.getInputStream());
+        while (System.currentTimeMillis() < end) {
+            if (msgWrapper.hasAvailstorageNodeMsg()) {
+                ClientMessages.AvailStorageNode availStorageNodeMsg
+                        = msgWrapper.getAvailstorageNodeMsg();
+                for (int i = 0; i < availStorageNodeMsg.getStorageNodeHostNameCount(); i++) {
+                    availStorageNodeHostName.add(availStorageNodeMsg.getStorageNodeHostName(i));
+                }
+                break;
+            }
+            Thread.sleep(500);
+        }
     }
 
     public static void sendStoreRequestToStorageNode(DFSChunk chunk) throws IOException {
-        socket = new Socket("localhost", 9090);
 
         StorageMessages.StoreChunk storeChunkMsg
                 = StorageMessages.StoreChunk.newBuilder()
@@ -67,9 +90,7 @@ public class Client {
                         .setStoreChunkMsg(storeChunkMsg)
                         .build();
 
-        msgWrapper.writeDelimitedTo(socket.getOutputStream());
-
-        socket.close();
+        msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
     }
 
     public static void breakFiletoChunks(File file) throws IOException {

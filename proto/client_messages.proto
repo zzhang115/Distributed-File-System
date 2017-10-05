@@ -7,6 +7,6 @@ message AvailStorageNode {
 
 message ClientMessageWrapper {
     oneof msg {
-        AvailStorageNode availstorageNode = 1;
+        AvailStorageNode availstorageNodeMsg = 1;
     }
 }
