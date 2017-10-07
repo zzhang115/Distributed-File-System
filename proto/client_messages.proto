@@ -5,8 +5,17 @@ message AvailStorageNode {
     repeated string storageNodeHostName = 1;
 }
 
+message RetrieveFileInfo {
+    int32 chunkId = 1;
+    string storageNodeHostName = 2;
+}
+message ReplyForRetrieving {
+    repeated RetrieveFileInfo retrieveFileInfo = 1;
+}
+
 message ClientMessageWrapper {
     oneof msg {
         AvailStorageNode availstorageNodeMsg = 1;
+        ReplyForRetrieving replyForRetrievingMsg = 2;
     }
 }

@@ -9,13 +9,13 @@ message RetrieveFileRequest {
     string filename = 1;
 }
 
-message metaData {
+message MetaData {
     string filename = 1;
     int32 chunkId = 2;
 }
 
 message HeartBeatSignal {
-    repeated metaData meta = 1;
+    repeated MetaData meta = 1;
     double freeSpace = 2;
     string timestamp = 3;
 }
@@ -24,7 +24,7 @@ message ControllerMessageWrapper {
     oneof msg {
         StoreChunkRequest storeChunkRequestMsg = 1;
         HeartBeatSignal heartBeatSignalMsg = 2;
-        RetrieveFileRequest retrieveFileRequest = 3;
+        RetrieveFileRequest retrieveFileMsg = 3;
     }
 }
 

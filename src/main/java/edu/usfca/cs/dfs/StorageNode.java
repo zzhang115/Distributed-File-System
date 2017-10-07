@@ -110,9 +110,7 @@ public class StorageNode {
 
     public static void writeFileToLocalMachine
             (String fileName, int chunkId, ByteString data) throws IOException {
-        // File chunk = new File("storage.file/" + fileName + "_Chunk" + chunkId);
         FileOutputStream fileOutputStream = new FileOutputStream("storage.file/" + fileName + "_Chunk" + chunkId);
-        // BufferedWriter writer = new BufferedWriter(new FileWriter(chunk));
         System.out.println("old: "+data.size());
         byte[] dataBytes = data.toByteArray();
         System.out.println(dataBytes.length);

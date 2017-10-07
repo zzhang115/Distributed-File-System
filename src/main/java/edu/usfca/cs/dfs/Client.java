@@ -28,12 +28,12 @@ public class Client {
     private static final int STORAGENODE_PORT = 9090;
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        logger.info("Client Initializing.");
-        clientInit();
+//        clientStoreFile();
+        clientRetrieveFile();
     }
 
-    public static void clientInit() throws IOException, InterruptedException {
-
+    public static void clientStoreFile() throws IOException, InterruptedException {
+        logger.info("Client: Start Send Storing File Request");
         File file = new File(filePath);
         fileSize = file.length();
         System.out.println("fileSize:" + fileSize);
@@ -43,15 +43,22 @@ public class Client {
         logger.info("Client: Finish breaking chunks.");
 
         sendStoreRequestToController(fileSize);
-        getReplyFromController();
+        getStoringReplyFromController();
         sendStoreRequestToStorageNode();
     }
 
-    public static void sendStoreRequestToController(long fileSize) throws IOException {
+    public static void clientRetrieveFile() throws IOException, InterruptedException {
+        logger.info("Client: Send Retrieving File Request: " + testRetrieveFileName);
+        sendRetrieveFileRequestToController(testRetrieveFileName);
+        logger.info("Client: Wait Msg For Retrievng File: " + testRetrieveFileName);
+        getRetrievingReplyFromController();
+    }
 
+    public static void sendStoreRequestToController(long fileSize) throws IOException {
         controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
         ControllerMessages.StoreChunkRequest storeChunkRequestMsg = ControllerMessages
                 .StoreChunkRequest.newBuilder().setFileSize(fileSize).build();
+
         ControllerMessages.ControllerMessageWrapper msgWrapper = ControllerMessages
                 .ControllerMessageWrapper.newBuilder()
                 .setStoreChunkRequestMsg(storeChunkRequestMsg)
@@ -59,8 +66,7 @@ public class Client {
         msgWrapper.writeDelimitedTo(controllerSocket.getOutputStream());
     }
 
-    public static void getReplyFromController() throws IOException, InterruptedException {
-
+    public static void getStoringReplyFromController() throws IOException, InterruptedException {
         long currentTime = System.currentTimeMillis();
         long end = currentTime + REPLY_WAITING_TIME;
         ClientMessages.ClientMessageWrapper msgWrapper
@@ -86,21 +92,38 @@ public class Client {
         controllerSocket.close();
     }
 
-    public static void retrieveFileRequestToController(String fileName) throws IOException {
-
+    public static void sendRetrieveFileRequestToController(String fileName) throws IOException {
         controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
         ControllerMessages.RetrieveFileRequest retrieveFileMsg = ControllerMessages
                 .RetrieveFileRequest.newBuilder().setFilename(fileName).build();
         ControllerMessages.ControllerMessageWrapper msgWrapper = ControllerMessages
                 .ControllerMessageWrapper.newBuilder()
-                .setRetrieveFileRequest(retrieveFileMsg)
+                .setRetrieveFileMsg(retrieveFileMsg)
                 .build();
         msgWrapper.writeDelimitedTo(controllerSocket.getOutputStream());
+    }
+
+    public static void getRetrievingReplyFromController() throws IOException, InterruptedException {
+        long currentTime = System.currentTimeMillis();
+        long end = currentTime + REPLY_WAITING_TIME;
+        ClientMessages.ClientMessageWrapper msgWrapper
+                = ClientMessages.ClientMessageWrapper.parseDelimitedFrom(
+                        controllerSocket.getInputStream());
+        while (System.currentTimeMillis() < end) {
+            if (msgWrapper.hasReplyForRetrievingMsg()) {
+                ClientMessages.ReplyForRetrieving retrievingFileMsg
+                        = msgWrapper.getReplyForRetrievingMsg();
+                int count = retrievingFileMsg.getRetrieveFileInfoCount();
+                logger.info("chunk num:" + count);
+                return;
+            }
+            Thread.sleep(500);
+        }
         controllerSocket.close();
     }
 
+//    public static void
     public static void sendStoreRequestToStorageNode() throws IOException {
-
         if (availStorageNodeHostNames.size() > 0) {
             String hostName = availStorageNodeHostNames.get(0);
             for (DFSChunk chunk : chunks) {
@@ -141,7 +164,6 @@ public class Client {
                 System.arraycopy(buffer, 0, newBuffer, 0, length);
                 ByteString data = ByteString.copyFrom(newBuffer);
                 chunks.add(new DFSChunk(fileName, chunksId++, data));
-//                System.out.println(dfsChunk.getData().toStringUtf8());
             }
             System.out.println("chunks size: " + chunks.size());
         }
