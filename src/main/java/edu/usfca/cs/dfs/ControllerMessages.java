@@ -463,6 +463,528 @@ public final class ControllerMessages {
 
   }
 
+  public interface RetrieveFileRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RetrieveFileRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string filename = 1;</code>
+     */
+    java.lang.String getFilename();
+    /**
+     * <code>string filename = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getFilenameBytes();
+  }
+  /**
+   * Protobuf type {@code RetrieveFileRequest}
+   */
+  public  static final class RetrieveFileRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:RetrieveFileRequest)
+      RetrieveFileRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use RetrieveFileRequest.newBuilder() to construct.
+    private RetrieveFileRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private RetrieveFileRequest() {
+      filename_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RetrieveFileRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              filename_ = s;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return edu.usfca.cs.dfs.ControllerMessages.internal_static_RetrieveFileRequest_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return edu.usfca.cs.dfs.ControllerMessages.internal_static_RetrieveFileRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.class, edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.Builder.class);
+    }
+
+    public static final int FILENAME_FIELD_NUMBER = 1;
+    private volatile java.lang.Object filename_;
+    /**
+     * <code>string filename = 1;</code>
+     */
+    public java.lang.String getFilename() {
+      java.lang.Object ref = filename_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        filename_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string filename = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getFilenameBytes() {
+      java.lang.Object ref = filename_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        filename_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getFilenameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, filename_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getFilenameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, filename_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest)) {
+        return super.equals(obj);
+      }
+      edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest other = (edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest) obj;
+
+      boolean result = true;
+      result = result && getFilename()
+          .equals(other.getFilename());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + FILENAME_FIELD_NUMBER;
+      hash = (53 * hash) + getFilename().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code RetrieveFileRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:RetrieveFileRequest)
+        edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return edu.usfca.cs.dfs.ControllerMessages.internal_static_RetrieveFileRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return edu.usfca.cs.dfs.ControllerMessages.internal_static_RetrieveFileRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.class, edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.Builder.class);
+      }
+
+      // Construct using edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        filename_ = "";
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return edu.usfca.cs.dfs.ControllerMessages.internal_static_RetrieveFileRequest_descriptor;
+      }
+
+      public edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest getDefaultInstanceForType() {
+        return edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.getDefaultInstance();
+      }
+
+      public edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest build() {
+        edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest buildPartial() {
+        edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest result = new edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest(this);
+        result.filename_ = filename_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest) {
+          return mergeFrom((edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest other) {
+        if (other == edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.getDefaultInstance()) return this;
+        if (!other.getFilename().isEmpty()) {
+          filename_ = other.filename_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object filename_ = "";
+      /**
+       * <code>string filename = 1;</code>
+       */
+      public java.lang.String getFilename() {
+        java.lang.Object ref = filename_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          filename_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string filename = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getFilenameBytes() {
+        java.lang.Object ref = filename_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          filename_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string filename = 1;</code>
+       */
+      public Builder setFilename(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        filename_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string filename = 1;</code>
+       */
+      public Builder clearFilename() {
+        
+        filename_ = getDefaultInstance().getFilename();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string filename = 1;</code>
+       */
+      public Builder setFilenameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        filename_ = value;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:RetrieveFileRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:RetrieveFileRequest)
+    private static final edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest();
+    }
+
+    public static edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<RetrieveFileRequest>
+        PARSER = new com.google.protobuf.AbstractParser<RetrieveFileRequest>() {
+      public RetrieveFileRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new RetrieveFileRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<RetrieveFileRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RetrieveFileRequest> getParserForType() {
+      return PARSER;
+    }
+
+    public edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface metaDataOrBuilder extends
       // @@protoc_insertion_point(interface_extends:metaData)
       com.google.protobuf.MessageOrBuilder {
@@ -2038,6 +2560,19 @@ public final class ControllerMessages {
      */
     edu.usfca.cs.dfs.ControllerMessages.HeartBeatSignalOrBuilder getHeartBeatSignalMsgOrBuilder();
 
+    /**
+     * <code>.RetrieveFileRequest retrieveFileRequest = 3;</code>
+     */
+    boolean hasRetrieveFileRequest();
+    /**
+     * <code>.RetrieveFileRequest retrieveFileRequest = 3;</code>
+     */
+    edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest getRetrieveFileRequest();
+    /**
+     * <code>.RetrieveFileRequest retrieveFileRequest = 3;</code>
+     */
+    edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequestOrBuilder getRetrieveFileRequestOrBuilder();
+
     public edu.usfca.cs.dfs.ControllerMessages.ControllerMessageWrapper.MsgCase getMsgCase();
   }
   /**
@@ -2111,6 +2646,20 @@ public final class ControllerMessages {
               msgCase_ = 2;
               break;
             }
+            case 26: {
+              edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.Builder subBuilder = null;
+              if (msgCase_ == 3) {
+                subBuilder = ((edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest) msg_).toBuilder();
+              }
+              msg_ =
+                  input.readMessage(edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest) msg_);
+                msg_ = subBuilder.buildPartial();
+              }
+              msgCase_ = 3;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -2141,6 +2690,7 @@ public final class ControllerMessages {
         implements com.google.protobuf.Internal.EnumLite {
       STORECHUNKREQUESTMSG(1),
       HEARTBEATSIGNALMSG(2),
+      RETRIEVEFILEREQUEST(3),
       MSG_NOT_SET(0);
       private final int value;
       private MsgCase(int value) {
@@ -2158,6 +2708,7 @@ public final class ControllerMessages {
         switch (value) {
           case 1: return STORECHUNKREQUESTMSG;
           case 2: return HEARTBEATSIGNALMSG;
+          case 3: return RETRIEVEFILEREQUEST;
           case 0: return MSG_NOT_SET;
           default: return null;
         }
@@ -2225,6 +2776,32 @@ public final class ControllerMessages {
       return edu.usfca.cs.dfs.ControllerMessages.HeartBeatSignal.getDefaultInstance();
     }
 
+    public static final int RETRIEVEFILEREQUEST_FIELD_NUMBER = 3;
+    /**
+     * <code>.RetrieveFileRequest retrieveFileRequest = 3;</code>
+     */
+    public boolean hasRetrieveFileRequest() {
+      return msgCase_ == 3;
+    }
+    /**
+     * <code>.RetrieveFileRequest retrieveFileRequest = 3;</code>
+     */
+    public edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest getRetrieveFileRequest() {
+      if (msgCase_ == 3) {
+         return (edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest) msg_;
+      }
+      return edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.getDefaultInstance();
+    }
+    /**
+     * <code>.RetrieveFileRequest retrieveFileRequest = 3;</code>
+     */
+    public edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequestOrBuilder getRetrieveFileRequestOrBuilder() {
+      if (msgCase_ == 3) {
+         return (edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest) msg_;
+      }
+      return edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -2243,6 +2820,9 @@ public final class ControllerMessages {
       if (msgCase_ == 2) {
         output.writeMessage(2, (edu.usfca.cs.dfs.ControllerMessages.HeartBeatSignal) msg_);
       }
+      if (msgCase_ == 3) {
+        output.writeMessage(3, (edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest) msg_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -2258,6 +2838,10 @@ public final class ControllerMessages {
       if (msgCase_ == 2) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, (edu.usfca.cs.dfs.ControllerMessages.HeartBeatSignal) msg_);
+      }
+      if (msgCase_ == 3) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, (edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest) msg_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2287,6 +2871,10 @@ public final class ControllerMessages {
           result = result && getHeartBeatSignalMsg()
               .equals(other.getHeartBeatSignalMsg());
           break;
+        case 3:
+          result = result && getRetrieveFileRequest()
+              .equals(other.getRetrieveFileRequest());
+          break;
         case 0:
         default:
       }
@@ -2309,6 +2897,10 @@ public final class ControllerMessages {
         case 2:
           hash = (37 * hash) + HEARTBEATSIGNALMSG_FIELD_NUMBER;
           hash = (53 * hash) + getHeartBeatSignalMsg().hashCode();
+          break;
+        case 3:
+          hash = (37 * hash) + RETRIEVEFILEREQUEST_FIELD_NUMBER;
+          hash = (53 * hash) + getRetrieveFileRequest().hashCode();
           break;
         case 0:
         default:
@@ -2480,6 +3072,13 @@ public final class ControllerMessages {
             result.msg_ = heartBeatSignalMsgBuilder_.build();
           }
         }
+        if (msgCase_ == 3) {
+          if (retrieveFileRequestBuilder_ == null) {
+            result.msg_ = msg_;
+          } else {
+            result.msg_ = retrieveFileRequestBuilder_.build();
+          }
+        }
         result.msgCase_ = msgCase_;
         onBuilt();
         return result;
@@ -2529,6 +3128,10 @@ public final class ControllerMessages {
           }
           case HEARTBEATSIGNALMSG: {
             mergeHeartBeatSignalMsg(other.getHeartBeatSignalMsg());
+            break;
+          }
+          case RETRIEVEFILEREQUEST: {
+            mergeRetrieveFileRequest(other.getRetrieveFileRequest());
             break;
           }
           case MSG_NOT_SET: {
@@ -2848,6 +3451,142 @@ public final class ControllerMessages {
         onChanged();;
         return heartBeatSignalMsgBuilder_;
       }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest, edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.Builder, edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequestOrBuilder> retrieveFileRequestBuilder_;
+      /**
+       * <code>.RetrieveFileRequest retrieveFileRequest = 3;</code>
+       */
+      public boolean hasRetrieveFileRequest() {
+        return msgCase_ == 3;
+      }
+      /**
+       * <code>.RetrieveFileRequest retrieveFileRequest = 3;</code>
+       */
+      public edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest getRetrieveFileRequest() {
+        if (retrieveFileRequestBuilder_ == null) {
+          if (msgCase_ == 3) {
+            return (edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest) msg_;
+          }
+          return edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.getDefaultInstance();
+        } else {
+          if (msgCase_ == 3) {
+            return retrieveFileRequestBuilder_.getMessage();
+          }
+          return edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.RetrieveFileRequest retrieveFileRequest = 3;</code>
+       */
+      public Builder setRetrieveFileRequest(edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest value) {
+        if (retrieveFileRequestBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          msg_ = value;
+          onChanged();
+        } else {
+          retrieveFileRequestBuilder_.setMessage(value);
+        }
+        msgCase_ = 3;
+        return this;
+      }
+      /**
+       * <code>.RetrieveFileRequest retrieveFileRequest = 3;</code>
+       */
+      public Builder setRetrieveFileRequest(
+          edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.Builder builderForValue) {
+        if (retrieveFileRequestBuilder_ == null) {
+          msg_ = builderForValue.build();
+          onChanged();
+        } else {
+          retrieveFileRequestBuilder_.setMessage(builderForValue.build());
+        }
+        msgCase_ = 3;
+        return this;
+      }
+      /**
+       * <code>.RetrieveFileRequest retrieveFileRequest = 3;</code>
+       */
+      public Builder mergeRetrieveFileRequest(edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest value) {
+        if (retrieveFileRequestBuilder_ == null) {
+          if (msgCase_ == 3 &&
+              msg_ != edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.getDefaultInstance()) {
+            msg_ = edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.newBuilder((edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest) msg_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            msg_ = value;
+          }
+          onChanged();
+        } else {
+          if (msgCase_ == 3) {
+            retrieveFileRequestBuilder_.mergeFrom(value);
+          }
+          retrieveFileRequestBuilder_.setMessage(value);
+        }
+        msgCase_ = 3;
+        return this;
+      }
+      /**
+       * <code>.RetrieveFileRequest retrieveFileRequest = 3;</code>
+       */
+      public Builder clearRetrieveFileRequest() {
+        if (retrieveFileRequestBuilder_ == null) {
+          if (msgCase_ == 3) {
+            msgCase_ = 0;
+            msg_ = null;
+            onChanged();
+          }
+        } else {
+          if (msgCase_ == 3) {
+            msgCase_ = 0;
+            msg_ = null;
+          }
+          retrieveFileRequestBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.RetrieveFileRequest retrieveFileRequest = 3;</code>
+       */
+      public edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.Builder getRetrieveFileRequestBuilder() {
+        return getRetrieveFileRequestFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.RetrieveFileRequest retrieveFileRequest = 3;</code>
+       */
+      public edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequestOrBuilder getRetrieveFileRequestOrBuilder() {
+        if ((msgCase_ == 3) && (retrieveFileRequestBuilder_ != null)) {
+          return retrieveFileRequestBuilder_.getMessageOrBuilder();
+        } else {
+          if (msgCase_ == 3) {
+            return (edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest) msg_;
+          }
+          return edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.RetrieveFileRequest retrieveFileRequest = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest, edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.Builder, edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequestOrBuilder> 
+          getRetrieveFileRequestFieldBuilder() {
+        if (retrieveFileRequestBuilder_ == null) {
+          if (!(msgCase_ == 3)) {
+            msg_ = edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.getDefaultInstance();
+          }
+          retrieveFileRequestBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest, edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest.Builder, edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequestOrBuilder>(
+                  (edu.usfca.cs.dfs.ControllerMessages.RetrieveFileRequest) msg_,
+                  getParentForChildren(),
+                  isClean());
+          msg_ = null;
+        }
+        msgCase_ = 3;
+        onChanged();;
+        return retrieveFileRequestBuilder_;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
@@ -2903,6 +3642,11 @@ public final class ControllerMessages {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_StoreChunkRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_RetrieveFileRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_RetrieveFileRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_metaData_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -2927,14 +3671,17 @@ public final class ControllerMessages {
   static {
     java.lang.String[] descriptorData = {
       "\n\031controller_messages.proto\"%\n\021StoreChun" +
-      "kRequest\022\020\n\010fileSize\030\001 \001(\003\"-\n\010metaData\022\020" +
-      "\n\010filename\030\001 \001(\t\022\017\n\007chunkId\030\002 \001(\005\"P\n\017Hea" +
-      "rtBeatSignal\022\027\n\004meta\030\001 \003(\0132\t.metaData\022\021\n" +
-      "\tfreeSpace\030\002 \001(\001\022\021\n\ttimestamp\030\003 \001(\t\"\205\001\n\030" +
-      "ControllerMessageWrapper\0222\n\024storeChunkRe" +
-      "questMsg\030\001 \001(\0132\022.StoreChunkRequestH\000\022.\n\022" +
-      "heartBeatSignalMsg\030\002 \001(\0132\020.HeartBeatSign" +
-      "alH\000B\005\n\003msgB\022\n\020edu.usfca.cs.dfsb\006proto3"
+      "kRequest\022\020\n\010fileSize\030\001 \001(\003\"\'\n\023RetrieveFi" +
+      "leRequest\022\020\n\010filename\030\001 \001(\t\"-\n\010metaData\022" +
+      "\020\n\010filename\030\001 \001(\t\022\017\n\007chunkId\030\002 \001(\005\"P\n\017He" +
+      "artBeatSignal\022\027\n\004meta\030\001 \003(\0132\t.metaData\022\021" +
+      "\n\tfreeSpace\030\002 \001(\001\022\021\n\ttimestamp\030\003 \001(\t\"\272\001\n" +
+      "\030ControllerMessageWrapper\0222\n\024storeChunkR" +
+      "equestMsg\030\001 \001(\0132\022.StoreChunkRequestH\000\022.\n" +
+      "\022heartBeatSignalMsg\030\002 \001(\0132\020.HeartBeatSig" +
+      "nalH\000\0223\n\023retrieveFileRequest\030\003 \001(\0132\024.Ret",
+      "rieveFileRequestH\000B\005\n\003msgB\022\n\020edu.usfca.c" +
+      "s.dfsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2954,24 +3701,30 @@ public final class ControllerMessages {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_StoreChunkRequest_descriptor,
         new java.lang.String[] { "FileSize", });
-    internal_static_metaData_descriptor =
+    internal_static_RetrieveFileRequest_descriptor =
       getDescriptor().getMessageTypes().get(1);
+    internal_static_RetrieveFileRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_RetrieveFileRequest_descriptor,
+        new java.lang.String[] { "Filename", });
+    internal_static_metaData_descriptor =
+      getDescriptor().getMessageTypes().get(2);
     internal_static_metaData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_metaData_descriptor,
         new java.lang.String[] { "Filename", "ChunkId", });
     internal_static_HeartBeatSignal_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_HeartBeatSignal_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_HeartBeatSignal_descriptor,
         new java.lang.String[] { "Meta", "FreeSpace", "Timestamp", });
     internal_static_ControllerMessageWrapper_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_ControllerMessageWrapper_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ControllerMessageWrapper_descriptor,
-        new java.lang.String[] { "StoreChunkRequestMsg", "HeartBeatSignalMsg", "Msg", });
+        new java.lang.String[] { "StoreChunkRequestMsg", "HeartBeatSignalMsg", "RetrieveFileRequest", "Msg", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

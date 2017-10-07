@@ -24,6 +24,7 @@ public class StorageNode {
     private static Map<String, List<Integer>> updateMetaMap;
     private static Map<String, List<Integer>> fullMetaMap;
     private static ReentrantLock lock = new ReentrantLock();
+    private static List<String> availStorageNodeHostNames = new ArrayList<String>();
     private static final int CONTROLLER_PORT = 8080;
     private static final int STORAGENODE_PORT= 9090;
 
@@ -54,55 +55,64 @@ public class StorageNode {
             }
         };
 
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(heartBeat, 0, 5, TimeUnit.SECONDS);
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1); executor.scheduleAtFixedRate(heartBeat, 0, 5, TimeUnit.SECONDS);
     }
 
     public static void mainFunction() throws IOException {
         while (true) {
-            System.out.println("Listening...");
-            Socket socket = nodeServerSocket.accept();
-            StorageMessages.StorageMessageWrapper msgWrapper
+            handleStoreChunkRequest();
+        }
+    }
+
+    public static void handleStoreChunkRequest() throws IOException {
+        System.out.println("Listening...");
+        Socket socket = nodeServerSocket.accept();
+        StorageMessages.StorageMessageWrapper msgWrapper
                 = StorageMessages.StorageMessageWrapper.parseDelimitedFrom(
-                        socket.getInputStream());
+                socket.getInputStream());
 
-            if (msgWrapper.hasStoreChunkMsg()) {
-                StorageMessages.StoreChunk storeChunkMsg
+        if (msgWrapper.hasStoreChunkMsg()) {
+            StorageMessages.StoreChunk storeChunkMsg
                     = msgWrapper.getStoreChunkMsg();
-                String fileName = storeChunkMsg.getFileName();
-                int chunkId = storeChunkMsg.getChunkId();
-                System.out.println("Storing file name: " + fileName);
-                System.out.println("Storing file ID: " + chunkId);
 
-                if (fullMetaMap.keySet().contains(fileName)) {
-                    fullMetaMap.get(fileName).add(chunkId);
-                } else {
-                    List<Integer> chunkIdList = new ArrayList<Integer>();
-                    chunkIdList.add(chunkId);
-                    fullMetaMap.put(fileName, chunkIdList);
-                }
-
-                lock.lock();
-                if (updateMetaMap.keySet().contains(fileName)) {
-                    updateMetaMap.get(fileName).add(chunkId);
-                } else {
-                    List<Integer> chunkIdList = new ArrayList<Integer>();
-                    chunkIdList.add(chunkId);
-                    updateMetaMap.put(fileName, chunkIdList);
-                }
-                lock.unlock();
-
-                ByteString data = storeChunkMsg.getData();
-                writeFileToLocalMachine(fileName, chunkId, data);
+            int storageHostNameCount = storeChunkMsg.getHostNameCount();
+            for (int i = 0; i < storageHostNameCount; i++) {
+                availStorageNodeHostNames.add(storeChunkMsg.getHostName(i));
             }
+
+            String fileName = storeChunkMsg.getFileName();
+            int chunkId = storeChunkMsg.getChunkId();
+            System.out.println("Storing file name: " + fileName);
+            System.out.println("Storing file ID: " + chunkId);
+
+            if (fullMetaMap.keySet().contains(fileName)) {
+                fullMetaMap.get(fileName).add(chunkId);
+            } else {
+                List<Integer> chunkIdList = new ArrayList<Integer>();
+                chunkIdList.add(chunkId);
+                fullMetaMap.put(fileName, chunkIdList);
+            }
+
+            lock.lock();
+            if (updateMetaMap.keySet().contains(fileName)) {
+                updateMetaMap.get(fileName).add(chunkId);
+            } else {
+                List<Integer> chunkIdList = new ArrayList<Integer>();
+                chunkIdList.add(chunkId);
+                updateMetaMap.put(fileName, chunkIdList);
+            }
+            lock.unlock();
+
+            ByteString data = storeChunkMsg.getData();
+            writeFileToLocalMachine(fileName, chunkId, data);
         }
     }
 
     public static void writeFileToLocalMachine
             (String fileName, int chunkId, ByteString data) throws IOException {
-//        File chunk = new File("storage.file/" + fileName + "_Chunk" + chunkId);
+        // File chunk = new File("storage.file/" + fileName + "_Chunk" + chunkId);
         FileOutputStream fileOutputStream = new FileOutputStream("storage.file/" + fileName + "_Chunk" + chunkId);
-//        BufferedWriter writer = new BufferedWriter(new FileWriter(chunk));
+        // BufferedWriter writer = new BufferedWriter(new FileWriter(chunk));
         System.out.println("old: "+data.size());
         byte[] dataBytes = data.toByteArray();
         System.out.println(dataBytes.length);

@@ -13,13 +13,16 @@ import java.util.logging.Logger;
 public class Client {
     private static Logger logger = Logger.getLogger("Log");
     private static String filePath = "client.file/test.pdf";
+    private static String retrieveFilePath = "client.retrieve.file";
+    private static String testRetrieveFileName = "test.pdf";
 //    private static String filePath = "client.file/data_co.csv";
     private static Socket controllerSocket;
     private static Socket storageNodeSocket;
     private static List<DFSChunk> chunks= new ArrayList<DFSChunk>();
-    private static List<String> availStorageNodeHostName = new ArrayList<String>();
+    private static List<String> availStorageNodeHostNames = new ArrayList<String>();
     private static long fileSize;
     private static final int SIZE_OF_CHUNK = 1024 * 1024; // 1MB
+    private static final String CONTROLLER_HOSTNAME = "localhost";
     private static final int REPLY_WAITING_TIME = 10000;
     private static final int CONTROLLER_PORT = 8080;
     private static final int STORAGENODE_PORT = 9090;
@@ -30,6 +33,7 @@ public class Client {
     }
 
     public static void clientInit() throws IOException, InterruptedException {
+
         File file = new File(filePath);
         fileSize = file.length();
         System.out.println("fileSize:" + fileSize);
@@ -38,13 +42,14 @@ public class Client {
         breakFiletoChunks(file);
         logger.info("Client: Finish breaking chunks.");
 
-        sendRequestToController(fileSize);
+        sendStoreRequestToController(fileSize);
         getReplyFromController();
         sendStoreRequestToStorageNode();
     }
 
-    public static void sendRequestToController(long fileSize) throws IOException {
-        controllerSocket = new Socket("localhost", CONTROLLER_PORT);
+    public static void sendStoreRequestToController(long fileSize) throws IOException {
+
+        controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
         ControllerMessages.StoreChunkRequest storeChunkRequestMsg = ControllerMessages
                 .StoreChunkRequest.newBuilder().setFileSize(fileSize).build();
         ControllerMessages.ControllerMessageWrapper msgWrapper = ControllerMessages
@@ -55,6 +60,7 @@ public class Client {
     }
 
     public static void getReplyFromController() throws IOException, InterruptedException {
+
         long currentTime = System.currentTimeMillis();
         long end = currentTime + REPLY_WAITING_TIME;
         ClientMessages.ClientMessageWrapper msgWrapper
@@ -66,8 +72,9 @@ public class Client {
                         = msgWrapper.getAvailstorageNodeMsg();
                 int count = availStorageNodeMsg.getStorageNodeHostNameCount();
                 for (int i = 0; i < count; i++) {
-                    logger.info("Receive StorageNode HostName: " + availStorageNodeMsg.getStorageNodeHostName(i));
-                    availStorageNodeHostName.add(availStorageNodeMsg.getStorageNodeHostName(i));
+                    logger.info("Receive StorageNode HostName: " +
+                            availStorageNodeMsg.getStorageNodeHostName(i));
+                    availStorageNodeHostNames.add(availStorageNodeMsg.getStorageNodeHostName(i));
                 }
                 return;
             }
@@ -79,25 +86,46 @@ public class Client {
         controllerSocket.close();
     }
 
+    public static void retrieveFileRequestToController(String fileName) throws IOException {
+
+        controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
+        ControllerMessages.RetrieveFileRequest retrieveFileMsg = ControllerMessages
+                .RetrieveFileRequest.newBuilder().setFilename(fileName).build();
+        ControllerMessages.ControllerMessageWrapper msgWrapper = ControllerMessages
+                .ControllerMessageWrapper.newBuilder()
+                .setRetrieveFileRequest(retrieveFileMsg)
+                .build();
+        msgWrapper.writeDelimitedTo(controllerSocket.getOutputStream());
+        controllerSocket.close();
+    }
+
     public static void sendStoreRequestToStorageNode() throws IOException {
 
-        for (DFSChunk chunk : chunks) {
-            storageNodeSocket = new Socket("localhost", STORAGENODE_PORT);
-            System.out.println("chunkID " + chunk.getChunkID());
-            StorageMessages.StoreChunk storeChunkMsg
-                    = StorageMessages.StoreChunk.newBuilder()
-                    .setFileName(chunk.getChunkName())
-                    .setChunkId(chunk.getChunkID())
-                    .setData(chunk.getData())
-                    .build();
+        if (availStorageNodeHostNames.size() > 0) {
+            String hostName = availStorageNodeHostNames.get(0);
+            for (DFSChunk chunk : chunks) {
+                storageNodeSocket = new Socket(hostName, STORAGENODE_PORT);
+                System.out.println("chunkID " + chunk.getChunkID());
 
-            StorageMessages.StorageMessageWrapper msgWrapper =
-                    StorageMessages.StorageMessageWrapper.newBuilder()
-                            .setStoreChunkMsg(storeChunkMsg)
-                            .build();
+                StorageMessages.StoreChunk.Builder storeChunkMsg =
+                        StorageMessages.StoreChunk.newBuilder();
 
-            msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
-            storageNodeSocket.close();
+                for (int i = 1; i < availStorageNodeHostNames.size(); i++) {
+                    storeChunkMsg.addHostName(availStorageNodeHostNames.get(i));
+                }
+
+                storeChunkMsg.setFileName(chunk.getChunkName()).setChunkId(chunk.getChunkID())
+                        .setData(chunk.getData())
+                        .build();
+
+                StorageMessages.StorageMessageWrapper msgWrapper =
+                        StorageMessages.StorageMessageWrapper.newBuilder()
+                                .setStoreChunkMsg(storeChunkMsg)
+                                .build();
+
+                msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
+                storageNodeSocket.close();
+            }
         }
     }
 
