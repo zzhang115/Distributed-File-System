@@ -24,11 +24,14 @@ public class Client {
     private static final int SIZE_OF_CHUNK = 1024 * 1024; // 1MB
     private static final String CONTROLLER_HOSTNAME = "localhost";
     private static final int REPLY_WAITING_TIME = 10000;
+    private static final int RETRIEVE_WAITING_TIME = 5000;
     private static final int CONTROLLER_PORT = 8080;
     private static final int STORAGENODE_PORT = 9090;
 
     public static void main(String[] args) throws IOException, InterruptedException {
-//        clientStoreFile();
+        clientStoreFile();
+        // at least wait 5 secs(heart beat interval) to keep file info has been registered in metadata
+        Thread.sleep(RETRIEVE_WAITING_TIME);
         clientRetrieveFile();
     }
 
@@ -108,7 +111,8 @@ public class Client {
         long end = currentTime + REPLY_WAITING_TIME;
         ClientMessages.ClientMessageWrapper msgWrapper
                 = ClientMessages.ClientMessageWrapper.parseDelimitedFrom(
-                        controllerSocket.getInputStream());
+                        controllerSocket.getInputStream()); // wait here until there is a message
+
         while (System.currentTimeMillis() < end) {
             if (msgWrapper.hasReplyForRetrievingMsg()) {
                 ClientMessages.ReplyForRetrieving retrievingFileMsg
@@ -122,7 +126,6 @@ public class Client {
         controllerSocket.close();
     }
 
-//    public static void
     public static void sendStoreRequestToStorageNode() throws IOException {
         if (availStorageNodeHostNames.size() > 0) {
             String hostName = availStorageNodeHostNames.get(0);

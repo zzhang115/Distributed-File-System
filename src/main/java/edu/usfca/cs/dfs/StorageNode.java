@@ -65,7 +65,6 @@ public class StorageNode {
     }
 
     public static void handleStoreChunkRequest() throws IOException {
-        System.out.println("Listening...");
         Socket socket = nodeServerSocket.accept();
         StorageMessages.StorageMessageWrapper msgWrapper
                 = StorageMessages.StorageMessageWrapper.parseDelimitedFrom(
@@ -75,6 +74,8 @@ public class StorageNode {
             StorageMessages.StoreChunk storeChunkMsg
                     = msgWrapper.getStoreChunkMsg();
 
+            // storing chunk info into map in order to update info to controller
+            // still need to solve a problem that is that if chunk stored failed, don't update info to controller
             int storageHostNameCount = storeChunkMsg.getHostNameCount();
             for (int i = 0; i < storageHostNameCount; i++) {
                 availStorageNodeHostNames.add(storeChunkMsg.getHostName(i));
@@ -82,8 +83,8 @@ public class StorageNode {
 
             String fileName = storeChunkMsg.getFileName();
             int chunkId = storeChunkMsg.getChunkId();
-            System.out.println("Storing file name: " + fileName);
-            System.out.println("Storing file ID: " + chunkId);
+            logger.info("StorageNode: Storing file name: " + fileName);
+            logger.info("StorageNode: Storing file ID: " + chunkId);
 
             if (fullMetaMap.keySet().contains(fileName)) {
                 fullMetaMap.get(fileName).add(chunkId);
@@ -110,12 +111,10 @@ public class StorageNode {
 
     public static void writeFileToLocalMachine
             (String fileName, int chunkId, ByteString data) throws IOException {
+
         FileOutputStream fileOutputStream = new FileOutputStream("storage.file/" + fileName + "_Chunk" + chunkId);
-        System.out.println("old: "+data.size());
         byte[] dataBytes = data.toByteArray();
-        System.out.println(dataBytes.length);
         ByteString bytes = ByteString.copyFrom(dataBytes);
-        System.out.println("new: "+bytes.size());
 
         fileOutputStream.write(dataBytes);
         fileOutputStream.flush();

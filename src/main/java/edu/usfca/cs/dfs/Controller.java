@@ -119,14 +119,15 @@ public class Controller {
     }
 
     public static void sendReplyForRetrieving(Socket socket, String retrieveFileName) throws IOException {
+        ClientMessages.ReplyForRetrieving.Builder retrieveFileMsg =
+                ClientMessages.ReplyForRetrieving.newBuilder();
         if (metaMap.containsKey(retrieveFileName)) {
             Map<Integer, Set<String>> chunkMap = metaMap.get(retrieveFileName);
-            ClientMessages.ReplyForRetrieving.Builder retrieveFileMsg =
-                    ClientMessages.ReplyForRetrieving.newBuilder();
 
             for (int chunkId : chunkMap.keySet()) {
                 for (String storageHostName : chunkMap.get(chunkId)) {
                     // need to add if failure Node
+                    System.out.println("come in " + chunkId + " " + storageHostName);
                     retrieveFileMsg.addRetrieveFileInfoBuilder().setChunkId(chunkId)
                             .setStorageNodeHostName(storageHostName);
                     break;
@@ -138,6 +139,11 @@ public class Controller {
                             .build();
             msgWrapper.writeDelimitedTo(socket.getOutputStream());
         }
+        ClientMessages.ClientMessageWrapper msgWrapper =
+                ClientMessages.ClientMessageWrapper.newBuilder()
+                        .setReplyForRetrievingMsg(retrieveFileMsg)
+                        .build();
+        msgWrapper.writeDelimitedTo(socket.getOutputStream());
     }
 
     public static void sendReplyForStoring(Socket socket, double fileSize) throws IOException {
@@ -190,7 +196,7 @@ public class Controller {
         for (String storageNodeHostName : heartBeatMap.keySet()) {
             Date storageNodeDate = dateFormat.parse(heartBeatMap.get(storageNodeHostName));
             long dateDiff = (currentDate.getTime() - storageNodeDate.getTime()) / MILLIS_PER_SEC;
-            System.out.println(dateDiff + " " + currentDate.getTime() +" "+ storageNodeDate.getTime());
+//            System.out.println(dateDiff + " " + currentDate.getTime() +" "+ storageNodeDate.getTime());
             if (dateDiff >= FAILURE_NODE_TIME) {
                 System.out.println(storageNodeHostName + " crashed down!");
             }
