@@ -13,19 +13,21 @@ import java.util.logging.Logger;
 public class Client {
     private static Logger logger = Logger.getLogger("Log");
     private static String filePath = "client.file/test.pdf";
-    private static String retrieveFilePath = "client.retrieve.file";
+    private static String retrieveFilePath = "client.retrieve.file/";
     private static String testRetrieveFileName = "test.pdf";
 //    private static String filePath = "client.file/data_co.csv";
     private static Socket controllerSocket;
     private static Socket storageNodeSocket;
-    private static List<DFSChunk> chunks= new ArrayList<DFSChunk>();
+    private static List<DFSChunk> storeChunks = new ArrayList<DFSChunk>();
+    private static List<DFSChunk> retrieveChunks = new ArrayList<DFSChunk>();
     private static List<String> availStorageNodeHostNames = new ArrayList<String>();
     private static Map<Integer, String> retrieveFileMap = new HashMap<Integer, String>();
     private static long fileSize;
+    private static int retrieveChunkSum;
     private static final int SIZE_OF_CHUNK = 1024 * 1024; // 1MB
     private static final String CONTROLLER_HOSTNAME = "localhost";
     private static final int REPLY_WAITING_TIME = 10000;
-    private static final int RETRIEVE_WAITING_TIME = 5000;
+    private static final int RETRIEVE_WAITING_TIME = 3000;
     private static final int CONTROLLER_PORT = 8080;
     private static final int STORAGENODE_PORT = 9090;
 
@@ -65,7 +67,8 @@ public class Client {
         sendRetrieveFileRequestToController(testRetrieveFileName);
         logger.info("Client: Wait Msg For Retrievng File: " + testRetrieveFileName);
         getRetrievingReplyFromController();
-//        sendRetrieveRequestToStorageNode(testRetrieveFileName);
+        sendRetrieveRequestToStorageNode(testRetrieveFileName);
+        writeReceivedFileDataToLocal();
     }
 
     public static void sendStoreRequestToController(long fileSize) throws IOException {
@@ -97,8 +100,9 @@ public class Client {
             if (msgWrapper.hasAvailstorageNodeMsg()) {
                 ClientMessages.AvailStorageNode availStorageNodeMsg
                         = msgWrapper.getAvailstorageNodeMsg();
-                int count = availStorageNodeMsg.getStorageNodeHostNameCount();
-                for (int i = 0; i < count; i++) {
+                retrieveChunkSum = availStorageNodeMsg.getStorageNodeHostNameCount();
+
+                for (int i = 0; i < retrieveChunkSum; i++) {
                     logger.info("Client: Receive StorageNode HostName: " +
                             availStorageNodeMsg.getStorageNodeHostName(i));
                     availStorageNodeHostNames.add(availStorageNodeMsg.getStorageNodeHostName(i));
@@ -116,7 +120,7 @@ public class Client {
     public static void sendStoreRequestToStorageNode() throws IOException {
         if (availStorageNodeHostNames.size() > 0) {
             String hostName = availStorageNodeHostNames.get(0);
-            for (DFSChunk chunk : chunks) {
+            for (DFSChunk chunk : storeChunks) {
                 storageNodeSocket = new Socket(hostName, STORAGENODE_PORT);
                 logger.info("Client: Send Store Request To Controller To Store Chunk" + chunk.getChunkID());
 
@@ -173,10 +177,14 @@ public class Client {
                 ClientMessages.ReplyForRetrieving retrievingFileMsg
                         = msgWrapper.getReplyForRetrievingMsg();
                 int count = retrievingFileMsg.getRetrieveFileInfoCount();
+                int chunkId;
+                String storageNodeHostName;
                 logger.info("Client: Chunk's Num: " + count);
                 for (int i = 0; i < count; i++) {
-                    retrieveFileMap.put(retrievingFileMsg.getRetrieveFileInfo(i).getChunkId(),
-                            retrievingFileMsg.getRetrieveFileInfo(i).getStorageNodeHostName());
+                    chunkId = retrievingFileMsg.getRetrieveFileInfo(i).getChunkId();
+                    storageNodeHostName = retrievingFileMsg.getRetrieveFileInfo(i).getStorageNodeHostName();
+                    logger.info("Client: ChunkId: " + chunkId + " StorageNodeHostName: " + storageNodeHostName);
+                    retrieveFileMap.put(chunkId, storageNodeHostName);
                 }
                 return;
             }
@@ -185,7 +193,7 @@ public class Client {
         controllerSocket.close();
     }
 
-    public static void sendRetrieveRequestToStorageNode(String fileName) throws IOException {
+    public static void sendRetrieveRequestToStorageNode(String fileName) throws IOException, InterruptedException {
         logger.info("Client: Start Sending Retrieve Request To StorageNode");
         for (Map.Entry<Integer, String> entry : retrieveFileMap.entrySet()) {
             storageNodeSocket = new Socket(entry.getValue(), STORAGENODE_PORT);
@@ -199,9 +207,51 @@ public class Client {
                         .setRetrieveFileMsg(retrieveFileMsg)
                         .build();
             msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
-            storageNodeSocket.close();
+
+            logger.info("Client: Start Receving File Data From StorageNode");
+            receiveDataFromStorageNode(storageNodeSocket);
         }
         logger.info("Client: Finished Sending Retrieve Request To StorageNode");
+    }
+
+    public static void receiveDataFromStorageNode(Socket socket) throws IOException, InterruptedException {
+        long currentTime = System.currentTimeMillis();
+        long end = currentTime + REPLY_WAITING_TIME;
+        ClientMessages.ClientMessageWrapper msgWrapper
+                = ClientMessages.ClientMessageWrapper.parseDelimitedFrom(
+                        socket.getInputStream()); // wait here until there is a message
+
+        logger.info("Client: Waiting For Reply Of Retrieving From Controller");
+        while (System.currentTimeMillis() < end) {
+            if (msgWrapper.hasRetrieveFileDataMsg()) {
+                ClientMessages.RetrieveFileData retrievingFileDataMsg
+                        = msgWrapper.getRetrieveFileDataMsg();
+                String fileName = retrievingFileDataMsg.getFileName();
+                int chunkId = retrievingFileDataMsg.getChunkID();
+                ByteString data =  retrievingFileDataMsg.getData();
+                retrieveChunks.add(new DFSChunk(fileName, chunkId, data));
+                logger.info("Client: Received Chunk: FileName: " + fileName + " ChunkId: " + chunkId);
+                socket.close();
+                return;
+            }
+            Thread.sleep(500);
+        }
+
+        socket.close();
+    }
+
+    public static void writeReceivedFileDataToLocal() throws IOException {
+        if (retrieveChunks.size() > 0) {
+            logger.info("Client: Start Writing Retrieved Data To Local Machine");
+            Collections.sort(retrieveChunks, new ChunkComparator());
+            FileOutputStream fileOutputStream = new FileOutputStream(retrieveFilePath + testRetrieveFileName);
+            for (DFSChunk chunk : retrieveChunks) {
+                fileOutputStream.write(chunk.getData().toByteArray());
+            }
+            fileOutputStream.flush();
+            fileOutputStream.close();
+            logger.info("Client: Finished Writing Retrieved Data To Local Machine");
+        }
     }
 
     public static void breakFiletoChunks(File file) throws IOException {
@@ -215,9 +265,15 @@ public class Client {
                 byte[] newBuffer = new byte[length];
                 System.arraycopy(buffer, 0, newBuffer, 0, length);
                 ByteString data = ByteString.copyFrom(newBuffer);
-                chunks.add(new DFSChunk(fileName, chunksId++, data));
+                storeChunks.add(new DFSChunk(fileName, chunksId++, data));
             }
-            logger.info("Client: Chunks Size: " + chunks.size());
+            logger.info("Client: Chunks Size: " + storeChunks.size());
+        }
+    }
+
+    private static class ChunkComparator implements Comparator<DFSChunk> {
+        public int compare(DFSChunk a, DFSChunk b) {
+            return a.getChunkID() - b.getChunkID();
         }
     }
 

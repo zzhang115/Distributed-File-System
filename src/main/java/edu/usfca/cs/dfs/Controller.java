@@ -46,9 +46,18 @@ public class Controller {
         }
     }
 
+    public static void main(String[] args) throws IOException {
+        controllerInit();
+        while (true) {
+            handleMessage();
+        }
+    }
+
     public static void controllerInit() throws IOException {
         System.setProperty("java.util.logging.SimpleFormatter.format",
                 "%5$s%6$s -- %1$tF %1$tT %4$s %2$s%n");
+        logger.info("Controller: Initializing...");
+
         storageNodeQueue = new PriorityQueue<STNode>(new FreeSpaceComparator());
         metaMap = new HashMap<String, Map<Integer, Set<String>>>();
         heartBeatMap = new HashMap<String, String>();
@@ -58,7 +67,7 @@ public class Controller {
         Runnable failureDetect = new Runnable() {
             public void run() {
                 try {
-                    System.out.println("Controller: Detecting Failure Node...");
+                    logger.info("Controller: Detecting Failure Node...");
                     detectFailureNode();
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -68,15 +77,6 @@ public class Controller {
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(failureDetect, 0, 5, TimeUnit.SECONDS);
-
-    }
-
-    public static void main(String[] args) throws IOException {
-        logger.info("Controller: Starting controller...");
-        controllerInit();
-        while (true) {
-            handleMessage();
-        }
     }
 
     public static void handleMessage() throws IOException {

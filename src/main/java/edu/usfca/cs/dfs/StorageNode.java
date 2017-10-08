@@ -30,7 +30,6 @@ public class StorageNode {
 
     public static void main(String[] args) throws Exception {
         String hostname = getHostname();
-        logger.info("StorageNode: Initializing...");
         storageNodeInit();
         while (true) {
             handleMessage();
@@ -40,6 +39,8 @@ public class StorageNode {
     public static void storageNodeInit() throws IOException {
         System.setProperty("java.util.logging.SimpleFormatter.format",
                 "%5$s%6$s -- %1$tF %1$tT %4$s %2$s%n");
+        logger.info("StorageNode: Initializing...");
+
         nodeServerSocket = new ServerSocket(9090);
         dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         updateMetaMap = new HashMap<String, List<Integer>>();
