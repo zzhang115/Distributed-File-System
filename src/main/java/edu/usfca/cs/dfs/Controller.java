@@ -149,6 +149,7 @@ public class Controller {
     public static void sendReplyForStoring(Socket socket, double fileSize) throws IOException {
         int nodeNum = Math.min(COPY_NUM, storageNodeQueue.size());
         List<STNode> availNodes = new ArrayList<STNode>();
+        logger.info("Controller: Start Send Reply For Storing To Client");
         ClientMessages.AvailStorageNode.Builder availStorageNodeMsg =
                 ClientMessages.AvailStorageNode.newBuilder();
         for (int i = 0; i < nodeNum; i++) {
@@ -164,6 +165,7 @@ public class Controller {
                     .setAvailstorageNodeMsg(availStorageNodeMsg)
                     .build();
         msgWrapper.writeDelimitedTo(socket.getOutputStream());
+        logger.info("Controller: Finished Sending Reply For Storing To Client");
         for (STNode stNode : availNodes) {
             storageNodeQueue.offer(stNode);
         }

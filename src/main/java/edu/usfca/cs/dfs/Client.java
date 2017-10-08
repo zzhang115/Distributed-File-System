@@ -40,11 +40,11 @@ public class Client {
         logger.info("Client: Start Send Storing File Request");
         File file = new File(filePath);
         fileSize = file.length();
-        System.out.println("fileSize:" + fileSize);
+        logger.info("Client: FileSize is " + fileSize);
         String md5Hash = fileCheckSum(file);
-        logger.info("Client: Start break file to chunks.");
+        logger.info("Client: Start break file to chunks");
         breakFiletoChunks(file);
-        logger.info("Client: Finish breaking chunks.");
+        logger.info("Client: Finish breaking chunks");
 
         sendStoreRequestToController(fileSize);
         getStoringReplyFromController();
@@ -69,11 +69,14 @@ public class Client {
                 .setStoreChunkRequestMsg(storeChunkRequestMsg)
                 .build();
         msgWrapper.writeDelimitedTo(controllerSocket.getOutputStream());
-        controllerSocket.close();
     }
 
     public static void getStoringReplyFromController() throws IOException, InterruptedException {
-        controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
+//        controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
+//        new controllerSocket will lead program stuck at line 83 getInputStream();
+//        in the same time, controller just receive this new controllerSocket, and stuck at socket.getInputStream()
+//        so it cause storageNode cannot connect with controller, so it said carshed down
+
         long currentTime = System.currentTimeMillis();
         long end = currentTime + REPLY_WAITING_TIME;
         ClientMessages.ClientMessageWrapper msgWrapper
@@ -97,7 +100,6 @@ public class Client {
         if (System.currentTimeMillis() < end) {
             logger.info("Client: Controller is out of service now!");
         }
-        controllerSocket.close();
     }
 
     public static void sendStoreRequestToStorageNode() throws IOException {
@@ -105,7 +107,7 @@ public class Client {
             String hostName = availStorageNodeHostNames.get(0);
             for (DFSChunk chunk : chunks) {
                 storageNodeSocket = new Socket(hostName, STORAGENODE_PORT);
-                System.out.println("Client: Store Chunk" + chunk.getChunkID());
+                logger.info("Client: Send Store Request To Controller To Store Chunk" + chunk.getChunkID());
 
                 StorageMessages.StoreChunk.Builder storeChunkMsg =
                         StorageMessages.StoreChunk.newBuilder();
@@ -132,7 +134,7 @@ public class Client {
     }
 
     public static void sendRetrieveFileRequestToController(String fileName) throws IOException {
-        controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
+        logger.info("Client: Start Sending Retrieve File Request To Controller");
         ControllerMessages.RetrieveFileRequest retrieveFileMsg = ControllerMessages
                 .RetrieveFileRequest.newBuilder().setFilename(fileName).build();
         ControllerMessages.ControllerMessageWrapper msgWrapper = ControllerMessages
@@ -140,6 +142,7 @@ public class Client {
                 .setRetrieveFileMsg(retrieveFileMsg)
                 .build();
         msgWrapper.writeDelimitedTo(controllerSocket.getOutputStream());
+        logger.info("Client: Finished Sending Retrieve File Request To Controller");
     }
 
     public static void getRetrievingReplyFromController() throws IOException, InterruptedException {
@@ -149,6 +152,7 @@ public class Client {
                 = ClientMessages.ClientMessageWrapper.parseDelimitedFrom(
                         controllerSocket.getInputStream()); // wait here until there is a message
 
+        logger.info("Client: Waiting For Reply Of Retrieving From Controller");
         while (System.currentTimeMillis() < end) {
             if (msgWrapper.hasReplyForRetrievingMsg()) {
                 ClientMessages.ReplyForRetrieving retrievingFileMsg
@@ -163,10 +167,10 @@ public class Client {
             }
             Thread.sleep(500);
         }
-        controllerSocket.close();
     }
 
     public static void sendRetrieveRequestToStorageNode(String fileName) throws IOException {
+        logger.info("Client: Start Sending Retrieve Request To StorageNode");
         for (Map.Entry<Integer, String> entry : retrieveFileMap.entrySet()) {
             storageNodeSocket = new Socket(entry.getValue(), STORAGENODE_PORT);
             StorageMessages.RetrieveFile.Builder retrieveFileMsg =
@@ -181,6 +185,7 @@ public class Client {
             msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
             storageNodeSocket.close();
         }
+        logger.info("Client: Finished Sending Retrieve Request To StorageNode");
     }
 
     public static void breakFiletoChunks(File file) throws IOException {
