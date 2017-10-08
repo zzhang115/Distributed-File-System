@@ -25,8 +25,8 @@ public class StorageNode {
     private static Map<String, List<Integer>> fullMetaMap; // <fileName, <chunkId>>
     private static ReentrantLock lock = new ReentrantLock();
     private static List<String> availStorageNodeHostNames = new ArrayList<String>();
-    private static final int CONTROLLER_PORT = 8080;
-    private static final int STORAGENODE_PORT= 9090;
+    private static final int CONTROLLER_PORT = 40000;
+    private static final int STORAGENODE_PORT= 40010;
 
     public static void main(String[] args) throws Exception {
         String hostname = getHostname();
@@ -41,7 +41,7 @@ public class StorageNode {
                 "%5$s%6$s -- %1$tF %1$tT %4$s %2$s%n");
         logger.info("StorageNode: Initializing...");
 
-        nodeServerSocket = new ServerSocket(9090);
+        nodeServerSocket = new ServerSocket(STORAGENODE_PORT);
         dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         updateMetaMap = new HashMap<String, List<Integer>>();
         fullMetaMap = new HashMap<String, List<Integer>>();

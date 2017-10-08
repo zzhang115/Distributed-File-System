@@ -24,6 +24,7 @@ public class Controller {
     private static final int FAILURE_NODE_TIME = 15;
     private static final int MILLIS_PER_SEC= 1000;
     private static final int COPY_NUM = 3;
+    private static final int CONTROLLER_PORT = 40000;
 
     private static class STNode {
         String storageNodeHostName;
@@ -61,7 +62,7 @@ public class Controller {
         storageNodeQueue = new PriorityQueue<STNode>(new FreeSpaceComparator());
         metaMap = new HashMap<String, Map<Integer, Set<String>>>();
         heartBeatMap = new HashMap<String, String>();
-        controllerSocket = new ServerSocket(8080);
+        controllerSocket = new ServerSocket(CONTROLLER_PORT);
         dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
         Runnable failureDetect = new Runnable() {

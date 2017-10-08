@@ -28,8 +28,8 @@ public class Client {
     private static final String CONTROLLER_HOSTNAME = "localhost";
     private static final int REPLY_WAITING_TIME = 10000;
     private static final int RETRIEVE_WAITING_TIME = 3000;
-    private static final int CONTROLLER_PORT = 8080;
-    private static final int STORAGENODE_PORT = 9090;
+    private static final int CONTROLLER_PORT = 40000;
+    private static final int STORAGENODE_PORT = 40010;
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
@@ -122,7 +122,8 @@ public class Client {
             String hostName = availStorageNodeHostNames.get(0);
             for (DFSChunk chunk : storeChunks) {
                 storageNodeSocket = new Socket(hostName, STORAGENODE_PORT);
-                logger.info("Client: Send Store Request To Controller To Store Chunk" + chunk.getChunkID());
+                logger.info("Client: Send Store Request To StorageNode: " + hostName
+                        + " To Store Chunk" + chunk.getChunkID());
 
                 StorageMessages.StoreChunk.Builder storeChunkMsg =
                         StorageMessages.StoreChunk.newBuilder();
