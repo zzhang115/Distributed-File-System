@@ -33,7 +33,7 @@ public class Client {
         clientStoreFile();
         // at least wait 5 secs(heart beat interval) to keep file info has been registered in metadata
         Thread.sleep(RETRIEVE_WAITING_TIME);
-//        clientRetrieveFile();
+        clientRetrieveFile();
     }
 
     public static void clientStoreFile() throws IOException, InterruptedException {
@@ -55,7 +55,9 @@ public class Client {
         logger.info("Client: Send Retrieving File Request: " + testRetrieveFileName);
         sendRetrieveFileRequestToController(testRetrieveFileName);
         logger.info("Client: Wait Msg For Retrievng File: " + testRetrieveFileName);
-        getRetrievingReplyFromController();
+//        getRetrievingReplyFromController();
+//        sendRetrieveRequestToStorageNode(testRetrieveFileName);
+
     }
 
     public static void sendStoreRequestToController(long fileSize) throws IOException {
@@ -136,7 +138,10 @@ public class Client {
     public static void sendRetrieveFileRequestToController(String fileName) throws IOException {
         logger.info("Client: Start Sending Retrieve File Request To Controller");
         ControllerMessages.RetrieveFileRequest retrieveFileMsg = ControllerMessages
-                .RetrieveFileRequest.newBuilder().setFilename(fileName).build();
+                .RetrieveFileRequest.newBuilder()
+                .setFilename(fileName)
+                .build();
+
         ControllerMessages.ControllerMessageWrapper msgWrapper = ControllerMessages
                 .ControllerMessageWrapper.newBuilder()
                 .setRetrieveFileMsg(retrieveFileMsg)

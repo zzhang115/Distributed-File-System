@@ -30,9 +30,11 @@ public class StorageNode {
 
     public static void main(String[] args) throws Exception {
         String hostname = getHostname();
-        logger.info("StorageNode Initializing.");
+        logger.info("StorageNode: Initializing...");
         storageNodeInit();
-        mainFunction();
+        while (true) {
+            handleMessage();
+        }
     }
 
     public static void storageNodeInit() throws IOException {
@@ -43,7 +45,7 @@ public class StorageNode {
 
         Runnable heartBeat = new Runnable() {
             public void run() {
-                logger.info("Send HeartBeat! --" + dateFormat.format(new Date()));
+                logger.info("StorageNode: Send HeartBeat! --" + dateFormat.format(new Date()));
                 try {
                     lock.lock();
                     sendHeartBeat();
@@ -57,15 +59,8 @@ public class StorageNode {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1); executor.scheduleAtFixedRate(heartBeat, 0, 5, TimeUnit.SECONDS);
     }
 
-    public static void mainFunction() throws IOException {
-        while (true) {
-            Socket socket = nodeServerSocket.accept();
-            handleStoreChunkRequest(socket);
-            socket.close();
-        }
-    }
-
-    public static void handleStoreChunkRequest(Socket socket) throws IOException {
+    public static void handleMessage() throws IOException {
+        Socket socket = nodeServerSocket.accept();
         StorageMessages.StorageMessageWrapper msgWrapper
                 = StorageMessages.StorageMessageWrapper.parseDelimitedFrom(
                 socket.getInputStream());
@@ -108,42 +103,42 @@ public class StorageNode {
             ByteString data = storeChunkMsg.getData();
             writeFileToLocalMachine(fileName, chunkId, data);
         }
-    }
 
-    public static void handleRetrieveFileRequest(Socket socket) throws IOException {
-        logger.info("Storage: Receive Retrieve File Request!");
-        StorageMessages.StorageMessageWrapper msgWrapper =
-                StorageMessages.StorageMessageWrapper.parseDelimitedFrom(
-                        socket.getInputStream());
         if (msgWrapper.hasRetrieveFileMsg()) {
             StorageMessages.RetrieveFile retrieveFileMsg =
                     msgWrapper.getRetrieveFileMsg();
+            logger.info("StorageNode: Received Retrieve File Request!");
             String fileName = retrieveFileMsg.getFileName();
             int chunkId = retrieveFileMsg.getChunkId();
+            logger.info("StorageNode: Retrieve Request, FileName: " + fileName + " ChunkId: " + chunkId);
             if (fullMetaMap.containsKey(fileName) && fullMetaMap.get(fileName).contains(chunkId)) {
-
+                sendFileDataToClient(socket, fileName, chunkId);
             }
         }
+        socket.close();
     }
 
     public static void sendFileDataToClient(Socket socket, String fileName, int chunkId) throws IOException {
+        logger.info("StorageNode: Start Sending File Data To Client");
         File file = new File("storage.file/" + fileName + "_Chunk" + chunkId);
         byte[] dataBytes = new byte[(int)file.length()];
         FileInputStream fileInputStream = new FileInputStream(file);
         fileInputStream.read(dataBytes);
         fileInputStream.close();
+        ByteString data = ByteString.copyFrom(dataBytes);
 
         ClientMessages.RetrieveFileData.Builder retrieveFileDataMsg =
                 ClientMessages.RetrieveFileData.newBuilder();
         retrieveFileDataMsg.setFileName(fileName)
                 .setChunkID(chunkId)
+                .setData(data)
                 .build();
         ClientMessages.ClientMessageWrapper msgWrapper =
                 ClientMessages.ClientMessageWrapper.newBuilder()
                         .setRetrieveFileDataMsg(retrieveFileDataMsg)
                         .build();
         msgWrapper.writeDelimitedTo(socket.getOutputStream());
-        socket.close();
+        logger.info("StorageNode: Finished Sending File Data To Client");
     }
 
     public static void writeFileToLocalMachine

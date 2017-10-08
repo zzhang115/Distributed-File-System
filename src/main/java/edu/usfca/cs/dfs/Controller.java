@@ -69,7 +69,7 @@ public class Controller {
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println("Starting controller...");
+        logger.info("Controller: Starting controller...");
         controllerInit();
         while (true) {
             handleMessage();
@@ -98,7 +98,7 @@ public class Controller {
             for (int i = 0; i < heartBeatSignalMsg.getMetaCount(); i++) {
                 String fileName = heartBeatSignalMsg.getMeta(i).getFilename();
                 int chunkId = heartBeatSignalMsg.getMeta(i).getChunkId();
-                System.out.println("i = " + i + "fileName: " + fileName + "chunkId: " + chunkId);
+                logger.info("Controller: HeartBeat New FileName: " + fileName + " ChunkId: " + chunkId);
                 storeFileInfo(storageHostName, fileName, chunkId);
             }
             logger.info("Controller: Received HeartBeat: " + heartBeatSignalMsg.getTimestamp()
@@ -116,6 +116,7 @@ public class Controller {
             logger.info("Controller: Sending Reply For Retrievng File Request: " + retrieveFileName);
             sendReplyForRetrieving(socket, retrieveFileName);
         }
+        socket.close();
     }
 
     public static void sendReplyForRetrieving(Socket socket, String retrieveFileName) throws IOException {
@@ -127,7 +128,6 @@ public class Controller {
             for (int chunkId : chunkMap.keySet()) {
                 for (String storageHostName : chunkMap.get(chunkId)) {
                     // need to add if failure Node
-                    System.out.println("come in " + chunkId + " " + storageHostName);
                     retrieveFileMsg.addRetrieveFileInfoBuilder().setChunkId(chunkId)
                             .setStorageNodeHostName(storageHostName);
                     break;
@@ -200,7 +200,7 @@ public class Controller {
             long dateDiff = (currentDate.getTime() - storageNodeDate.getTime()) / MILLIS_PER_SEC;
 //            System.out.println(dateDiff + " " + currentDate.getTime() +" "+ storageNodeDate.getTime());
             if (dateDiff >= FAILURE_NODE_TIME) {
-                System.out.println(storageNodeHostName + " crashed down!");
+                logger.info("Controller: " + storageNodeHostName + " crashed down!");
             }
         }
     }
