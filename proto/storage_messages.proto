@@ -10,6 +10,7 @@ message StoreChunk {
 
 message RetrieveFile {
     string fileName = 1;
+    int32 chunkId = 2;
 }
 
 message StorageMessageWrapper {

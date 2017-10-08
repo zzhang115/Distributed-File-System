@@ -872,6 +872,11 @@ public final class StorageMessages {
      */
     com.google.protobuf.ByteString
         getFileNameBytes();
+
+    /**
+     * <code>int32 chunkId = 2;</code>
+     */
+    int getChunkId();
   }
   /**
    * Protobuf type {@code RetrieveFile}
@@ -887,6 +892,7 @@ public final class StorageMessages {
     }
     private RetrieveFile() {
       fileName_ = "";
+      chunkId_ = 0;
     }
 
     @java.lang.Override
@@ -921,6 +927,11 @@ public final class StorageMessages {
               java.lang.String s = input.readStringRequireUtf8();
 
               fileName_ = s;
+              break;
+            }
+            case 16: {
+
+              chunkId_ = input.readInt32();
               break;
             }
           }
@@ -981,6 +992,15 @@ public final class StorageMessages {
       }
     }
 
+    public static final int CHUNKID_FIELD_NUMBER = 2;
+    private int chunkId_;
+    /**
+     * <code>int32 chunkId = 2;</code>
+     */
+    public int getChunkId() {
+      return chunkId_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -996,6 +1016,9 @@ public final class StorageMessages {
       if (!getFileNameBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, fileName_);
       }
+      if (chunkId_ != 0) {
+        output.writeInt32(2, chunkId_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1006,6 +1029,10 @@ public final class StorageMessages {
       size = 0;
       if (!getFileNameBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, fileName_);
+      }
+      if (chunkId_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, chunkId_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1025,6 +1052,8 @@ public final class StorageMessages {
       boolean result = true;
       result = result && getFileName()
           .equals(other.getFileName());
+      result = result && (getChunkId()
+          == other.getChunkId());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -1038,6 +1067,8 @@ public final class StorageMessages {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + FILENAME_FIELD_NUMBER;
       hash = (53 * hash) + getFileName().hashCode();
+      hash = (37 * hash) + CHUNKID_FIELD_NUMBER;
+      hash = (53 * hash) + getChunkId();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1169,6 +1200,8 @@ public final class StorageMessages {
         super.clear();
         fileName_ = "";
 
+        chunkId_ = 0;
+
         return this;
       }
 
@@ -1192,6 +1225,7 @@ public final class StorageMessages {
       public edu.usfca.cs.dfs.StorageMessages.RetrieveFile buildPartial() {
         edu.usfca.cs.dfs.StorageMessages.RetrieveFile result = new edu.usfca.cs.dfs.StorageMessages.RetrieveFile(this);
         result.fileName_ = fileName_;
+        result.chunkId_ = chunkId_;
         onBuilt();
         return result;
       }
@@ -1236,6 +1270,9 @@ public final class StorageMessages {
         if (!other.getFileName().isEmpty()) {
           fileName_ = other.fileName_;
           onChanged();
+        }
+        if (other.getChunkId() != 0) {
+          setChunkId(other.getChunkId());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1329,6 +1366,32 @@ public final class StorageMessages {
   checkByteStringIsUtf8(value);
         
         fileName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int chunkId_ ;
+      /**
+       * <code>int32 chunkId = 2;</code>
+       */
+      public int getChunkId() {
+        return chunkId_;
+      }
+      /**
+       * <code>int32 chunkId = 2;</code>
+       */
+      public Builder setChunkId(int value) {
+        
+        chunkId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 chunkId = 2;</code>
+       */
+      public Builder clearChunkId() {
+        
+        chunkId_ = 0;
         onChanged();
         return this;
       }
@@ -2296,11 +2359,12 @@ public final class StorageMessages {
     java.lang.String[] descriptorData = {
       "\n\026storage_messages.proto\"O\n\nStoreChunk\022\020" +
       "\n\010fileName\030\001 \001(\t\022\017\n\007chunkId\030\002 \001(\005\022\014\n\004dat" +
-      "a\030\003 \001(\014\022\020\n\010hostName\030\004 \003(\t\" \n\014RetrieveFil" +
-      "e\022\020\n\010fileName\030\001 \001(\t\"n\n\025StorageMessageWra" +
-      "pper\022$\n\rstoreChunkMsg\030\001 \001(\0132\013.StoreChunk" +
-      "H\000\022(\n\017retrieveFileMsg\030\002 \001(\0132\r.RetrieveFi" +
-      "leH\000B\005\n\003msgB\022\n\020edu.usfca.cs.dfsb\006proto3"
+      "a\030\003 \001(\014\022\020\n\010hostName\030\004 \003(\t\"1\n\014RetrieveFil" +
+      "e\022\020\n\010fileName\030\001 \001(\t\022\017\n\007chunkId\030\002 \001(\005\"n\n\025" +
+      "StorageMessageWrapper\022$\n\rstoreChunkMsg\030\001" +
+      " \001(\0132\013.StoreChunkH\000\022(\n\017retrieveFileMsg\030\002" +
+      " \001(\0132\r.RetrieveFileH\000B\005\n\003msgB\022\n\020edu.usfc" +
+      "a.cs.dfsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2325,7 +2389,7 @@ public final class StorageMessages {
     internal_static_RetrieveFile_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_RetrieveFile_descriptor,
-        new java.lang.String[] { "FileName", });
+        new java.lang.String[] { "FileName", "ChunkId", });
     internal_static_StorageMessageWrapper_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_StorageMessageWrapper_fieldAccessorTable = new

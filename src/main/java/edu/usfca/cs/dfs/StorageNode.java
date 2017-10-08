@@ -21,15 +21,14 @@ public class StorageNode {
     private static ServerSocket nodeServerSocket;
     private static Socket nodeSocket;
     private static DateFormat dateFormat;
-    private static Map<String, List<Integer>> updateMetaMap;
-    private static Map<String, List<Integer>> fullMetaMap;
+    private static Map<String, List<Integer>> updateMetaMap; // <fileName, <chunkId>>
+    private static Map<String, List<Integer>> fullMetaMap; // <fileName, <chunkId>>
     private static ReentrantLock lock = new ReentrantLock();
     private static List<String> availStorageNodeHostNames = new ArrayList<String>();
     private static final int CONTROLLER_PORT = 8080;
     private static final int STORAGENODE_PORT= 9090;
 
-    public static void main(String[] args)
-    throws Exception {
+    public static void main(String[] args) throws Exception {
         String hostname = getHostname();
         logger.info("StorageNode Initializing.");
         storageNodeInit();
@@ -60,17 +59,19 @@ public class StorageNode {
 
     public static void mainFunction() throws IOException {
         while (true) {
-            handleStoreChunkRequest();
+            Socket socket = nodeServerSocket.accept();
+            handleStoreChunkRequest(socket);
+            socket.close();
         }
     }
 
-    public static void handleStoreChunkRequest() throws IOException {
-        Socket socket = nodeServerSocket.accept();
+    public static void handleStoreChunkRequest(Socket socket) throws IOException {
         StorageMessages.StorageMessageWrapper msgWrapper
                 = StorageMessages.StorageMessageWrapper.parseDelimitedFrom(
                 socket.getInputStream());
 
         if (msgWrapper.hasStoreChunkMsg()) {
+            logger.info("Storage: Receive Store Chunk Request!");
             StorageMessages.StoreChunk storeChunkMsg
                     = msgWrapper.getStoreChunkMsg();
 
@@ -107,6 +108,42 @@ public class StorageNode {
             ByteString data = storeChunkMsg.getData();
             writeFileToLocalMachine(fileName, chunkId, data);
         }
+    }
+
+    public static void handleRetrieveFileRequest(Socket socket) throws IOException {
+        logger.info("Storage: Receive Retrieve File Request!");
+        StorageMessages.StorageMessageWrapper msgWrapper =
+                StorageMessages.StorageMessageWrapper.parseDelimitedFrom(
+                        socket.getInputStream());
+        if (msgWrapper.hasRetrieveFileMsg()) {
+            StorageMessages.RetrieveFile retrieveFileMsg =
+                    msgWrapper.getRetrieveFileMsg();
+            String fileName = retrieveFileMsg.getFileName();
+            int chunkId = retrieveFileMsg.getChunkId();
+            if (fullMetaMap.containsKey(fileName) && fullMetaMap.get(fileName).contains(chunkId)) {
+
+            }
+        }
+    }
+
+    public static void sendFileDataToClient(Socket socket, String fileName, int chunkId) throws IOException {
+        File file = new File("storage.file/" + fileName + "_Chunk" + chunkId);
+        byte[] dataBytes = new byte[(int)file.length()];
+        FileInputStream fileInputStream = new FileInputStream(file);
+        fileInputStream.read(dataBytes);
+        fileInputStream.close();
+
+        ClientMessages.RetrieveFileData.Builder retrieveFileDataMsg =
+                ClientMessages.RetrieveFileData.newBuilder();
+        retrieveFileDataMsg.setFileName(fileName)
+                .setChunkID(chunkId)
+                .build();
+        ClientMessages.ClientMessageWrapper msgWrapper =
+                ClientMessages.ClientMessageWrapper.newBuilder()
+                        .setRetrieveFileDataMsg(retrieveFileDataMsg)
+                        .build();
+        msgWrapper.writeDelimitedTo(socket.getOutputStream());
+        socket.close();
     }
 
     public static void writeFileToLocalMachine

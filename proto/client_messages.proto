@@ -9,13 +9,21 @@ message RetrieveFileInfo {
     int32 chunkId = 1;
     string storageNodeHostName = 2;
 }
+
 message ReplyForRetrieving {
     repeated RetrieveFileInfo retrieveFileInfo = 1;
+}
+
+message RetrieveFileData {
+    string fileName = 1;
+    int32 chunkID = 2;
+    bytes data = 3;
 }
 
 message ClientMessageWrapper {
     oneof msg {
         AvailStorageNode availstorageNodeMsg = 1;
         ReplyForRetrieving replyForRetrievingMsg = 2;
+        RetrieveFileData retrieveFileDataMsg = 3;
     }
 }

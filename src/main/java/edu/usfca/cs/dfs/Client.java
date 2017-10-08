@@ -20,6 +20,7 @@ public class Client {
     private static Socket storageNodeSocket;
     private static List<DFSChunk> chunks= new ArrayList<DFSChunk>();
     private static List<String> availStorageNodeHostNames = new ArrayList<String>();
+    private static Map<Integer, String> retrieveFileMap = new HashMap<Integer, String>();
     private static long fileSize;
     private static final int SIZE_OF_CHUNK = 1024 * 1024; // 1MB
     private static final String CONTROLLER_HOSTNAME = "localhost";
@@ -32,7 +33,7 @@ public class Client {
         clientStoreFile();
         // at least wait 5 secs(heart beat interval) to keep file info has been registered in metadata
         Thread.sleep(RETRIEVE_WAITING_TIME);
-        clientRetrieveFile();
+//        clientRetrieveFile();
     }
 
     public static void clientStoreFile() throws IOException, InterruptedException {
@@ -58,6 +59,7 @@ public class Client {
     }
 
     public static void sendStoreRequestToController(long fileSize) throws IOException {
+        logger.info("Client: Start Sending Store Request To Controller");
         controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
         ControllerMessages.StoreChunkRequest storeChunkRequestMsg = ControllerMessages
                 .StoreChunkRequest.newBuilder().setFileSize(fileSize).build();
@@ -67,21 +69,24 @@ public class Client {
                 .setStoreChunkRequestMsg(storeChunkRequestMsg)
                 .build();
         msgWrapper.writeDelimitedTo(controllerSocket.getOutputStream());
+        controllerSocket.close();
     }
 
     public static void getStoringReplyFromController() throws IOException, InterruptedException {
+        controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
         long currentTime = System.currentTimeMillis();
         long end = currentTime + REPLY_WAITING_TIME;
         ClientMessages.ClientMessageWrapper msgWrapper
                 = ClientMessages.ClientMessageWrapper.parseDelimitedFrom(
                         controllerSocket.getInputStream());
+        logger.info("Client: Waiting For Reply Of Storing Request!");
         while (System.currentTimeMillis() < end) {
             if (msgWrapper.hasAvailstorageNodeMsg()) {
                 ClientMessages.AvailStorageNode availStorageNodeMsg
                         = msgWrapper.getAvailstorageNodeMsg();
                 int count = availStorageNodeMsg.getStorageNodeHostNameCount();
                 for (int i = 0; i < count; i++) {
-                    logger.info("Receive StorageNode HostName: " +
+                    logger.info("Client: Receive StorageNode HostName: " +
                             availStorageNodeMsg.getStorageNodeHostName(i));
                     availStorageNodeHostNames.add(availStorageNodeMsg.getStorageNodeHostName(i));
                 }
@@ -90,9 +95,40 @@ public class Client {
             Thread.sleep(500);
         }
         if (System.currentTimeMillis() < end) {
-            System.out.println("Controller is out of service now!");
+            logger.info("Client: Controller is out of service now!");
         }
         controllerSocket.close();
+    }
+
+    public static void sendStoreRequestToStorageNode() throws IOException {
+        if (availStorageNodeHostNames.size() > 0) {
+            String hostName = availStorageNodeHostNames.get(0);
+            for (DFSChunk chunk : chunks) {
+                storageNodeSocket = new Socket(hostName, STORAGENODE_PORT);
+                System.out.println("Client: Store Chunk" + chunk.getChunkID());
+
+                StorageMessages.StoreChunk.Builder storeChunkMsg =
+                        StorageMessages.StoreChunk.newBuilder();
+
+                for (int i = 1; i < availStorageNodeHostNames.size(); i++) {
+                    storeChunkMsg.addHostName(availStorageNodeHostNames.get(i));
+                }
+
+                storeChunkMsg.setFileName(chunk.getChunkName()).setChunkId(chunk.getChunkID())
+                        .setData(chunk.getData())
+                        .build();
+
+                StorageMessages.StorageMessageWrapper msgWrapper =
+                        StorageMessages.StorageMessageWrapper.newBuilder()
+                                .setStoreChunkMsg(storeChunkMsg)
+                                .build();
+
+                msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
+                storageNodeSocket.close();
+            }
+        } else {
+            logger.info("Client: No StorageNode Is Available!");
+        }
     }
 
     public static void sendRetrieveFileRequestToController(String fileName) throws IOException {
@@ -118,7 +154,11 @@ public class Client {
                 ClientMessages.ReplyForRetrieving retrievingFileMsg
                         = msgWrapper.getReplyForRetrievingMsg();
                 int count = retrievingFileMsg.getRetrieveFileInfoCount();
-                logger.info("chunk num:" + count);
+                logger.info("Client: Chunk's Num: " + count);
+                for (int i = 0; i < count; i++) {
+                    retrieveFileMap.put(retrievingFileMsg.getRetrieveFileInfo(i).getChunkId(),
+                            retrievingFileMsg.getRetrieveFileInfo(i).getStorageNodeHostName());
+                }
                 return;
             }
             Thread.sleep(500);
@@ -126,32 +166,20 @@ public class Client {
         controllerSocket.close();
     }
 
-    public static void sendStoreRequestToStorageNode() throws IOException {
-        if (availStorageNodeHostNames.size() > 0) {
-            String hostName = availStorageNodeHostNames.get(0);
-            for (DFSChunk chunk : chunks) {
-                storageNodeSocket = new Socket(hostName, STORAGENODE_PORT);
-                System.out.println("chunkID " + chunk.getChunkID());
-
-                StorageMessages.StoreChunk.Builder storeChunkMsg =
-                        StorageMessages.StoreChunk.newBuilder();
-
-                for (int i = 1; i < availStorageNodeHostNames.size(); i++) {
-                    storeChunkMsg.addHostName(availStorageNodeHostNames.get(i));
-                }
-
-                storeChunkMsg.setFileName(chunk.getChunkName()).setChunkId(chunk.getChunkID())
-                        .setData(chunk.getData())
+    public static void sendRetrieveRequestToStorageNode(String fileName) throws IOException {
+        for (Map.Entry<Integer, String> entry : retrieveFileMap.entrySet()) {
+            storageNodeSocket = new Socket(entry.getValue(), STORAGENODE_PORT);
+            StorageMessages.RetrieveFile.Builder retrieveFileMsg =
+                    StorageMessages.RetrieveFile.newBuilder();
+            retrieveFileMsg.setFileName(fileName)
+                    .setChunkId(entry.getKey())
+                    .build();
+            StorageMessages.StorageMessageWrapper msgWrapper =
+                    StorageMessages.StorageMessageWrapper.newBuilder()
+                        .setRetrieveFileMsg(retrieveFileMsg)
                         .build();
-
-                StorageMessages.StorageMessageWrapper msgWrapper =
-                        StorageMessages.StorageMessageWrapper.newBuilder()
-                                .setStoreChunkMsg(storeChunkMsg)
-                                .build();
-
-                msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
-                storageNodeSocket.close();
-            }
+            msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
+            storageNodeSocket.close();
         }
     }
 
@@ -168,7 +196,7 @@ public class Client {
                 ByteString data = ByteString.copyFrom(newBuffer);
                 chunks.add(new DFSChunk(fileName, chunksId++, data));
             }
-            System.out.println("chunks size: " + chunks.size());
+            System.out.println("Client: Chunks Size: " + chunks.size());
         }
     }
 
