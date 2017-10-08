@@ -47,6 +47,8 @@ public class Controller {
     }
 
     public static void controllerInit() throws IOException {
+        System.setProperty("java.util.logging.SimpleFormatter.format",
+                "%5$s%6$s -- %1$tF %1$tT %4$s %2$s%n");
         storageNodeQueue = new PriorityQueue<STNode>(new FreeSpaceComparator());
         metaMap = new HashMap<String, Map<Integer, Set<String>>>();
         heartBeatMap = new HashMap<String, String>();
@@ -66,6 +68,7 @@ public class Controller {
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(failureDetect, 0, 5, TimeUnit.SECONDS);
+
     }
 
     public static void main(String[] args) throws IOException {
@@ -108,18 +111,19 @@ public class Controller {
         }
 
         if (msgWrapper.hasRetrieveFileMsg()) {
+            logger.info("Controller: Received Retrieve File Request");
             ControllerMessages.RetrieveFileRequest retrieveFileMsg =
                     msgWrapper.getRetrieveFileMsg();
 
             String retrieveFileName = retrieveFileMsg.getFilename();
             logger.info("Controller: Received Retrieve File Request: " + retrieveFileName);
-            logger.info("Controller: Sending Reply For Retrievng File Request: " + retrieveFileName);
             sendReplyForRetrieving(socket, retrieveFileName);
         }
         socket.close();
     }
 
     public static void sendReplyForRetrieving(Socket socket, String retrieveFileName) throws IOException {
+        logger.info("Controller: Sending Reply For Retrievng File Request: " + retrieveFileName);
         ClientMessages.ReplyForRetrieving.Builder retrieveFileMsg =
                 ClientMessages.ReplyForRetrieving.newBuilder();
         if (metaMap.containsKey(retrieveFileName)) {
@@ -144,6 +148,7 @@ public class Controller {
                         .setReplyForRetrievingMsg(retrieveFileMsg)
                         .build();
         msgWrapper.writeDelimitedTo(socket.getOutputStream());
+        logger.info("Controller: Finished Reply For Retrievng File Request: " + retrieveFileName);
     }
 
     public static void sendReplyForStoring(Socket socket, double fileSize) throws IOException {

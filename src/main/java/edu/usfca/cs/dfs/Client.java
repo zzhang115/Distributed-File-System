@@ -30,13 +30,22 @@ public class Client {
     private static final int STORAGENODE_PORT = 9090;
 
     public static void main(String[] args) throws IOException, InterruptedException {
+
+        clientInit();
         clientStoreFile();
         // at least wait 5 secs(heart beat interval) to keep file info has been registered in metadata
         Thread.sleep(RETRIEVE_WAITING_TIME);
         clientRetrieveFile();
     }
 
+    public static void clientInit() throws IOException {
+        System.setProperty("java.util.logging.SimpleFormatter.format",
+                "%5$s%6$s -- %1$tF %1$tT %4$s %2$s%n");
+    }
+
     public static void clientStoreFile() throws IOException, InterruptedException {
+//        System.setProperty("java.util.logging.SimpleFormatter.format",
+//                "%1$tF %1$tT %4$s %2$s %5$s%6$s%n");
         logger.info("Client: Start Send Storing File Request");
         File file = new File(filePath);
         fileSize = file.length();
@@ -55,14 +64,13 @@ public class Client {
         logger.info("Client: Send Retrieving File Request: " + testRetrieveFileName);
         sendRetrieveFileRequestToController(testRetrieveFileName);
         logger.info("Client: Wait Msg For Retrievng File: " + testRetrieveFileName);
-//        getRetrievingReplyFromController();
+        getRetrievingReplyFromController();
 //        sendRetrieveRequestToStorageNode(testRetrieveFileName);
-
     }
 
     public static void sendStoreRequestToController(long fileSize) throws IOException {
-        logger.info("Client: Start Sending Store Request To Controller");
         controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
+        logger.info("Client: Start Sending Store Request To Controller");
         ControllerMessages.StoreChunkRequest storeChunkRequestMsg = ControllerMessages
                 .StoreChunkRequest.newBuilder().setFileSize(fileSize).build();
 
@@ -102,6 +110,7 @@ public class Client {
         if (System.currentTimeMillis() < end) {
             logger.info("Client: Controller is out of service now!");
         }
+        controllerSocket.close();
     }
 
     public static void sendStoreRequestToStorageNode() throws IOException {
@@ -136,6 +145,7 @@ public class Client {
     }
 
     public static void sendRetrieveFileRequestToController(String fileName) throws IOException {
+        controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
         logger.info("Client: Start Sending Retrieve File Request To Controller");
         ControllerMessages.RetrieveFileRequest retrieveFileMsg = ControllerMessages
                 .RetrieveFileRequest.newBuilder()
@@ -172,6 +182,7 @@ public class Client {
             }
             Thread.sleep(500);
         }
+        controllerSocket.close();
     }
 
     public static void sendRetrieveRequestToStorageNode(String fileName) throws IOException {
@@ -206,7 +217,7 @@ public class Client {
                 ByteString data = ByteString.copyFrom(newBuffer);
                 chunks.add(new DFSChunk(fileName, chunksId++, data));
             }
-            System.out.println("Client: Chunks Size: " + chunks.size());
+            logger.info("Client: Chunks Size: " + chunks.size());
         }
     }
 
