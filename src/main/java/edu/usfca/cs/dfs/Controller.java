@@ -36,6 +36,12 @@ public class Controller {
             this.storageNodeHostName = storageNodeHostName;
             this.freeSpace = freeSpace;
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            final STNode stNode = (STNode) obj;
+            return this.equals(stNode.storageNodeHostName);
+        }
     }
 
     private static class FreeSpaceComparator implements Comparator<STNode> {
@@ -106,7 +112,8 @@ public class Controller {
             for (int i = 0; i < heartBeatSignalMsg.getMetaCount(); i++) {
                 String fileName = heartBeatSignalMsg.getMeta(i).getFilename();
                 int chunkId = heartBeatSignalMsg.getMeta(i).getChunkId();
-                logger.info("Controller: HeartBeat New FileName: " + fileName + " ChunkId: " + chunkId);
+                logger.info("Controller: HeartBeat From " + storageHostName +
+                        " New FileName: " + fileName + " ChunkId: " + chunkId);
                 storeFileInfo(storageHostName, fileName, chunkId);
             }
             logger.info("Controller: Received HeartBeat: " + heartBeatSignalMsg.getTimestamp()
@@ -198,7 +205,13 @@ public class Controller {
     }
 
     public static void storeStorageNodeInfo(String storageHostName, double freeSpace, String timeStamp) {
-        storageNodeQueue.offer(new STNode(storageHostName, freeSpace));
+        STNode stNode = new STNode(storageHostName, freeSpace);
+        if (storageNodeQueue.contains(stNode)) {
+            storageNodeQueue.remove(stNode);
+            storageNodeQueue.offer(stNode);
+        } else {
+            storageNodeQueue.offer(stNode);
+        }
         heartBeatMap.put(storageHostName, timeStamp);
     }
 
