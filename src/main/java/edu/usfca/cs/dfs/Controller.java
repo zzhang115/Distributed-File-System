@@ -59,7 +59,7 @@ public class Controller {
                 "%5$s%6$s -- %1$tF %1$tT %4$s %2$s%n");
         logger.info("Controller: Initializing...");
 
-        storageNodeQueue = new PriorityQueue<STNode>(new FreeSpaceComparator());
+        storageNodeQueue = new PriorityQueue<STNode>(3, new FreeSpaceComparator());
         metaMap = new HashMap<String, Map<Integer, Set<String>>>();
         heartBeatMap = new HashMap<String, String>();
         controllerSocket = new ServerSocket(CONTROLLER_PORT);
