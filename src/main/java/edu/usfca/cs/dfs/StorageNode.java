@@ -25,11 +25,12 @@ public class StorageNode {
     private static Map<String, List<Integer>> fullMetaMap; // <fileName, <chunkId>>
     private static ReentrantLock lock = new ReentrantLock();
     private static List<String> availStorageNodeHostNames = new ArrayList<String>();
+    private static String CONTROLLER_HOSTNAME;
     private static final int CONTROLLER_PORT = 40000;
     private static final int STORAGENODE_PORT= 40010;
 
     public static void main(String[] args) throws Exception {
-        String hostname = getHostname();
+        CONTROLLER_HOSTNAME = getHostname();
         storageNodeInit();
         while (true) {
             handleMessage();
@@ -157,7 +158,7 @@ public class StorageNode {
     }
 
     public static void sendHeartBeat() throws IOException {
-        nodeSocket = new Socket("localhost", CONTROLLER_PORT);
+        nodeSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
         String curPath = System.getProperty("user.dir");
 
         ControllerMessages.HeartBeatSignal.Builder heartBeatMsg =
@@ -187,8 +188,7 @@ public class StorageNode {
      *
      * @return name of the current host
      */
-    private static String getHostname()
-    throws UnknownHostException {
+    private static String getHostname() throws UnknownHostException {
         return InetAddress.getLocalHost().getHostName();
     }
 }

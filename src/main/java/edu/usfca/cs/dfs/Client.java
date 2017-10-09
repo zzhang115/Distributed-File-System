@@ -25,7 +25,7 @@ public class Client {
     private static long fileSize;
     private static int retrieveChunkSum;
     private static final int SIZE_OF_CHUNK = 1024 * 1024; // 1MB
-    private static final String CONTROLLER_HOSTNAME = "localhost";
+    private static final String CONTROLLER_HOSTNAME = "bass01.cs.usfca.edu";
     private static final int REPLY_WAITING_TIME = 10000;
     private static final int RETRIEVE_WAITING_TIME = 3000;
     private static final int CONTROLLER_PORT = 40000;
