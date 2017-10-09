@@ -2,8 +2,10 @@ package edu.usfca.cs.dfs;
 
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,13 +24,14 @@ public class Controller {
     private static ServerSocket controllerSocket;
     private static DateFormat dateFormat;
     private static final int FAILURE_NODE_TIME = 15;
-    private static final int MILLIS_PER_SEC= 1000;
+    private static final int MILLIS_PER_SEC = 1000;
     private static final int COPY_NUM = 3;
     private static final int CONTROLLER_PORT = 40000;
 
     private static class STNode {
         String storageNodeHostName;
         Double freeSpace;
+
         STNode(String storageNodeHostName, double freeSpace) {
             this.storageNodeHostName = storageNodeHostName;
             this.freeSpace = freeSpace;
@@ -48,6 +51,7 @@ public class Controller {
     }
 
     public static void main(String[] args) throws IOException {
+        logger.info("Controller: LocalHostName is " + getHostname());
         controllerInit();
         while (true) {
             handleMessage();
@@ -168,8 +172,8 @@ public class Controller {
         }
         ClientMessages.ClientMessageWrapper msgWrapper =
                 ClientMessages.ClientMessageWrapper.newBuilder()
-                    .setAvailstorageNodeMsg(availStorageNodeMsg)
-                    .build();
+                        .setAvailstorageNodeMsg(availStorageNodeMsg)
+                        .build();
         msgWrapper.writeDelimitedTo(socket.getOutputStream());
         logger.info("Controller: Finished Sending Reply For Storing To Client");
         for (STNode stNode : availNodes) {
@@ -209,5 +213,15 @@ public class Controller {
                 logger.info("Controller: " + storageNodeHostName + " crashed down!");
             }
         }
+    }
+
+    /**
+     * Retrieves the short host name of the current host.
+     *
+     * @return name of the current host
+     */
+    private static String getHostname()
+            throws UnknownHostException {
+        return InetAddress.getLocalHost().getHostName();
     }
 }
