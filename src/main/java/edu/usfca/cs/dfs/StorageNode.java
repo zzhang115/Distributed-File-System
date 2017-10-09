@@ -25,12 +25,12 @@ public class StorageNode {
     private static Map<String, List<Integer>> fullMetaMap; // <fileName, <chunkId>>
     private static ReentrantLock lock = new ReentrantLock();
     private static List<String> availStorageNodeHostNames = new ArrayList<String>();
-    private static String CONTROLLER_HOSTNAME;
+    private static final String CONTROLLER_HOSTNAME = "bass01.cs.usfca.edu";
     private static final int CONTROLLER_PORT = 40000;
     private static final int STORAGENODE_PORT= 40010;
 
     public static void main(String[] args) throws Exception {
-        CONTROLLER_HOSTNAME = getHostname();
+        String hostname = getHostname();
         storageNodeInit();
         while (true) {
             handleMessage();
