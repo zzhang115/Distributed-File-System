@@ -119,30 +119,33 @@ public class Client {
 
     public static void sendStoreRequestToStorageNode() throws IOException {
         if (availStorageNodeHostNames.size() > 0) {
-            String hostName = availStorageNodeHostNames.get(0);
-            for (DFSChunk chunk : storeChunks) {
-                storageNodeSocket = new Socket(hostName, STORAGENODE_PORT);
-                logger.info("Client: Send Store Request To StorageNode: " + hostName
-                        + " To Store Chunk" + chunk.getChunkID());
+            for (int i = 0; i < availStorageNodeHostNames.size(); i++) {
+                String hostName = availStorageNodeHostNames.get(i);
+                for (DFSChunk chunk : storeChunks) {
+                    storageNodeSocket = new Socket(hostName, STORAGENODE_PORT);
+                    logger.info("Client: Send Store Request To StorageNode: " + hostName
+                            + " To Store Chunk" + chunk.getChunkID());
 
-                StorageMessages.StoreChunk.Builder storeChunkMsg =
-                        StorageMessages.StoreChunk.newBuilder();
+                    StorageMessages.StoreChunk.Builder storeChunkMsg =
+                            StorageMessages.StoreChunk.newBuilder();
 
-                for (int i = 1; i < availStorageNodeHostNames.size(); i++) {
-                    storeChunkMsg.addHostName(availStorageNodeHostNames.get(i));
+                    // form send pipeline
+                    for (int j = 1; j < availStorageNodeHostNames.size(); j++) {
+                        storeChunkMsg.addHostName(availStorageNodeHostNames.get(j));
+                    }
+
+                    storeChunkMsg.setFileName(chunk.getChunkName()).setChunkId(chunk.getChunkID())
+                            .setData(chunk.getData())
+                            .build();
+
+                    StorageMessages.StorageMessageWrapper msgWrapper =
+                            StorageMessages.StorageMessageWrapper.newBuilder()
+                                    .setStoreChunkMsg(storeChunkMsg)
+                                    .build();
+
+                    msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
+                    storageNodeSocket.close();
                 }
-
-                storeChunkMsg.setFileName(chunk.getChunkName()).setChunkId(chunk.getChunkID())
-                        .setData(chunk.getData())
-                        .build();
-
-                StorageMessages.StorageMessageWrapper msgWrapper =
-                        StorageMessages.StorageMessageWrapper.newBuilder()
-                                .setStoreChunkMsg(storeChunkMsg)
-                                .build();
-
-                msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
-                storageNodeSocket.close();
             }
         } else {
             logger.info("Client: No StorageNode Is Available!");
@@ -195,8 +198,8 @@ public class Client {
     }
 
     public static void sendRetrieveRequestToStorageNode(String fileName) throws IOException, InterruptedException {
-        logger.info("Client: Start Sending Retrieve Request To StorageNode");
         for (Map.Entry<Integer, String> entry : retrieveFileMap.entrySet()) {
+            logger.info("Client: Start Sending Retrieve Request To StorageNode " + entry.getValue());
             storageNodeSocket = new Socket(entry.getValue(), STORAGENODE_PORT);
             StorageMessages.RetrieveFile.Builder retrieveFileMsg =
                     StorageMessages.RetrieveFile.newBuilder();
@@ -208,11 +211,12 @@ public class Client {
                         .setRetrieveFileMsg(retrieveFileMsg)
                         .build();
             msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
+            logger.info("Client: Finished Sending Retrieve Request To StorageNode " + entry.getValue());
 
-            logger.info("Client: Start Receving File Data From StorageNode");
+            logger.info("Client: Start Receving File Data From StorageNode " + entry.getValue());
             receiveDataFromStorageNode(storageNodeSocket);
+            logger.info("Client: Finished Receving File Data From StorageNode " + entry.getValue());
         }
-        logger.info("Client: Finished Sending Retrieve Request To StorageNode");
     }
 
     public static void receiveDataFromStorageNode(Socket socket) throws IOException, InterruptedException {

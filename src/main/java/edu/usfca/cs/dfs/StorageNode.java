@@ -125,7 +125,7 @@ public class StorageNode {
 
     public static void sendFileDataToClient(Socket socket, String fileName, int chunkId) throws IOException {
         logger.info("StorageNode: Start Sending File Data To Client");
-        File file = new File("storage.file/" + fileName + "_Chunk" + chunkId);
+        File file = new File(storeFilePath + fileName + "_Chunk" + chunkId);
         byte[] dataBytes = new byte[(int)file.length()];
         FileInputStream fileInputStream = new FileInputStream(file);
         fileInputStream.read(dataBytes);
