@@ -57,7 +57,7 @@ public class Controller {
     }
 
     public static void main(String[] args) throws IOException {
-        logger.info("Controller: LocalHostName is " + getHostname());
+//        logger.info("Controller: LocalHostName is " + getHostname());
         controllerInit();
         while (true) {
             handleMessage();
