@@ -40,7 +40,7 @@ public class Controller {
         @Override
         public boolean equals(Object obj) {
             final STNode stNode = (STNode) obj;
-            return this.equals(stNode.storageNodeHostName);
+            return this.storageNodeHostName.equals(stNode.storageNodeHostName);
         }
     }
 

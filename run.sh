@@ -1,8 +1,8 @@
 #bin/usr/env bash
 if [ $1 -eq 0 ];then
-        java -cp target/dfs*.jar edu.usfca.cs.dfs.Controller
+        java -cp p1*/target/dfs*.jar edu.usfca.cs.dfs.Controller
 elif [ $1 -eq 1 ];then
-        java -cp target/dfs*.jar edu.usfca.cs.dfs.StorageNode
+        java -cp p1*/target/dfs*.jar edu.usfca.cs.dfs.StorageNode
 elif [ $1 -eq 2 ];then
-        java -cp target/dfs*.jar edu.usfca.cs.dfs.Client
+        java -cp p1*/target/dfs*.jar edu.usfca.cs.dfs.Client
 fi
