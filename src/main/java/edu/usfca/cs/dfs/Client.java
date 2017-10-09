@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 
 public class Client {
@@ -30,6 +31,7 @@ public class Client {
     private static final int RETRIEVE_WAITING_TIME = 3000;
     private static final int CONTROLLER_PORT = 40000;
     private static final int STORAGENODE_PORT = 40010;
+    private static CountDownLatch latch;
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
@@ -198,24 +200,53 @@ public class Client {
     }
 
     public static void sendRetrieveRequestToStorageNode(String fileName) throws IOException, InterruptedException {
+        latch = new CountDownLatch(retrieveFileMap.size());
         for (Map.Entry<Integer, String> entry : retrieveFileMap.entrySet()) {
             logger.info("Client: Start Sending Retrieve Request To StorageNode " + entry.getValue());
-            storageNodeSocket = new Socket(entry.getValue(), STORAGENODE_PORT);
-            StorageMessages.RetrieveFile.Builder retrieveFileMsg =
-                    StorageMessages.RetrieveFile.newBuilder();
-            retrieveFileMsg.setFileName(fileName)
-                    .setChunkId(entry.getKey())
-                    .build();
-            StorageMessages.StorageMessageWrapper msgWrapper =
-                    StorageMessages.StorageMessageWrapper.newBuilder()
-                        .setRetrieveFileMsg(retrieveFileMsg)
-                        .build();
-            msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
-            logger.info("Client: Finished Sending Retrieve Request To StorageNode " + entry.getValue());
+            Runnable myRunnable = new MyRunnable(entry.getValue(), fileName, entry.getKey());
+            Thread thread = new Thread(myRunnable);
+            thread.start();
+        }
+        latch.await();
+        logger.info("Client: Finished Sending Retrieve Request To StorageNode And Receving Data");
+    }
 
-            logger.info("Client: Start Receving File Data From StorageNode " + entry.getValue());
-            receiveDataFromStorageNode(storageNodeSocket);
-            logger.info("Client: Finished Receving File Data From StorageNode " + entry.getValue());
+    private static class MyRunnable implements Runnable {
+        Socket socket;
+        String storageNodeHostName;
+        String fileName;
+        int chunkId;
+
+        public MyRunnable (String storageNodeHostName, String fileName, int chunkId) throws IOException {
+            socket = new Socket(storageNodeHostName, STORAGENODE_PORT);
+            this.storageNodeHostName = storageNodeHostName;
+            this.fileName = fileName;
+            this.chunkId = chunkId;
+        }
+
+        public void run() {
+            try {
+                StorageMessages.RetrieveFile.Builder retrieveFileMsg =
+                        StorageMessages.RetrieveFile.newBuilder();
+                retrieveFileMsg.setFileName(fileName)
+                        .setChunkId(chunkId)
+                        .build();
+                StorageMessages.StorageMessageWrapper msgWrapper =
+                        StorageMessages.StorageMessageWrapper.newBuilder()
+                                .setRetrieveFileMsg(retrieveFileMsg)
+                                .build();
+                msgWrapper.writeDelimitedTo(socket.getOutputStream());
+                logger.info("Client: Finished Sending Retrieve Request To StorageNode " + storageNodeHostName);
+
+                logger.info("Client: Start Receving File Data From StorageNode " + storageNodeHostName);
+                receiveDataFromStorageNode(socket);
+                logger.info("Client: Finished Receving File Data From StorageNode " + storageNodeHostName);
+                latch.countDown();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -226,7 +257,7 @@ public class Client {
                 = ClientMessages.ClientMessageWrapper.parseDelimitedFrom(
                         socket.getInputStream()); // wait here until there is a message
 
-        logger.info("Client: Waiting For Reply Of Retrieving From Controller");
+        logger.info("Client: Waiting For Reply Of Retrieving From StorageNode");
         while (System.currentTimeMillis() < end) {
             if (msgWrapper.hasRetrieveFileDataMsg()) {
                 ClientMessages.RetrieveFileData retrievingFileDataMsg
@@ -234,7 +265,9 @@ public class Client {
                 String fileName = retrievingFileDataMsg.getFileName();
                 int chunkId = retrievingFileDataMsg.getChunkID();
                 ByteString data =  retrievingFileDataMsg.getData();
-                retrieveChunks.add(new DFSChunk(fileName, chunkId, data));
+                synchronized(retrieveChunks) {
+                    retrieveChunks.add(new DFSChunk(fileName, chunkId, data));
+                }
                 logger.info("Client: Received Chunk: FileName: " + fileName + " ChunkId: " + chunkId);
                 socket.close();
                 return;
