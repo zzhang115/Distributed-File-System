@@ -109,15 +109,16 @@ public class Controller {
                     msgWrapper.getHeartBeatSignalMsg();
 
             String storageHostName = socket.getInetAddress().getHostName();
+            logger.info("Controller: Received HeartBeat From " + storageHostName +
+                    " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
+
             for (int i = 0; i < heartBeatSignalMsg.getMetaCount(); i++) {
                 String fileName = heartBeatSignalMsg.getMeta(i).getFilename();
                 int chunkId = heartBeatSignalMsg.getMeta(i).getChunkId();
-                logger.info("Controller: HeartBeat From " + storageHostName +
+                logger.info("Controller: HeartBeat" +
                         " New FileName: " + fileName + " ChunkId: " + chunkId);
                 storeFileInfo(storageHostName, fileName, chunkId);
             }
-            logger.info("Controller: Received HeartBeat: " + heartBeatSignalMsg.getTimestamp()
-                    + " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
             storeStorageNodeInfo(storageHostName, heartBeatSignalMsg.getFreeSpace(),
                     heartBeatSignalMsg.getTimestamp());
         }

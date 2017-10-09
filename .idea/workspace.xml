@@ -21,7 +21,7 @@
           <file leaf-file-name="Client.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="360">
+                <state relative-caret-position="495">
                   <caret line="105" column="69" lean-forward="false" selection-start-line="105" selection-start-column="69" selection-end-line="105" selection-end-column="69" />
                   <folding>
                     <element signature="imports" expanded="true" />
@@ -57,8 +57,8 @@
           <file leaf-file-name="Controller.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="540">
-                  <caret line="60" column="15" lean-forward="false" selection-start-line="60" selection-start-column="15" selection-end-line="60" selection-end-column="15" />
+                <state relative-caret-position="515">
+                  <caret line="117" column="50" lean-forward="false" selection-start-line="117" selection-start-column="50" selection-end-line="117" selection-end-column="50" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -929,14 +929,7 @@
       <workItem from="1506979504249" duration="4597000" />
       <workItem from="1507009124496" duration="7001000" />
       <workItem from="1507141063733" duration="81145000" />
-      <workItem from="1507509259568" duration="5178000" />
-    </task>
-    <task id="LOCAL-00003" summary="break chunks done">
-      <created>1505605527194</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1505605527194</updated>
+      <workItem from="1507509259568" duration="5617000" />
     </task>
     <task id="LOCAL-00004" summary="break chunks done">
       <created>1505607707184</created>
@@ -1274,11 +1267,18 @@
       <option name="project" value="LOCAL" />
       <updated>1507519232264</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="change queue">
+      <created>1507519370906</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1507519370906</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="202127000" />
+    <option name="totallyTimeSpent" value="202566000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="46" y="-11" width="1875" height="1092" extended-state="6" />
@@ -1688,7 +1688,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
+        <state relative-caret-position="495">
           <caret line="105" column="69" lean-forward="false" selection-start-line="105" selection-start-column="69" selection-end-line="105" selection-end-column="69" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1706,8 +1706,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="60" column="15" lean-forward="false" selection-start-line="60" selection-start-column="15" selection-end-line="60" selection-end-column="15" />
+        <state relative-caret-position="515">
+          <caret line="117" column="50" lean-forward="false" selection-start-line="117" selection-start-column="50" selection-end-line="117" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
