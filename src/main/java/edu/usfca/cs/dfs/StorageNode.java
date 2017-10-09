@@ -26,6 +26,7 @@ public class StorageNode {
     private static ReentrantLock lock = new ReentrantLock();
     private static List<String> availStorageNodeHostNames = new ArrayList<String>();
     private static final String CONTROLLER_HOSTNAME = "bass01.cs.usfca.edu";
+    private static String storeFilePath = "p1-zzhang115/storage.file/";
     private static final int CONTROLLER_PORT = 40000;
     private static final int STORAGENODE_PORT= 40010;
 
@@ -148,7 +149,7 @@ public class StorageNode {
     public static void writeFileToLocalMachine
             (String fileName, int chunkId, ByteString data) throws IOException {
 
-        FileOutputStream fileOutputStream = new FileOutputStream("storage.file/" + fileName + "_Chunk" + chunkId);
+        FileOutputStream fileOutputStream = new FileOutputStream(storeFilePath + fileName + "_Chunk" + chunkId);
         byte[] dataBytes = data.toByteArray();
         ByteString bytes = ByteString.copyFrom(dataBytes);
 

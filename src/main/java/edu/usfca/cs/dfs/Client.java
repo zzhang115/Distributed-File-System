@@ -12,8 +12,8 @@ import java.util.logging.Logger;
 
 public class Client {
     private static Logger logger = Logger.getLogger("Log");
-    private static String filePath = "client.file/test.pdf";
-    private static String retrieveFilePath = "client.retrieve.file/";
+    private static String filePath = "p1-zzhang115/client.file/test.pdf";
+    private static String retrieveFilePath = "p1-zzhang115/client.retrieve.file/";
     private static String testRetrieveFileName = "test.pdf";
 //    private static String filePath = "client.file/data_co.csv";
     private static Socket controllerSocket;
