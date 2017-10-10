@@ -170,7 +170,7 @@ public class Client {
         }
     }
 
-    public static void sendRetrieveFileRequestToController(String fileName) throws IOException {
+    public static void sendRetrieveFileRequestToController(String fileName) throws IOException, InterruptedException {
         Socket controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
         logger.info("Client: Start Sending Retrieve File Request To Controller");
         ControllerMessages.RetrieveFileRequest retrieveFileMsg = ControllerMessages
@@ -184,6 +184,7 @@ public class Client {
                 .build();
         msgWrapper.writeDelimitedTo(controllerSocket.getOutputStream());
         logger.info("Client: Finished Sending Retrieve File Request To Controller");
+        getRetrievingReplyFromController(controllerSocket);
     }
 
     public static void getRetrievingReplyFromController(Socket controllerSocket)

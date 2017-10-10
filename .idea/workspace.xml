@@ -21,8 +21,8 @@
           <file leaf-file-name="Client.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="495">
-                  <caret line="41" column="29" lean-forward="true" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="29" />
+                <state relative-caret-position="251">
+                  <caret line="189" column="78" lean-forward="false" selection-start-line="189" selection-start-column="63" selection-end-line="189" selection-end-column="79" />
                   <folding>
                     <element signature="e#3723#3731#0" expanded="true" />
                   </folding>
@@ -867,13 +867,6 @@
       <workItem from="1507009124496" duration="7001000" />
       <workItem from="1507141063733" duration="76900000" />
     </task>
-    <task id="LOCAL-00006" summary="add chunks files,">
-      <created>1505772302494</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1505772302494</updated>
-    </task>
     <task id="LOCAL-00007" summary="add chunks files,">
       <created>1505796852616</created>
       <option name="number" value="00007" />
@@ -1210,11 +1203,18 @@
       <option name="project" value="LOCAL" />
       <updated>1507616100740</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="change chunk retrieve random">
+      <created>1507616274782</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1507616274782</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="208075000" />
+    <option name="totallyTimeSpent" value="208338000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1658,8 +1658,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="41" column="29" lean-forward="true" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="29" />
+        <state relative-caret-position="251">
+          <caret line="189" column="78" lean-forward="false" selection-start-line="189" selection-start-column="63" selection-end-line="189" selection-end-column="79" />
           <folding>
             <element signature="e#3723#3731#0" expanded="true" />
           </folding>
