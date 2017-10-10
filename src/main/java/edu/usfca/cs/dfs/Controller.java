@@ -158,7 +158,7 @@ public class Controller {
         List<Integer> randomNums = new ArrayList<Integer>();
 
         while (randomNums.size() < nodeNum) {
-            int n = rand.nextInt(storageNodeList.size() - 1) + 0;
+            int n = rand.nextInt(storageNodeList.size()) + 0;
             if (!randomNums.contains(n) && storageNodeList.get(n).freeSpace > chunkSize) {
                 randomNums.add(n);
             }
