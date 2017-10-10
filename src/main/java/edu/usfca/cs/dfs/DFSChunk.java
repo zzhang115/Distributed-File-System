@@ -10,27 +10,29 @@ import java.util.Scanner;
 public class DFSChunk {
     private String filename;
     private int chunkID;
-    private int storageNodeID;
     private ByteString data;
+    private long chunkSize;
 
     public String getChunkName() {
         return filename;
     }
+
     public int getChunkID() {
         return chunkID;
-    }
-
-    public int getStorageNodeID() {
-        return storageNodeID;
     }
 
     public ByteString getData() {
         return data;
     }
 
+    public long getChunkSize() {
+        return chunkSize;
+    }
+
     public DFSChunk(String filename, int chunkID, ByteString data) {
         this.filename = filename;
         this.chunkID = chunkID;
         this.data = data;
+        this.chunkSize = data.size();
     }
 }

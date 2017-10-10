@@ -61,7 +61,8 @@ public class StorageNode {
             }
         };
 
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1); executor.scheduleAtFixedRate(heartBeat, 0, 5, TimeUnit.SECONDS);
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(heartBeat, 0, 5, TimeUnit.SECONDS);
     }
 
     public static void handleMessage() throws IOException {

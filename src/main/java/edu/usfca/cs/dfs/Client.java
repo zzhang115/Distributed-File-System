@@ -17,7 +17,7 @@ public class Client {
     private static String retrieveFilePath = "p1-zzhang115/client.retrieve.file/";
     private static String testRetrieveFileName = "test.pdf";
 //    private static String filePath = "client.file/data_co.csv";
-    private static Socket controllerSocket;
+//    private static Socket controllerSocket;
     private static Socket storageNodeSocket;
     private static List<DFSChunk> storeChunks = new ArrayList<DFSChunk>();
     private static List<DFSChunk> retrieveChunks = new ArrayList<DFSChunk>();
@@ -38,8 +38,8 @@ public class Client {
         clientInit();
         clientStoreFile();
         // at least wait 5 secs(heart beat interval) to keep file info has been registered in metadata
-        Thread.sleep(RETRIEVE_WAITING_TIME);
-        clientRetrieveFile();
+//        Thread.sleep(RETRIEVE_WAITING_TIME);
+//        clientRetrieveFile();
     }
 
     public static void clientInit() throws IOException {
@@ -59,8 +59,7 @@ public class Client {
         breakFiletoChunks(file);
         logger.info("Client: Finish breaking chunks");
 
-        sendStoreRequestToController(fileSize);
-        getStoringReplyFromController();
+        sendStoreRequestToController();
         sendStoreRequestToStorageNode();
     }
 
@@ -68,25 +67,28 @@ public class Client {
         logger.info("Client: Send Retrieving File Request: " + testRetrieveFileName);
         sendRetrieveFileRequestToController(testRetrieveFileName);
         logger.info("Client: Wait Msg For Retrievng File: " + testRetrieveFileName);
-        getRetrievingReplyFromController();
+//        getRetrievingReplyFromController();
         sendRetrieveRequestToStorageNode(testRetrieveFileName);
         writeReceivedFileDataToLocal();
     }
 
-    public static void sendStoreRequestToController(long fileSize) throws IOException {
-        controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
-        logger.info("Client: Start Sending Store Request To Controller");
-        ControllerMessages.StoreChunkRequest storeChunkRequestMsg = ControllerMessages
-                .StoreChunkRequest.newBuilder().setFileSize(fileSize).build();
+    public static void sendStoreRequestToController() throws IOException, InterruptedException {
+        for (DFSChunk chunk : storeChunks) {
+            Socket controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
+            logger.info("Client: Start Sending Store Request To Controller");
+            ControllerMessages.StoreChunkRequest storeChunkRequestMsg = ControllerMessages
+                    .StoreChunkRequest.newBuilder().setFileSize(chunk.getChunkSize()).build();
 
-        ControllerMessages.ControllerMessageWrapper msgWrapper = ControllerMessages
-                .ControllerMessageWrapper.newBuilder()
-                .setStoreChunkRequestMsg(storeChunkRequestMsg)
-                .build();
-        msgWrapper.writeDelimitedTo(controllerSocket.getOutputStream());
+            ControllerMessages.ControllerMessageWrapper msgWrapper = ControllerMessages
+                    .ControllerMessageWrapper.newBuilder()
+                    .setStoreChunkRequestMsg(storeChunkRequestMsg)
+                    .build();
+            msgWrapper.writeDelimitedTo(controllerSocket.getOutputStream());
+            getStoringReplyFromController(controllerSocket);
+        }
     }
 
-    public static void getStoringReplyFromController() throws IOException, InterruptedException {
+    public static void getStoringReplyFromController(Socket controllerSocket) throws IOException, InterruptedException {
 //        controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
 //        new controllerSocket will lead program stuck at line 83 getInputStream();
 //        in the same time, controller just receive this new controllerSocket, and stuck at socket.getInputStream()
@@ -109,6 +111,7 @@ public class Client {
                             availStorageNodeMsg.getStorageNodeHostName(i));
                     availStorageNodeHostNames.add(availStorageNodeMsg.getStorageNodeHostName(i));
                 }
+                controllerSocket.close();
                 return;
             }
             Thread.sleep(500);
@@ -155,7 +158,7 @@ public class Client {
     }
 
     public static void sendRetrieveFileRequestToController(String fileName) throws IOException {
-        controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
+        Socket controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
         logger.info("Client: Start Sending Retrieve File Request To Controller");
         ControllerMessages.RetrieveFileRequest retrieveFileMsg = ControllerMessages
                 .RetrieveFileRequest.newBuilder()
@@ -170,7 +173,8 @@ public class Client {
         logger.info("Client: Finished Sending Retrieve File Request To Controller");
     }
 
-    public static void getRetrievingReplyFromController() throws IOException, InterruptedException {
+    public static void getRetrievingReplyFromController(Socket controllerSocket)
+            throws IOException, InterruptedException {
         long currentTime = System.currentTimeMillis();
         long end = currentTime + REPLY_WAITING_TIME;
         ClientMessages.ClientMessageWrapper msgWrapper

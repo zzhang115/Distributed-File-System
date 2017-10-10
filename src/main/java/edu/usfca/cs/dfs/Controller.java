@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public class Controller {
 
     private static Logger logger = Logger.getLogger("Log");
-    private static PriorityQueue<STNode> storageNodeQueue;  //storageNodeQueue sort STNode basic on their free space
+    private static List<STNode> storageNodeList;  //storageNodeQueue sort STNode basic on their free space
     private static Map<String, Map<Integer, Set<String>>> metaMap; // <fileName, <chunkId, <storageHostName>>>
     private static Map<String, String> heartBeatMap;  // <storageNodeHostName, timeStamp>
     private static ServerSocket controllerSocket;
@@ -44,18 +44,6 @@ public class Controller {
         }
     }
 
-    private static class FreeSpaceComparator implements Comparator<STNode> {
-        public int compare(STNode a, STNode b) {
-            if (a.freeSpace > b.freeSpace) {
-                return 1;
-            } else if (a.freeSpace < b.freeSpace) {
-                return -1;
-            } else {
-                return 0;
-            }
-        }
-    }
-
     public static void main(String[] args) throws IOException {
 //        logger.info("Controller: LocalHostName is " + getHostname());
         controllerInit();
@@ -69,7 +57,7 @@ public class Controller {
                 "%5$s%6$s -- %1$tF %1$tT %4$s %2$s%n");
         logger.info("Controller: Initializing...");
 
-        storageNodeQueue = new PriorityQueue<STNode>(3, new FreeSpaceComparator());
+        storageNodeList= new ArrayList<STNode>();
         metaMap = new HashMap<String, Map<Integer, Set<String>>>();
         heartBeatMap = new HashMap<String, String>();
         controllerSocket = new ServerSocket(CONTROLLER_PORT);
@@ -164,18 +152,23 @@ public class Controller {
         logger.info("Controller: Finished Reply For Retrievng File Request: " + retrieveFileName);
     }
 
-    public static void sendReplyForStoring(Socket socket, double fileSize) throws IOException {
-        int nodeNum = Math.min(COPY_NUM, storageNodeQueue.size());
-        List<STNode> availNodes = new ArrayList<STNode>();
+    public static void sendReplyForStoring(Socket socket, double chunkSize) throws IOException {
+        int nodeNum = Math.min(COPY_NUM, storageNodeList.size());
+        List<Integer> randomNums = new ArrayList<Integer>();
+
+        Random rand = new Random();
+        while (randomNums.size() < nodeNum) {
+            int n = rand.nextInt(storageNodeList.size() - 1) + 0;
+            if (!randomNums.contains(n) && storageNodeList.get(n).freeSpace > chunkSize) {
+                randomNums.add(n);
+            }
+        }
+
         logger.info("Controller: Start Send Reply For Storing To Client");
         ClientMessages.AvailStorageNode.Builder availStorageNodeMsg =
                 ClientMessages.AvailStorageNode.newBuilder();
-        for (int i = 0; i < nodeNum; i++) {
-            STNode stNode = storageNodeQueue.poll();
-            if (stNode.freeSpace < fileSize) {
-                break;
-            }
-            availNodes.add(stNode);
+        for (int i = 0; i < randomNums.size(); i++) {
+            STNode stNode = storageNodeList.get(i);
             availStorageNodeMsg.addStorageNodeHostName(stNode.storageNodeHostName);
         }
         ClientMessages.ClientMessageWrapper msgWrapper =
@@ -184,9 +177,6 @@ public class Controller {
                         .build();
         msgWrapper.writeDelimitedTo(socket.getOutputStream());
         logger.info("Controller: Finished Sending Reply For Storing To Client");
-        for (STNode stNode : availNodes) {
-            storageNodeQueue.offer(stNode);
-        }
     }
 
     public static void storeFileInfo(String storageHostName, String fileName, int chunkId) {
@@ -207,11 +197,11 @@ public class Controller {
 
     public static void storeStorageNodeInfo(String storageHostName, double freeSpace, String timeStamp) {
         STNode stNode = new STNode(storageHostName, freeSpace);
-        if (storageNodeQueue.contains(stNode)) {
-            storageNodeQueue.remove(stNode);
-            storageNodeQueue.offer(stNode);
+        if (storageNodeList.contains(stNode)) {
+            storageNodeList.remove(stNode);
+            storageNodeList.add(stNode);
         } else {
-            storageNodeQueue.offer(stNode);
+            storageNodeList.add(stNode);
         }
         heartBeatMap.put(storageHostName, timeStamp);
     }
