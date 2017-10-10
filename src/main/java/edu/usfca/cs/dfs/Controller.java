@@ -155,6 +155,7 @@ public class Controller {
 
     public static void sendReplyForStoring(Socket socket, double chunkSize) throws IOException {
         int nodeNum = Math.min(COPY_NUM, storageNodeList.size());
+        logger.info("Controller: Total StorageNode Num is: " + storageNodeList.size());
         List<Integer> randomNums = new ArrayList<Integer>();
 
         while (randomNums.size() < nodeNum) {

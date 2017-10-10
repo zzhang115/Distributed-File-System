@@ -21,8 +21,8 @@
           <file leaf-file-name="Client.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="360">
-                  <caret line="36" column="20" lean-forward="false" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
+                <state relative-caret-position="450">
+                  <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
                   <folding>
                     <element signature="e#3372#3380#0" expanded="true" />
                   </folding>
@@ -66,12 +66,12 @@
           <file leaf-file-name="Controller.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="720">
-                  <caret line="178" column="16" lean-forward="false" selection-start-line="178" selection-start-column="16" selection-end-line="178" selection-end-column="16" />
+                <state relative-caret-position="166">
+                  <caret line="157" column="54" lean-forward="false" selection-start-line="157" selection-start-column="54" selection-end-line="157" selection-end-column="54" />
                   <folding>
                     <element signature="e#2480#2793#0" expanded="true" />
                     <element signature="e#2792#2793#0" expanded="true" />
-                    <element signature="e#6952#6961#0" expanded="true" />
+                    <element signature="e#7040#7049#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -1189,11 +1189,18 @@
       <option name="project" value="LOCAL" />
       <updated>1507612412173</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="change random">
+      <created>1507612670535</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1507612670535</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="204468000" />
+    <option name="totallyTimeSpent" value="204684000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1352,7 +1359,8 @@
     <MESSAGE value="change java 1.7" />
     <MESSAGE value="change chunk request" />
     <MESSAGE value="change chunk store" />
-    <option name="LAST_COMMIT_MESSAGE" value="change chunk store" />
+    <MESSAGE value="change random" />
+    <option name="LAST_COMMIT_MESSAGE" value="change random" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1624,8 +1632,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="36" column="20" lean-forward="false" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
+        <state relative-caret-position="450">
+          <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
           <folding>
             <element signature="e#3372#3380#0" expanded="true" />
           </folding>
@@ -1634,12 +1642,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="178" column="16" lean-forward="false" selection-start-line="178" selection-start-column="16" selection-end-line="178" selection-end-column="16" />
+        <state relative-caret-position="166">
+          <caret line="157" column="54" lean-forward="false" selection-start-line="157" selection-start-column="54" selection-end-line="157" selection-end-column="54" />
           <folding>
             <element signature="e#2480#2793#0" expanded="true" />
             <element signature="e#2792#2793#0" expanded="true" />
-            <element signature="e#6952#6961#0" expanded="true" />
+            <element signature="e#7040#7049#0" expanded="true" />
           </folding>
         </state>
       </provider>
