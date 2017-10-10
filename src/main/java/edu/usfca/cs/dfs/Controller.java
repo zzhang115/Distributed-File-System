@@ -155,7 +155,6 @@ public class Controller {
 
     public static void sendReplyForStoring(Socket socket, double chunkSize) throws IOException {
         int nodeNum = Math.min(COPY_NUM, storageNodeList.size());
-        logger.info("Controller: Total StorageNode Num is: " + storageNodeList.size());
         List<Integer> randomNums = new ArrayList<Integer>();
 
         while (randomNums.size() < nodeNum) {
@@ -169,6 +168,7 @@ public class Controller {
         ClientMessages.AvailStorageNode.Builder availStorageNodeMsg =
                 ClientMessages.AvailStorageNode.newBuilder();
         for (int i : randomNums) {
+            logger.info("Controller: Select " + i + "th StorageNode");
             STNode stNode = storageNodeList.get(i);
             availStorageNodeMsg.addStorageNodeHostName(stNode.storageNodeHostName);
         }
