@@ -131,12 +131,19 @@ public class Controller {
         if (metaMap.containsKey(retrieveFileName)) {
             Map<Integer, Set<String>> chunkMap = metaMap.get(retrieveFileName);
 
+            List<Integer> randomNums = new ArrayList<Integer>();
+
             for (int chunkId : chunkMap.keySet()) {
+                int i = 0;
+                int n = rand.nextInt(chunkMap.get(chunkId).size()) + 0;
                 for (String storageHostName : chunkMap.get(chunkId)) {
                     // need to add if failure Node
-                    retrieveFileMsg.addRetrieveFileInfoBuilder().setChunkId(chunkId)
-                            .setStorageNodeHostName(storageHostName);
-                    break;
+                    if (i == n) {
+                        retrieveFileMsg.addRetrieveFileInfoBuilder().setChunkId(chunkId)
+                                .setStorageNodeHostName(storageHostName);
+                        break;
+                    }
+                    i++;
                 }
             }
             ClientMessages.ClientMessageWrapper msgWrapper =

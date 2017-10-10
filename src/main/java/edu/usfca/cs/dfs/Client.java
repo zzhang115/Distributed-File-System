@@ -14,7 +14,8 @@ import java.util.logging.Logger;
 public class Client {
     private static Logger logger = Logger.getLogger("Log");
     private static String filePath = "p1-zzhang115/client.file/test.pdf";
-    private static String retrieveFilePath = "p1-zzhang115/client.retrieve.file/";
+//    private static String retrieveFilePath = "p1-zzhang115/client.retrieve.file/";
+    private static String retrieveFilePath = "/home2/zzhang115/";
     private static String testRetrieveFileName = "test.pdf";
 //    private static String filePath = "client.file/data_co.csv";
 //    private static Socket controllerSocket;
@@ -38,12 +39,22 @@ public class Client {
         clientStoreFile();
         // at least wait 5 secs(heart beat interval) to keep file info has been registered in metadata
 //        Thread.sleep(RETRIEVE_WAITING_TIME);
-//        clientRetrieveFile();
+        clientRetrieveFile();
     }
 
     public static void clientInit() throws IOException {
         System.setProperty("java.util.logging.SimpleFormatter.format",
                 "%5$s%6$s -- %1$tF %1$tT %4$s %2$s%n");
+        clearStoreFilePath();
+    }
+
+    public static void clearStoreFilePath() throws IOException {
+        File dir = new File(retrieveFilePath);
+        for (File file : dir.listFiles()) {
+            if (!file.isDirectory()) {
+                file.delete();
+            }
+        }
     }
 
     public static void clientStoreFile() throws IOException, InterruptedException {

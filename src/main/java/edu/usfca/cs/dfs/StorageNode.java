@@ -27,7 +27,6 @@ public class StorageNode {
     private static ReentrantLock lock = new ReentrantLock();
     private static List<String> availStorageNodeHostNames = new ArrayList<String>();
     private static final String CONTROLLER_HOSTNAME = "bass01.cs.usfca.edu";
-//    private static String storeFilePath = "p1-zzhang115/storage.file/";
     private static String storeFilePath = "/home2/zzhang115/";
     private static final int CONTROLLER_PORT = 40000;
     private static final int STORAGENODE_PORT= 40010;
