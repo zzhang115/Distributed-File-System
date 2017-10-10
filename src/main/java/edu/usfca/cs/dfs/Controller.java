@@ -168,7 +168,7 @@ public class Controller {
         logger.info("Controller: Start Send Reply For Storing To Client");
         ClientMessages.AvailStorageNode.Builder availStorageNodeMsg =
                 ClientMessages.AvailStorageNode.newBuilder();
-        for (int i = 0; i < randomNums.size(); i++) {
+        for (int i : randomNums) {
             STNode stNode = storageNodeList.get(i);
             availStorageNodeMsg.addStorageNodeHostName(stNode.storageNodeHostName);
         }
