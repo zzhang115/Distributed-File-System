@@ -38,7 +38,7 @@ public class Client {
         clientInit();
         clientStoreFile();
         // at least wait 5 secs(heart beat interval) to keep file info has been registered in metadata
-//        Thread.sleep(RETRIEVE_WAITING_TIME);
+        Thread.sleep(RETRIEVE_WAITING_TIME);
         clientRetrieveFile();
     }
 
