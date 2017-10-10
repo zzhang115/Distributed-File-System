@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -26,7 +27,8 @@ public class StorageNode {
     private static ReentrantLock lock = new ReentrantLock();
     private static List<String> availStorageNodeHostNames = new ArrayList<String>();
     private static final String CONTROLLER_HOSTNAME = "bass01.cs.usfca.edu";
-    private static String storeFilePath = "p1-zzhang115/storage.file/";
+//    private static String storeFilePath = "p1-zzhang115/storage.file/";
+    private static String storeFilePath = "/home2/zzhang115/";
     private static final int CONTROLLER_PORT = 40000;
     private static final int STORAGENODE_PORT= 40010;
 
@@ -47,6 +49,7 @@ public class StorageNode {
         dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         updateMetaMap = new HashMap<String, List<Integer>>();
         fullMetaMap = new HashMap<String, List<Integer>>();
+        clearStoreFilePath();
 
         Runnable heartBeat = new Runnable() {
             public void run() {
@@ -63,6 +66,15 @@ public class StorageNode {
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(heartBeat, 0, 5, TimeUnit.SECONDS);
+    }
+
+    public static void clearStoreFilePath() throws IOException {
+        File dir = new File(storeFilePath);
+        for (File file : dir.listFiles()) {
+            if (!file.isDirectory()) {
+                file.delete();
+            }
+        }
     }
 
     public static void handleMessage() throws IOException {
