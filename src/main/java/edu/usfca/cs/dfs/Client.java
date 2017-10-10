@@ -21,7 +21,6 @@ public class Client {
 //    private static Socket storageNodeSocket;
     private static List<DFSChunk> storeChunks = new ArrayList<DFSChunk>();
     private static List<DFSChunk> retrieveChunks = new ArrayList<DFSChunk>();
-    private static List<String> availStorageNodeHostNames = new ArrayList<String>();
     private static Map<Integer, String> retrieveFileMap = new HashMap<Integer, String>();
     private static long fileSize;
     private static int retrieveChunkSum;
@@ -74,6 +73,7 @@ public class Client {
 
     public static void sendStoreRequestToController() throws IOException, InterruptedException {
         for (DFSChunk chunk : storeChunks) {
+            List<String> availStorageNodeHostNames = new ArrayList<String>();
             Socket controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
             logger.info("Client: Start Sending Store Request To Controller");
             ControllerMessages.StoreChunkRequest storeChunkRequestMsg = ControllerMessages
@@ -84,12 +84,13 @@ public class Client {
                     .setStoreChunkRequestMsg(storeChunkRequestMsg)
                     .build();
             msgWrapper.writeDelimitedTo(controllerSocket.getOutputStream());
-            getStoringReplyFromController(controllerSocket);
-            sendStoreRequestToStorageNode(chunk);
+            getStoringReplyFromController(controllerSocket, availStorageNodeHostNames);
+            sendStoreRequestToStorageNode(chunk, availStorageNodeHostNames);
         }
     }
 
-    public static void getStoringReplyFromController(Socket controllerSocket) throws IOException, InterruptedException {
+    public static void getStoringReplyFromController(Socket controllerSocket, List<String> availStorageNodeHostNames)
+            throws IOException, InterruptedException {
 //        controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
 //        new controllerSocket will lead program stuck at line 83 getInputStream();
 //        in the same time, controller just receive this new controllerSocket, and stuck at socket.getInputStream()
@@ -97,6 +98,7 @@ public class Client {
 
         long currentTime = System.currentTimeMillis();
         long end = currentTime + REPLY_WAITING_TIME;
+
         ClientMessages.ClientMessageWrapper msgWrapper
                 = ClientMessages.ClientMessageWrapper.parseDelimitedFrom(
                         controllerSocket.getInputStream());
@@ -123,7 +125,8 @@ public class Client {
         controllerSocket.close();
     }
 
-    public static void sendStoreRequestToStorageNode(DFSChunk chunk) throws IOException {
+    public static void sendStoreRequestToStorageNode(DFSChunk chunk, List<String> availStorageNodeHostNames)
+            throws IOException {
         if (availStorageNodeHostNames.size() > 0) {
             for (int i = 0; i < availStorageNodeHostNames.size(); i++) {
                 String hostName = availStorageNodeHostNames.get(i);

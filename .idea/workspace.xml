@@ -21,9 +21,11 @@
           <file leaf-file-name="Client.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="210">
-                  <caret line="129" column="22" lean-forward="false" selection-start-line="129" selection-start-column="22" selection-end-line="129" selection-end-column="22" />
-                  <folding />
+                <state relative-caret-position="105">
+                  <caret line="19" column="44" lean-forward="false" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="44" />
+                  <folding>
+                    <element signature="e#3372#3380#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -1173,11 +1175,18 @@
       <option name="project" value="LOCAL" />
       <updated>1507611155533</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="change chunk store">
+      <created>1507611631260</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1507611631260</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="203428000" />
+    <option name="totallyTimeSpent" value="204214000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1335,7 +1344,8 @@
     <MESSAGE value="add multithreads" />
     <MESSAGE value="change java 1.7" />
     <MESSAGE value="change chunk request" />
-    <option name="LAST_COMMIT_MESSAGE" value="change chunk request" />
+    <MESSAGE value="change chunk store" />
+    <option name="LAST_COMMIT_MESSAGE" value="change chunk store" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1619,9 +1629,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="129" column="22" lean-forward="false" selection-start-line="129" selection-start-column="22" selection-end-line="129" selection-end-column="22" />
-          <folding />
+        <state relative-caret-position="105">
+          <caret line="19" column="44" lean-forward="false" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="44" />
+          <folding>
+            <element signature="e#3372#3380#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
