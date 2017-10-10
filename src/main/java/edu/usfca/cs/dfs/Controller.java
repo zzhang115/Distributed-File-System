@@ -131,8 +131,6 @@ public class Controller {
         if (metaMap.containsKey(retrieveFileName)) {
             Map<Integer, Set<String>> chunkMap = metaMap.get(retrieveFileName);
 
-            List<Integer> randomNums = new ArrayList<Integer>();
-
             for (int chunkId : chunkMap.keySet()) {
                 int i = 0;
                 int n = rand.nextInt(chunkMap.get(chunkId).size()) + 0;
@@ -141,6 +139,7 @@ public class Controller {
                     if (i == n) {
                         retrieveFileMsg.addRetrieveFileInfoBuilder().setChunkId(chunkId)
                                 .setStorageNodeHostName(storageHostName);
+                        logger.info("Controller: Choose " + storageHostName +" For Chunk" + chunkId);
                         break;
                     }
                     i++;

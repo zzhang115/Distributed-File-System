@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3df7ae5d-ae2e-4653-894d-d9189adc57ee" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java" afterPath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java" afterPath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageNode.java" afterPath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageNode.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -23,8 +21,8 @@
           <file leaf-file-name="Client.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="435">
-                  <caret line="206" column="46" lean-forward="false" selection-start-line="206" selection-start-column="46" selection-end-line="206" selection-end-column="46" />
+                <state relative-caret-position="-1980">
+                  <caret line="80" column="39" lean-forward="false" selection-start-line="80" selection-start-column="8" selection-end-line="80" selection-end-column="40" />
                   <folding>
                     <element signature="e#3725#3733#0" expanded="true" />
                   </folding>
@@ -68,13 +66,12 @@
           <file leaf-file-name="Controller.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="270">
-                  <caret line="142" column="23" lean-forward="false" selection-start-line="142" selection-start-column="23" selection-end-line="142" selection-end-column="23" />
+                <state relative-caret-position="135">
+                  <caret line="133" column="47" lean-forward="false" selection-start-line="133" selection-start-column="47" selection-end-line="133" selection-end-column="47" />
                   <folding>
                     <element signature="e#2480#2793#0" expanded="true" />
                     <element signature="e#2792#2793#0" expanded="true" />
-                    <element signature="e#5697#5706#0" expanded="true" />
-                    <element signature="e#7210#7219#0" expanded="true" />
+                    <element signature="e#7246#7255#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -870,13 +867,6 @@
       <workItem from="1507009124496" duration="7001000" />
       <workItem from="1507141063733" duration="76900000" />
     </task>
-    <task id="LOCAL-00004" summary="break chunks done">
-      <created>1505607707184</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1505607707184</updated>
-    </task>
     <task id="LOCAL-00005" summary="break chunks done">
       <created>1505612525098</created>
       <option name="number" value="00005" />
@@ -1213,11 +1203,18 @@
       <option name="project" value="LOCAL" />
       <updated>1507614487407</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="change chunk retrieve random">
+      <created>1507615941468</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1507615941468</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="207732000" />
+    <option name="totallyTimeSpent" value="207900000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1352,7 +1349,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="break chunks done" />
     <MESSAGE value="add chunks files," />
     <MESSAGE value="add heartbeat" />
     <MESSAGE value="add reentrant lock" />
@@ -1377,7 +1373,8 @@
     <MESSAGE value="change chunk store" />
     <MESSAGE value="change random" />
     <MESSAGE value="delete file in store file path of storagenode" />
-    <option name="LAST_COMMIT_MESSAGE" value="delete file in store file path of storagenode" />
+    <MESSAGE value="change chunk retrieve random" />
+    <option name="LAST_COMMIT_MESSAGE" value="change chunk retrieve random" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1647,25 +1644,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="206" column="46" lean-forward="false" selection-start-line="206" selection-start-column="46" selection-end-line="206" selection-end-column="46" />
+        <state relative-caret-position="135">
+          <caret line="133" column="47" lean-forward="false" selection-start-line="133" selection-start-column="47" selection-end-line="133" selection-end-column="47" />
           <folding>
-            <element signature="e#3725#3733#0" expanded="true" />
+            <element signature="e#2480#2793#0" expanded="true" />
+            <element signature="e#2792#2793#0" expanded="true" />
+            <element signature="e#7246#7255#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="142" column="23" lean-forward="false" selection-start-line="142" selection-start-column="23" selection-end-line="142" selection-end-column="23" />
+        <state relative-caret-position="-1980">
+          <caret line="80" column="39" lean-forward="false" selection-start-line="80" selection-start-column="8" selection-end-line="80" selection-end-column="40" />
           <folding>
-            <element signature="e#2480#2793#0" expanded="true" />
-            <element signature="e#2792#2793#0" expanded="true" />
-            <element signature="e#5697#5706#0" expanded="true" />
-            <element signature="e#7210#7219#0" expanded="true" />
+            <element signature="e#3725#3733#0" expanded="true" />
           </folding>
         </state>
       </provider>
