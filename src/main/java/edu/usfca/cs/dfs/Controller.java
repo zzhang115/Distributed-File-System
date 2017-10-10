@@ -27,6 +27,7 @@ public class Controller {
     private static final int MILLIS_PER_SEC = 1000;
     private static final int COPY_NUM = 3;
     private static final int CONTROLLER_PORT = 40000;
+    private static Random rand = new Random();
 
     private static class STNode {
         String storageNodeHostName;
@@ -156,7 +157,6 @@ public class Controller {
         int nodeNum = Math.min(COPY_NUM, storageNodeList.size());
         List<Integer> randomNums = new ArrayList<Integer>();
 
-        Random rand = new Random();
         while (randomNums.size() < nodeNum) {
             int n = rand.nextInt(storageNodeList.size() - 1) + 0;
             if (!randomNums.contains(n) && storageNodeList.get(n).freeSpace > chunkSize) {
