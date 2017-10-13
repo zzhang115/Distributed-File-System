@@ -98,8 +98,8 @@ public class Controller {
                     msgWrapper.getHeartBeatSignalMsg();
 
             String storageHostName = socket.getInetAddress().getHostName();
-            logger.info("Controller: Received HeartBeat From " + storageHostName +
-                    " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
+//            logger.info("Controller: Received HeartBeat From " + storageHostName +
+//                    " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
 
             for (int i = 0; i < heartBeatSignalMsg.getMetaCount(); i++) {
                 String fileName = heartBeatSignalMsg.getMeta(i).getFilename();

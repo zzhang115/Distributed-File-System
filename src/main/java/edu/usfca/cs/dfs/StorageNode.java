@@ -51,7 +51,7 @@ public class StorageNode {
 
         Runnable heartBeat = new Runnable() {
             public void run() {
-                logger.info("StorageNode: Send HeartBeat! --" + dateFormat.format(new Date()));
+//                logger.info("StorageNode: Send HeartBeat! --" + dateFormat.format(new Date()));
                 try {
                     lock.lock();
                     sendHeartBeat();
