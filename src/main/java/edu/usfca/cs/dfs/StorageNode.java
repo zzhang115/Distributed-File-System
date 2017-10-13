@@ -25,7 +25,6 @@ public class StorageNode {
     private static Map<String, List<Integer>> updateMetaMap; // <fileName, <chunkId>>
     private static Map<String, List<Integer>> fullMetaMap; // <fileName, <chunkId>>
     private static ReentrantLock lock = new ReentrantLock();
-    private static List<String> availStorageNodeHostNames = new ArrayList<String>();
     private static final String CONTROLLER_HOSTNAME = "bass01.cs.usfca.edu";
     private static String storeFilePath = "/home2/zzhang115/";
     private static final int CONTROLLER_PORT = 40000;
@@ -83,15 +82,16 @@ public class StorageNode {
                 socket.getInputStream());
 
         if (msgWrapper.hasStoreChunkMsg()) {
-            logger.info("Storage: Receive Store Chunk Request!");
+            logger.info("Storage: Receive Store Chunk Request From " + socket.getInetAddress());
             StorageMessages.StoreChunk storeChunkMsg
                     = msgWrapper.getStoreChunkMsg();
 
             // storing chunk info into map in order to update info to controller
             // still need to solve a problem that is that if chunk stored failed, don't update info to controller
             int storageHostNameCount = storeChunkMsg.getHostNameCount();
+            List<String> copyChunkStorageNodeHostNames = new ArrayList<String>();
             for (int i = 0; i < storageHostNameCount; i++) {
-                availStorageNodeHostNames.add(storeChunkMsg.getHostName(i));
+                copyChunkStorageNodeHostNames.add(storeChunkMsg.getHostName(i));
             }
 
             String fileName = storeChunkMsg.getFileName();
@@ -119,6 +119,9 @@ public class StorageNode {
 
             ByteString data = storeChunkMsg.getData();
             writeFileToLocalMachine(fileName, chunkId, data);
+            socket.close();
+            passChunkToPeer(copyChunkStorageNodeHostNames, fileName, chunkId, data);
+            return;
         }
 
         if (msgWrapper.hasRetrieveFileMsg()) {
@@ -131,8 +134,37 @@ public class StorageNode {
             if (fullMetaMap.containsKey(fileName) && fullMetaMap.get(fileName).contains(chunkId)) {
                 sendFileDataToClient(socket, fileName, chunkId);
             }
+            socket.close();
+            return;
         }
-        socket.close();
+    }
+
+    public static void passChunkToPeer(List<String> copyChunkStorageNodeHostNames, String fileName,
+                                       int chunkId, ByteString data) throws IOException {
+        if (copyChunkStorageNodeHostNames.size() > 0) {
+            String hostName = copyChunkStorageNodeHostNames.get(0);
+            Socket storageNodeSocket = new Socket(hostName, STORAGENODE_PORT);
+            logger.info("StorageNode: Send Store Request To Peer StorageNode: " + hostName
+                    + " To Store Chunk" + chunkId);
+
+            StorageMessages.StoreChunk.Builder storeChunkMsg =
+                    StorageMessages.StoreChunk.newBuilder();
+            // form send pipeline
+            for (int i = 1; i < copyChunkStorageNodeHostNames.size(); i++) {
+                storeChunkMsg.addHostName(copyChunkStorageNodeHostNames.get(i));
+            }
+
+            storeChunkMsg.setFileName(fileName).setChunkId(chunkId)
+                    .setData(data)
+                    .build();
+
+            StorageMessages.StorageMessageWrapper msgWrapper =
+                    StorageMessages.StorageMessageWrapper.newBuilder()
+                            .setStoreChunkMsg(storeChunkMsg)
+                            .build();
+            msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
+            storageNodeSocket.close();
+        }
     }
 
     public static void sendFileDataToClient(Socket socket, String fileName, int chunkId) throws IOException {

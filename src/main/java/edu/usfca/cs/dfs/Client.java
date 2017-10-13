@@ -139,8 +139,8 @@ public class Client {
     public static void sendStoreRequestToStorageNode(DFSChunk chunk, List<String> availStorageNodeHostNames)
             throws IOException {
         if (availStorageNodeHostNames.size() > 0) {
-            for (int i = 0; i < availStorageNodeHostNames.size(); i++) {
-                String hostName = availStorageNodeHostNames.get(i);
+//            for (int i = 0; i < availStorageNodeHostNames.size(); i++) {
+                String hostName = availStorageNodeHostNames.get(0);
                 Socket storageNodeSocket = new Socket(hostName, STORAGENODE_PORT);
                 logger.info("Client: Send Store Request To StorageNode: " + hostName
                         + " To Store Chunk" + chunk.getChunkID());
@@ -164,7 +164,7 @@ public class Client {
 
                 msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
                 storageNodeSocket.close();
-            }
+//            }
         } else {
             logger.info("Client: No StorageNode Is Available!");
         }
