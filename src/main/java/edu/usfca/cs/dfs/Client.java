@@ -83,7 +83,8 @@ public class Client {
     }
 
     public static void sendStoreRequestToController() throws IOException, InterruptedException {
-        for (DFSChunk chunk : storeChunks) {
+//        for (DFSChunk chunk : storeChunks) {
+        DFSChunk chunk = storeChunks.get(0);
             List<String> availStorageNodeHostNames = new ArrayList<String>();
             Socket controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
             logger.info("Client: Start Sending Store Request To Controller");
@@ -97,7 +98,7 @@ public class Client {
             msgWrapper.writeDelimitedTo(controllerSocket.getOutputStream());
             getStoringReplyFromController(controllerSocket, availStorageNodeHostNames);
             sendStoreRequestToStorageNode(chunk, availStorageNodeHostNames);
-        }
+//        }
     }
 
     public static void getStoringReplyFromController(Socket controllerSocket, List<String> availStorageNodeHostNames)
