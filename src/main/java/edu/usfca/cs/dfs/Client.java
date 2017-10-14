@@ -38,6 +38,8 @@ public class Client {
         switch(args[0]) {
             case "st":  // store file
                 clientStoreFile();
+                break;
+            case "gl":
                 clientGetDFSFileList();
                 break;
             case "rt":  // retrieve file
@@ -179,6 +181,7 @@ public class Client {
 
         Socket controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
 
+        logger.info("Client: Start Send Request For File List To Controller");
         ControllerMessages.GetFileListRequest.Builder getFileListMsg =
                 ControllerMessages.GetFileListRequest.newBuilder();
 
@@ -189,7 +192,7 @@ public class Client {
                         .setGetFileListMsg(getFileListMsg)
                         .build();
         msgWrapper.writeDelimitedTo(controllerSocket.getOutputStream());
-        logger.info("Client: Start To Ask For File List From Controller");
+        logger.info("Client: Finished Send Request For File List To Controller");
         getFileListReply(controllerSocket);
     }
 
@@ -209,11 +212,11 @@ public class Client {
                 StringBuffer buffer = new StringBuffer();
                 for (int i = 0; i < fileCount; i++) {
                     ClientMessages.DFSFile dfsFileMsg = dfsFileListMsg.getDfsFile(i);
-                    buffer.append("Client: File: " + dfsFileMsg.getFileName());
+                    buffer.append("Client: File: " + dfsFileMsg.getFileName() + "\n");
                     int chunkCount = dfsFileMsg.getDfsChunkCount();
                     for (int j = 0; j < chunkCount; j++) {
                         ClientMessages.DFSChunk dfsChunkMsg = dfsFileMsg.getDfsChunk(j);
-                        buffer.append(" ChunkId: " + dfsChunkMsg.getChunkId());
+                        buffer.append(" ChunkId: " + dfsChunkMsg.getChunkId() + "\n");
                         int storageNodeHostNameCount = dfsChunkMsg.getStorageNodeHostNameCount();
                         for (int k = 0; k < storageNodeHostNameCount; k++) {
                             buffer.append(" Stored At " + dfsChunkMsg.getStorageNodeHostName(k));

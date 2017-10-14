@@ -134,6 +134,7 @@ public class Controller {
     }
 
     public static void sendReplyForGetFileList(Socket socket) throws IOException {
+        logger.info("Controller: Start Send Get File List");
         ClientMessages.DFSFileList.Builder dfsFileListMsg =
                 ClientMessages.DFSFileList.newBuilder();
         for (String fileName : metaMap.keySet()) {
@@ -157,6 +158,7 @@ public class Controller {
                         .setDfsFileListMsg(dfsFileListMsg)
                         .build();
         msgWrapper.writeDelimitedTo(socket.getOutputStream());
+        logger.info("Controller: Finished Send Get File List");
     }
 
     public static void sendReplyForRetrieving(Socket socket, String retrieveFileName) throws IOException {
