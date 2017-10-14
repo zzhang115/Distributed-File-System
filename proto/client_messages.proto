@@ -5,6 +5,20 @@ message AvailStorageNode {
     repeated string storageNodeHostName = 1;
 }
 
+message DFSChunk {
+    int32 chunkId = 1;
+    repeated string storageNodeHostName = 2;
+}
+
+message DFSFile {
+    string fileName = 1;
+    repeated DFSChunk dfsChunk = 2;
+}
+
+message DFSFileList {
+    repeated DFSFile dfsFile = 1;
+}
+
 message RetrieveFileInfo {
     int32 chunkId = 1;
     string storageNodeHostName = 2;
@@ -23,7 +37,8 @@ message RetrieveFileData {
 message ClientMessageWrapper {
     oneof msg {
         AvailStorageNode availstorageNodeMsg = 1;
-        ReplyForRetrieving replyForRetrievingMsg = 2;
-        RetrieveFileData retrieveFileDataMsg = 3;
+        DFSFileList dfsFileListMsg = 2;
+        ReplyForRetrieving replyForRetrievingMsg = 3;
+        RetrieveFileData retrieveFileDataMsg = 4;
     }
 }

@@ -119,9 +119,7 @@ public class StorageNode {
 
             writeFileToLocalMachine(fileName, chunkId, data);
             logger.info("StorageNode: " + getHostname() + " Store Chunk Successfully!");
-            sendReplyToStorageNode(socket);
             socket.close();
-
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -145,9 +143,7 @@ public class StorageNode {
             return;
         }
     }
-    public static void sendReplyToStorageNode(Socket socket) {
 
-    }
     public static void passChunkToPeer(List<String> copyChunkStorageNodeHostNames, String fileName,
                                        int chunkId, int copies, ByteString data) throws IOException {
         if (copies > 0) {

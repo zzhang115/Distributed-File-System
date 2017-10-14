@@ -174,33 +174,50 @@ public class Client {
         }
     }
 
-    public static void getRetrievingReplyFromStorageNode(Socket storageNodeSocket) throws IOException, InterruptedException {
+    public static void getDFSFileList() throws IOException {
+
+        Socket controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
+
+        ControllerMessages.GetFileListRequest.Builder getFileListMsg =
+                ControllerMessages.GetFileListRequest.newBuilder();
+
+        getFileListMsg.setIsGet(true).build();
+
+        ControllerMessages.ControllerMessageWrapper msgWrapper =
+                ControllerMessages.ControllerMessageWrapper.newBuilder()
+                        .setGetFileListMsg(getFileListMsg)
+                        .build();
+        msgWrapper.writeDelimitedTo(controllerSocket.getOutputStream());
+        logger.info("Client: Start To Ask For File List From Controller");
+    }
+
+    public static void getFileListReply(Socket controllerSocket) throws IOException, InterruptedException {
+
         long currentTime = System.currentTimeMillis();
         long end = currentTime + REPLY_WAITING_TIME;
-        ClientMessages.ClientMessageWrapper msgWrapper
-                = ClientMessages.ClientMessageWrapper.parseDelimitedFrom(
-                        storageNodeSocket.getInputStream()); // wait here until there is a message
-
-        logger.info("Client: Waiting For Reply Of Storing From StorageNode");
-        while (System.currentTimeMillis() < end) {
-            if (msgWrapper.hasReplyForRetrievingMsg()) {
-                ClientMessages.ReplyForRetrieving retrievingFileMsg
-                        = msgWrapper.getReplyForRetrievingMsg();
-                int count = retrievingFileMsg.getRetrieveFileInfoCount();
-                int chunkId;
-                String storageNodeHostName;
-                logger.info("Client: Chunk's Num: " + count);
-                for (int i = 0; i < count; i++) {
-                    chunkId = retrievingFileMsg.getRetrieveFileInfo(i).getChunkId();
-                    storageNodeHostName = retrievingFileMsg.getRetrieveFileInfo(i).getStorageNodeHostName();
-                    logger.info("Client: ChunkId: " + chunkId + " StorageNodeHostName: " + storageNodeHostName);
-                    retrieveFileMap.put(chunkId, storageNodeHostName);
-                }
-                return;
-            }
-            Thread.sleep(500);
-        }
-        storageNodeSocket.close();
+//        ClientMessages.ClientMessageWrapper msgWrapper
+//                = ClientMessages.ClientMessageWrapper.parseDelimitedFrom(
+//                        storageNodeSocket.getInputStream()); // wait here until there is a message
+//
+//        logger.info("Client: Waiting For Reply Of Storing From StorageNode");
+//        while (System.currentTimeMillis() < end) {
+//            if (msgWrapper.hasReplyForStoringDataMsg()) {
+//                ClientMessages.ReplyForStoringData replyForStoringDataMsg
+//                        = msgWrapper.getReplyForStoringDataMsg();
+//                String fileName = replyForStoringDataMsg.getFileName();
+//                int chunkId = replyForStoringDataMsg.getChunkId();
+//                logger.info("Client: 's Num: " + count);
+//                for (int i = 0; i < count; i++) {
+//                    chunkId = retrievingFileMsg.getRetrieveFileInfo(i).getChunkId();
+//                    storageNodeHostName = retrievingFileMsg.getRetrieveFileInfo(i).getStorageNodeHostName();
+//                    logger.info("Client: ChunkId: " + chunkId + " StorageNodeHostName: " + storageNodeHostName);
+//                    retrieveFileMap.put(chunkId, storageNodeHostName);
+//                }
+//                return;
+//            }
+//            Thread.sleep(500);
+//        }
+//        storageNodeSocket.close();
     }
 
     public static void sendRetrieveFileRequestToController(String fileName) throws IOException, InterruptedException {

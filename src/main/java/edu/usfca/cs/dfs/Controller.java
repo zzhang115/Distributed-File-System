@@ -120,7 +120,30 @@ public class Controller {
             logger.info("Controller: Received Retrieve File Request: " + retrieveFileName);
             sendReplyForRetrieving(socket, retrieveFileName);
         }
+
+        if (msgWrapper.hasGetFileListMsg()) {
+            ControllerMessages.GetFileListRequest getFileListMsg =
+                    msgWrapper.getGetFileListMsg();
+            boolean isGetFileList = getFileListMsg.getIsGet();
+            if (isGetFileList) {
+                logger.info("Controller: Received Get File List Request");
+
+            }
+        }
         socket.close();
+    }
+
+    public static void sendReplyForGetFileList(Socket socket) {
+        ClientMessages.DFSFileList.Builder dfsFileListMsg =
+                ClientMessages.DFSFileList.newBuilder();
+        for (String fileName : metaMap.keySet()) {
+            dfsFileListMsg.addDfsFileBuilder().setFileName(fileName).build();
+            for (int chunkId : ((Map<Integer, Set<String>>) metaMap.values()).keySet()) {
+
+            }
+            dfsFileListMsg.addDfsFileBuilder().setFileName(fileName)
+                    .addDfsChunkBuilder().setChunkId()
+        }
     }
 
     public static void sendReplyForRetrieving(Socket socket, String retrieveFileName) throws IOException {

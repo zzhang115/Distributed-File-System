@@ -20,11 +20,16 @@ message HeartBeatSignal {
     string timestamp = 3;
 }
 
+message GetFileListRequest {
+    bool isGet = 1;
+}
+
 message ControllerMessageWrapper {
     oneof msg {
         StoreChunkRequest storeChunkRequestMsg = 1;
         HeartBeatSignal heartBeatSignalMsg = 2;
         RetrieveFileRequest retrieveFileMsg = 3;
+        GetFileListRequest getFileListMsg = 4;
     }
 }
 
