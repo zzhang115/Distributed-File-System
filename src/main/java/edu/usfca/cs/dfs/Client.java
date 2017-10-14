@@ -38,6 +38,7 @@ public class Client {
         switch(args[0]) {
             case "st":  // store file
                 clientStoreFile();
+                clientGetDFSFileList();
                 break;
             case "rt":  // retrieve file
                 clientRetrieveFile();
@@ -174,7 +175,7 @@ public class Client {
         }
     }
 
-    public static void getDFSFileList() throws IOException {
+    public static void clientGetDFSFileList() throws IOException, InterruptedException {
 
         Socket controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
 
@@ -189,35 +190,45 @@ public class Client {
                         .build();
         msgWrapper.writeDelimitedTo(controllerSocket.getOutputStream());
         logger.info("Client: Start To Ask For File List From Controller");
+        getFileListReply(controllerSocket);
     }
 
     public static void getFileListReply(Socket controllerSocket) throws IOException, InterruptedException {
 
         long currentTime = System.currentTimeMillis();
         long end = currentTime + REPLY_WAITING_TIME;
-//        ClientMessages.ClientMessageWrapper msgWrapper
-//                = ClientMessages.ClientMessageWrapper.parseDelimitedFrom(
-//                        storageNodeSocket.getInputStream()); // wait here until there is a message
-//
-//        logger.info("Client: Waiting For Reply Of Storing From StorageNode");
-//        while (System.currentTimeMillis() < end) {
-//            if (msgWrapper.hasReplyForStoringDataMsg()) {
-//                ClientMessages.ReplyForStoringData replyForStoringDataMsg
-//                        = msgWrapper.getReplyForStoringDataMsg();
-//                String fileName = replyForStoringDataMsg.getFileName();
-//                int chunkId = replyForStoringDataMsg.getChunkId();
-//                logger.info("Client: 's Num: " + count);
-//                for (int i = 0; i < count; i++) {
-//                    chunkId = retrievingFileMsg.getRetrieveFileInfo(i).getChunkId();
-//                    storageNodeHostName = retrievingFileMsg.getRetrieveFileInfo(i).getStorageNodeHostName();
-//                    logger.info("Client: ChunkId: " + chunkId + " StorageNodeHostName: " + storageNodeHostName);
-//                    retrieveFileMap.put(chunkId, storageNodeHostName);
-//                }
-//                return;
-//            }
-//            Thread.sleep(500);
-//        }
-//        storageNodeSocket.close();
+        ClientMessages.ClientMessageWrapper msgWrapper =
+                ClientMessages.ClientMessageWrapper.parseDelimitedFrom(controllerSocket.getInputStream());
+
+        logger.info("Client: Waiting For Reply Of Getting File List From Controller");
+        while (System.currentTimeMillis() < end) {
+            if (msgWrapper.hasDfsFileListMsg()) {
+                ClientMessages.DFSFileList dfsFileListMsg =
+                        msgWrapper.getDfsFileListMsg();
+                int fileCount = dfsFileListMsg.getDfsFileCount();
+                StringBuffer buffer = new StringBuffer();
+                for (int i = 0; i < fileCount; i++) {
+                    ClientMessages.DFSFile dfsFileMsg = dfsFileListMsg.getDfsFile(i);
+                    buffer.append("Client: File: " + dfsFileMsg.getFileName());
+                    int chunkCount = dfsFileMsg.getDfsChunkCount();
+                    for (int j = 0; j < chunkCount; j++) {
+                        ClientMessages.DFSChunk dfsChunkMsg = dfsFileMsg.getDfsChunk(j);
+                        buffer.append(" ChunkId: " + dfsChunkMsg.getChunkId());
+                        int storageNodeHostNameCount = dfsChunkMsg.getStorageNodeHostNameCount();
+                        for (int k = 0; k < storageNodeHostNameCount; k++) {
+                            buffer.append(" Stored At " + dfsChunkMsg.getStorageNodeHostName(k));
+                        }
+                    }
+                    logger.info(buffer.toString());
+                }
+                return;
+            }
+            Thread.sleep(500);
+        }
+        if (System.currentTimeMillis() < end) {
+            logger.info("Client: Controller is out of service now!");
+        }
+        controllerSocket.close();
     }
 
     public static void sendRetrieveFileRequestToController(String fileName) throws IOException, InterruptedException {

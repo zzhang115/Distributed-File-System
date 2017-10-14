@@ -127,23 +127,36 @@ public class Controller {
             boolean isGetFileList = getFileListMsg.getIsGet();
             if (isGetFileList) {
                 logger.info("Controller: Received Get File List Request");
-
+                sendReplyForGetFileList(socket);
             }
         }
         socket.close();
     }
 
-    public static void sendReplyForGetFileList(Socket socket) {
+    public static void sendReplyForGetFileList(Socket socket) throws IOException {
         ClientMessages.DFSFileList.Builder dfsFileListMsg =
                 ClientMessages.DFSFileList.newBuilder();
         for (String fileName : metaMap.keySet()) {
-            dfsFileListMsg.addDfsFileBuilder().setFileName(fileName).build();
-            for (int chunkId : ((Map<Integer, Set<String>>) metaMap.values()).keySet()) {
-
+            ClientMessages.DFSFile.Builder dfsFileMsg = ClientMessages.DFSFile.newBuilder();
+            dfsFileMsg.setFileName(fileName);
+            Map<Integer, Set<String>> chunkMap = metaMap.get(fileName);
+            for (int chunkId : chunkMap.keySet()) {
+                ClientMessages.DFSChunk.Builder dfsChunkMsg = ClientMessages.DFSChunk.newBuilder();
+                dfsChunkMsg.setChunkId(chunkId);
+                Set<String> storageNodeHostNames = chunkMap.get(chunkId);
+                for (String storageNodeHostName : storageNodeHostNames) {
+                    dfsChunkMsg.addStorageNodeHostName(storageNodeHostName);
+                }
+                dfsFileMsg.addDfsChunk(dfsChunkMsg);
             }
-            dfsFileListMsg.addDfsFileBuilder().setFileName(fileName)
-                    .addDfsChunkBuilder().setChunkId()
+            dfsFileListMsg.addDfsFile(dfsFileMsg);
         }
+
+        ClientMessages.ClientMessageWrapper msgWrapper =
+                ClientMessages.ClientMessageWrapper.newBuilder()
+                        .setDfsFileListMsg(dfsFileListMsg)
+                        .build();
+        msgWrapper.writeDelimitedTo(socket.getOutputStream());
     }
 
     public static void sendReplyForRetrieving(Socket socket, String retrieveFileName) throws IOException {
