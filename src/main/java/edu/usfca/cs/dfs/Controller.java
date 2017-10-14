@@ -23,7 +23,7 @@ public class Controller {
     private static Map<String, String> heartBeatMap;  // <storageNodeHostName, timeStamp>
     private static ServerSocket controllerSocket;
     private static DateFormat dateFormat;
-    private static final int FAILURE_NODE_TIME = 15;
+    private static final int FAILURE_NODE_TIME = 10;
     private static final int MILLIS_PER_SEC = 1000;
     private static final int CONTROLLER_PORT = 40000;
     private static Random rand = new Random();
@@ -75,7 +75,7 @@ public class Controller {
         };
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(failureDetect, 0, 1, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(failureDetect, 0, 2, TimeUnit.SECONDS);
     }
 
     public static void handleMessage() throws IOException {
