@@ -35,11 +35,19 @@ public class Client {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        clientInit();
-        clientStoreFile();
+//        clientInit();
+        switch(args[0]) {
+            case "st":
+                System.out.println(args[0]);
+                break;
+            case "rt":
+                System.out.println(args[0]);
+                break;
+        }
+//        clientStoreFile();
         // at least wait 5 secs(heart beat interval) to keep file info has been registered in metadata
-        Thread.sleep(RETRIEVE_WAITING_TIME);
-        clientRetrieveFile();
+//        Thread.sleep(RETRIEVE_WAITING_TIME);
+//        clientRetrieveFile();
     }
 
     public static void clientInit() throws IOException {
@@ -188,8 +196,7 @@ public class Client {
         getRetrievingReplyFromController(controllerSocket);
     }
 
-    public static void getRetrievingReplyFromController(Socket controllerSocket)
-            throws IOException, InterruptedException {
+    public static void getRetrievingReplyFromController(Socket controllerSocket) throws IOException, InterruptedException {
         long currentTime = System.currentTimeMillis();
         long end = currentTime + REPLY_WAITING_TIME;
         ClientMessages.ClientMessageWrapper msgWrapper

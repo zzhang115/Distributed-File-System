@@ -67,7 +67,7 @@ public class Controller {
         Runnable failureDetect = new Runnable() {
             public void run() {
                 try {
-                    logger.info("Controller: Detecting Failure Node...");
+//                    logger.info("Controller: Detecting Failure Node...");
                     detectFailureNode();
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -97,7 +97,7 @@ public class Controller {
             ControllerMessages.HeartBeatSignal heartBeatSignalMsg =
                     msgWrapper.getHeartBeatSignalMsg();
 
-            String storageHostName = socket.getInetAddress().getHostName();
+            String storageHostName = socket.getInetAddress().getCanonicalHostName();
 //            logger.info("Controller: Received HeartBeat From " + storageHostName +
 //                    " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
 

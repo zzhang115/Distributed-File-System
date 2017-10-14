@@ -5,7 +5,8 @@ message StoreChunk {
     string fileName = 1;
     int32 chunkId = 2;
     bytes data = 3;
-    repeated string hostName = 4;
+    int copies = 4;
+    repeated string hostName = 5;
 }
 
 message RetrieveFile {
