@@ -73,7 +73,6 @@ public class Client {
         logger.info("Client: Finish breaking chunks");
 
         sendStoreRequestToController();
-//        sendStoreRequestToStorageNode();
     }
 
     public static void clientRetrieveFile() throws IOException, InterruptedException {

@@ -18,14 +18,13 @@ import java.util.logging.Logger;
 public class Controller {
 
     private static Logger logger = Logger.getLogger("Log");
-    private static List<STNode> storageNodeList;  //storageNodeQueue sort STNode basic on their free space
+    private static volatile List<STNode> storageNodeList;  //storageNodeQueue sort STNode basic on their free space
     private static Map<String, Map<Integer, Set<String>>> metaMap; // <fileName, <chunkId, <storageHostName>>>
     private static Map<String, String> heartBeatMap;  // <storageNodeHostName, timeStamp>
     private static ServerSocket controllerSocket;
     private static DateFormat dateFormat;
     private static final int FAILURE_NODE_TIME = 15;
     private static final int MILLIS_PER_SEC = 1000;
-    private static final int COPY_NUM = 3;
     private static final int CONTROLLER_PORT = 40000;
     private static Random rand = new Random();
 
@@ -160,12 +159,6 @@ public class Controller {
     }
 
     public static void sendReplyForStoring(Socket socket, double chunkSize) throws IOException {
-//        while (randomNums.size() < nodeNum) {
-//            int n = rand.nextInt(storageNodeList.size()) + 0;
-//            if (!randomNums.contains(n) && storageNodeList.get(n).freeSpace > chunkSize) {
-//                randomNums.add(n);
-//            }
-//        }
         Collections.shuffle(storageNodeList);
         logger.info("Controller: Start Send Reply For Storing To Client");
         ClientMessages.AvailStorageNode.Builder availStorageNodeMsg =
@@ -214,12 +207,13 @@ public class Controller {
     public static void detectFailureNode() throws ParseException {
         Date currentDate = new Date();
 
-        for (String storageNodeHostName : heartBeatMap.keySet()) {
+        for (STNode stNode : storageNodeList) {
+            String storageNodeHostName = stNode.storageNodeHostName;
             Date storageNodeDate = dateFormat.parse(heartBeatMap.get(storageNodeHostName));
             long dateDiff = (currentDate.getTime() - storageNodeDate.getTime()) / MILLIS_PER_SEC;
-//            System.out.println(dateDiff + " " + currentDate.getTime() +" "+ storageNodeDate.getTime());
             if (dateDiff >= FAILURE_NODE_TIME) {
                 logger.info("Controller: " + storageNodeHostName + " crashed down!");
+                storageNodeList.remove(stNode);
             }
         }
     }
