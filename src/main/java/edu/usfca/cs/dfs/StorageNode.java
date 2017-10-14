@@ -22,7 +22,7 @@ public class StorageNode {
     private static ServerSocket nodeServerSocket;
     private static Socket nodeSocket;
     private static DateFormat dateFormat;
-    private static Map<String, List<Integer>> updateMetaMap; // <fileName, <chunkId>>
+    private static volatile Map<String, List<Integer>> updateMetaMap; // <fileName, <chunkId>>
     private static Map<String, List<Integer>> fullMetaMap; // <fileName, <chunkId>>
     private static ReentrantLock lock = new ReentrantLock();
     private static final String CONTROLLER_HOSTNAME = "bass01.cs.usfca.edu";
@@ -109,7 +109,6 @@ public class StorageNode {
                 fullMetaMap.put(fileName, chunkIdList);
             }
 
-            lock.lock();
             if (updateMetaMap.keySet().contains(fileName)) {
                 updateMetaMap.get(fileName).add(chunkId);
             } else {
@@ -117,11 +116,12 @@ public class StorageNode {
                 chunkIdList.add(chunkId);
                 updateMetaMap.put(fileName, chunkIdList);
             }
-            lock.unlock();
 
             writeFileToLocalMachine(fileName, chunkId, data);
             logger.info("StorageNode: " + getHostname() + " Store Chunk Successfully!");
+            sendReplyToStorageNode(socket);
             socket.close();
+
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -145,7 +145,9 @@ public class StorageNode {
             return;
         }
     }
+    public static void sendReplyToStorageNode(Socket socket) {
 
+    }
     public static void passChunkToPeer(List<String> copyChunkStorageNodeHostNames, String fileName,
                                        int chunkId, int copies, ByteString data) throws IOException {
         if (copies > 0) {
@@ -205,7 +207,6 @@ public class StorageNode {
 
         FileOutputStream fileOutputStream = new FileOutputStream(storeFilePath + fileName + "_Chunk" + chunkId);
         byte[] dataBytes = data.toByteArray();
-        ByteString bytes = ByteString.copyFrom(dataBytes);
 
         fileOutputStream.write(dataBytes);
         fileOutputStream.flush();

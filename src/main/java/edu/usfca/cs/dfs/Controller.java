@@ -66,7 +66,7 @@ public class Controller {
         Runnable failureDetect = new Runnable() {
             public void run() {
                 try {
-//                    logger.info("Controller: Detecting Failure Node...");
+                    logger.info("Controller: Detecting Failure Node...");
                     detectFailureNode();
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -75,7 +75,7 @@ public class Controller {
         };
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(failureDetect, 0, 5, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(failureDetect, 0, 1, TimeUnit.SECONDS);
     }
 
     public static void handleMessage() throws IOException {
@@ -97,8 +97,8 @@ public class Controller {
                     msgWrapper.getHeartBeatSignalMsg();
 
             String storageHostName = socket.getInetAddress().getCanonicalHostName();
-//            logger.info("Controller: Received HeartBeat From " + storageHostName +
-//                    " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
+            logger.info("Controller: Received HeartBeat From " + storageHostName +
+                    " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
 
             for (int i = 0; i < heartBeatSignalMsg.getMetaCount(); i++) {
                 String fileName = heartBeatSignalMsg.getMeta(i).getFilename();
