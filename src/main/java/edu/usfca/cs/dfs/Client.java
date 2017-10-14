@@ -18,8 +18,6 @@ public class Client {
     private static String retrieveFilePath = "/home2/zzhang115/";
     private static String testRetrieveFileName = "test.pdf";
 //    private static String filePath = "client.file/data_co.csv";
-//    private static Socket controllerSocket;
-//    private static Socket storageNodeSocket;
     private static List<DFSChunk> storeChunks = new ArrayList<DFSChunk>();
     private static List<DFSChunk> retrieveChunks = new ArrayList<DFSChunk>();
     private static Map<Integer, String> retrieveFileMap = new HashMap<Integer, String>();
@@ -35,19 +33,15 @@ public class Client {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-//        clientInit();
+        clientInit();
         switch(args[0]) {
-            case "st":
-                System.out.println(args[0]);
+            case "st":  // store file
+                clientStoreFile();
                 break;
-            case "rt":
-                System.out.println(args[0]);
+            case "rt":  // retrieve file
+                clientRetrieveFile();
                 break;
         }
-//        clientStoreFile();
-        // at least wait 5 secs(heart beat interval) to keep file info has been registered in metadata
-//        Thread.sleep(RETRIEVE_WAITING_TIME);
-//        clientRetrieveFile();
     }
 
     public static void clientInit() throws IOException {

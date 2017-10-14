@@ -120,6 +120,11 @@ public class StorageNode {
             ByteString data = storeChunkMsg.getData();
             writeFileToLocalMachine(fileName, chunkId, data);
             socket.close();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             passChunkToPeer(copyChunkStorageNodeHostNames, fileName, chunkId, data);
             return;
         }
