@@ -160,23 +160,21 @@ public class Controller {
     }
 
     public static void sendReplyForStoring(Socket socket, double chunkSize) throws IOException {
-        int nodeNum = Math.min(COPY_NUM, storageNodeList.size());
-        List<Integer> randomNums = new ArrayList<Integer>();
-
-        while (randomNums.size() < nodeNum) {
-            int n = rand.nextInt(storageNodeList.size()) + 0;
-            if (!randomNums.contains(n) && storageNodeList.get(n).freeSpace > chunkSize) {
-                randomNums.add(n);
-            }
-        }
-
+//        while (randomNums.size() < nodeNum) {
+//            int n = rand.nextInt(storageNodeList.size()) + 0;
+//            if (!randomNums.contains(n) && storageNodeList.get(n).freeSpace > chunkSize) {
+//                randomNums.add(n);
+//            }
+//        }
+        Collections.shuffle(storageNodeList);
         logger.info("Controller: Start Send Reply For Storing To Client");
         ClientMessages.AvailStorageNode.Builder availStorageNodeMsg =
                 ClientMessages.AvailStorageNode.newBuilder();
-        for (int i : randomNums) {
-            logger.info("Controller: Select " + i + "th StorageNode");
-            STNode stNode = storageNodeList.get(i);
-            availStorageNodeMsg.addStorageNodeHostName(stNode.storageNodeHostName);
+        for (STNode stNode : storageNodeList) {
+            if (stNode.freeSpace >= chunkSize) {
+                logger.info("Controller: Select StorageNode " + stNode.storageNodeHostName);
+                availStorageNodeMsg.addStorageNodeHostName(stNode.storageNodeHostName);
+            }
         }
         ClientMessages.ClientMessageWrapper msgWrapper =
                 ClientMessages.ClientMessageWrapper.newBuilder()

@@ -96,8 +96,10 @@ public class StorageNode {
 
             String fileName = storeChunkMsg.getFileName();
             int chunkId = storeChunkMsg.getChunkId();
-            logger.info("StorageNode: Storing file name: " + fileName);
-            logger.info("StorageNode: Storing file ID: " + chunkId);
+            int copies = storeChunkMsg.getCopies();
+            ByteString data = storeChunkMsg.getData();
+
+            logger.info("StorageNode: Storing File Name: " + fileName + " ChunkId: " + chunkId);
 
             if (fullMetaMap.keySet().contains(fileName)) {
                 fullMetaMap.get(fileName).add(chunkId);
@@ -117,15 +119,15 @@ public class StorageNode {
             }
             lock.unlock();
 
-            ByteString data = storeChunkMsg.getData();
             writeFileToLocalMachine(fileName, chunkId, data);
+            logger.info("StorageNode: " + getHostname() + " Store Chunk Successfully!");
             socket.close();
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            passChunkToPeer(copyChunkStorageNodeHostNames, fileName, chunkId, data);
+            passChunkToPeer(copyChunkStorageNodeHostNames, fileName, chunkId, copies - 1, data);
             return;
         }
 
@@ -145,8 +147,8 @@ public class StorageNode {
     }
 
     public static void passChunkToPeer(List<String> copyChunkStorageNodeHostNames, String fileName,
-                                       int chunkId, ByteString data) throws IOException {
-        if (copyChunkStorageNodeHostNames.size() > 0) {
+                                       int chunkId, int copies, ByteString data) throws IOException {
+        if (copies > 0) {
             String hostName = copyChunkStorageNodeHostNames.get(0);
             Socket storageNodeSocket = new Socket(hostName, STORAGENODE_PORT);
             logger.info("StorageNode: Send Store Request To Peer StorageNode: " + hostName
@@ -161,6 +163,7 @@ public class StorageNode {
 
             storeChunkMsg.setFileName(fileName).setChunkId(chunkId)
                     .setData(data)
+                    .setCopies(copies)
                     .build();
 
             StorageMessages.StorageMessageWrapper msgWrapper =
@@ -169,6 +172,8 @@ public class StorageNode {
                             .build();
             msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
             storageNodeSocket.close();
+            logger.info("StorageNode: Finishing Send Store Request To Peer StorageNode: " + hostName
+                    + " To Store Chunk" + chunkId);
         }
     }
 

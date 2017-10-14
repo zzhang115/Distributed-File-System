@@ -5,7 +5,7 @@ message StoreChunk {
     string fileName = 1;
     int32 chunkId = 2;
     bytes data = 3;
-    int copies = 4;
+    int32 copies = 4;
     repeated string hostName = 5;
 }
 

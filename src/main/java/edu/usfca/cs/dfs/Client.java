@@ -29,6 +29,7 @@ public class Client {
     private static final int RETRIEVE_WAITING_TIME = 3000;
     private static final int CONTROLLER_PORT = 40000;
     private static final int STORAGENODE_PORT = 40010;
+    private static final int COPY_NUM = 3;
     private static CountDownLatch latch;
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -142,32 +143,33 @@ public class Client {
     public static void sendStoreRequestToStorageNode(DFSChunk chunk, List<String> availStorageNodeHostNames)
             throws IOException {
         if (availStorageNodeHostNames.size() > 0) {
-//            for (int i = 0; i < availStorageNodeHostNames.size(); i++) {
-                String hostName = availStorageNodeHostNames.get(0);
-                Socket storageNodeSocket = new Socket(hostName, STORAGENODE_PORT);
-                logger.info("Client: Send Store Request To StorageNode: " + hostName
-                        + " To Store Chunk" + chunk.getChunkID());
+            String hostName = availStorageNodeHostNames.get(0);
+            int copies = Math.min(COPY_NUM, availStorageNodeHostNames.size());
 
-                StorageMessages.StoreChunk.Builder storeChunkMsg =
-                        StorageMessages.StoreChunk.newBuilder();
+            Socket storageNodeSocket = new Socket(hostName, STORAGENODE_PORT);
+            logger.info("Client: Send Store Request To StorageNode: " + hostName
+                    + " To Store Chunk" + chunk.getChunkID());
 
-                // form send pipeline
-                for (int j = 1; j < availStorageNodeHostNames.size(); j++) {
-                    storeChunkMsg.addHostName(availStorageNodeHostNames.get(j));
-                }
+            StorageMessages.StoreChunk.Builder storeChunkMsg =
+                    StorageMessages.StoreChunk.newBuilder();
 
-                storeChunkMsg.setFileName(chunk.getChunkName()).setChunkId(chunk.getChunkID())
-                        .setData(chunk.getData())
-                        .build();
+            // form send pipeline
+            for (int j = 1; j < availStorageNodeHostNames.size(); j++) {
+                storeChunkMsg.addHostName(availStorageNodeHostNames.get(j));
+            }
 
-                StorageMessages.StorageMessageWrapper msgWrapper =
-                        StorageMessages.StorageMessageWrapper.newBuilder()
-                                .setStoreChunkMsg(storeChunkMsg)
-                                .build();
+            storeChunkMsg.setFileName(chunk.getChunkName()).setChunkId(chunk.getChunkID())
+                    .setData(chunk.getData())
+                    .setCopies(copies)
+                    .build();
 
-                msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
-                storageNodeSocket.close();
-//            }
+            StorageMessages.StorageMessageWrapper msgWrapper =
+                    StorageMessages.StorageMessageWrapper.newBuilder()
+                            .setStoreChunkMsg(storeChunkMsg)
+                            .build();
+
+            msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
+            storageNodeSocket.close();
         } else {
             logger.info("Client: No StorageNode Is Available!");
         }
