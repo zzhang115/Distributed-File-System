@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3df7ae5d-ae2e-4653-894d-d9189adc57ee" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java" afterPath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java" afterPath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
@@ -71,8 +70,8 @@
           <file leaf-file-name="Controller.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="405">
-                  <caret line="206" column="39" lean-forward="false" selection-start-line="206" selection-start-column="23" selection-end-line="206" selection-end-column="40" />
+                <state relative-caret-position="585">
+                  <caret line="218" column="12" lean-forward="false" selection-start-line="218" selection-start-column="12" selection-end-line="218" selection-end-column="12" />
                   <folding />
                 </state>
               </provider>
@@ -910,14 +909,7 @@
       <workItem from="1507141063733" duration="76900000" />
       <workItem from="1507667378179" duration="663000" />
       <workItem from="1507747936002" duration="4334000" />
-      <workItem from="1507919147648" duration="11527000" />
-    </task>
-    <task id="LOCAL-00014" summary="add heartbeat">
-      <created>1506203980103</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1506203980103</updated>
+      <workItem from="1507919147648" duration="11889000" />
     </task>
     <task id="LOCAL-00015" summary="add heartbeat">
       <created>1506227125766</created>
@@ -1255,11 +1247,18 @@
       <option name="project" value="LOCAL" />
       <updated>1507944563347</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="modify pipeline">
+      <created>1507946967063</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1507946967063</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="225150000" />
+    <option name="totallyTimeSpent" value="225512000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1736,8 +1735,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="206" column="39" lean-forward="false" selection-start-line="206" selection-start-column="23" selection-end-line="206" selection-end-column="40" />
+        <state relative-caret-position="585">
+          <caret line="218" column="12" lean-forward="false" selection-start-line="218" selection-start-column="12" selection-end-line="218" selection-end-column="12" />
           <folding />
         </state>
       </provider>

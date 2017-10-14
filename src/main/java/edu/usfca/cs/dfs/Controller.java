@@ -207,13 +207,15 @@ public class Controller {
     public static void detectFailureNode() throws ParseException {
         Date currentDate = new Date();
 
-        for (STNode stNode : storageNodeList) {
+        for (int i = 0; i < storageNodeList.size(); i++) {
+            STNode stNode = storageNodeList.get(i);
             String storageNodeHostName = stNode.storageNodeHostName;
             Date storageNodeDate = dateFormat.parse(heartBeatMap.get(storageNodeHostName));
             long dateDiff = (currentDate.getTime() - storageNodeDate.getTime()) / MILLIS_PER_SEC;
             if (dateDiff >= FAILURE_NODE_TIME) {
                 logger.info("Controller: " + storageNodeHostName + " crashed down!");
                 storageNodeList.remove(stNode);
+                i--;
             }
         }
     }
