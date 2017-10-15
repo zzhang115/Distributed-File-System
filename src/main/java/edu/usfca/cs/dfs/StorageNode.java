@@ -23,7 +23,7 @@ public class StorageNode {
     private static Socket nodeSocket;
     private static DateFormat dateFormat;
     private static volatile Map<String, List<Integer>> updateMetaMap; // <fileName, <chunkId>>
-    private static Map<String, List<Integer>> fullMetaMap; // <fileName, <chunkId>>
+    private static volatile Map<String, List<Integer>> fullMetaMap; // <fileName, <chunkId>>
     private static ReentrantLock lock = new ReentrantLock();
     private static final String CONTROLLER_HOSTNAME = "bass01.cs.usfca.edu";
     private static String storeFilePath = "/home2/zzhang115/";
@@ -130,8 +130,7 @@ public class StorageNode {
         }
 
         if (msgWrapper.hasRetrieveFileMsg()) {
-            StorageMessages.RetrieveFile retrieveFileMsg =
-                    msgWrapper.getRetrieveFileMsg();
+            StorageMessages.RetrieveFile retrieveFileMsg = msgWrapper.getRetrieveFileMsg();
             logger.info("StorageNode: Received Retrieve File Request!");
             String fileName = retrieveFileMsg.getFileName();
             int chunkId = retrieveFileMsg.getChunkId();
@@ -142,6 +141,36 @@ public class StorageNode {
             socket.close();
             return;
         }
+
+        if (msgWrapper.hasRetrieveMetaMsg()) {
+            StorageMessages.RetrieveMeta retrieveMetaMsg =
+                    msgWrapper.getRetrieveMetaMsg();
+            logger.info("StorageNode: Received Retrieve Meta Request");
+            if (retrieveMetaMsg.getIsRetrieveMeta()) {
+                sendMetaDataToController(socket);
+            }
+            socket.close();
+            return;
+        }
+    }
+
+    public static void sendMetaDataToController(Socket socket) throws IOException {
+        logger.info("StorageNode: Start Send MetaData To Controller");
+        ControllerMessages.RetrieveMetaData.Builder retrieveMetaDataMsg =
+                ControllerMessages.RetrieveMetaData.newBuilder();
+
+        for (String fileName : fullMetaMap.keySet()) {
+            for (int chunkId : fullMetaMap.get(fileName)) {
+                retrieveMetaDataMsg.addMetaBuilder().setFilename(fileName).setChunkId(chunkId);
+            }
+        }
+        ControllerMessages.ControllerMessageWrapper msgWrapper =
+                ControllerMessages.ControllerMessageWrapper.newBuilder()
+                        .setMetaDataMsg(retrieveMetaDataMsg)
+                        .build();
+        msgWrapper.writeDelimitedTo(socket.getOutputStream());
+        logger.info("StorageNode: Finished Send MetaData To Controller");
+        socket.close();
     }
 
     public static void passChunkToPeer(List<String> copyChunkStorageNodeHostNames, String fileName,

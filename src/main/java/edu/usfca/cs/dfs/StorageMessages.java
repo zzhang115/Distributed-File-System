@@ -1507,6 +1507,455 @@ public final class StorageMessages {
 
   }
 
+  public interface RetrieveMetaOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:RetrieveMeta)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>bool isRetrieveMeta = 1;</code>
+     */
+    boolean getIsRetrieveMeta();
+  }
+  /**
+   * Protobuf type {@code RetrieveMeta}
+   */
+  public  static final class RetrieveMeta extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:RetrieveMeta)
+      RetrieveMetaOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use RetrieveMeta.newBuilder() to construct.
+    private RetrieveMeta(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private RetrieveMeta() {
+      isRetrieveMeta_ = false;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RetrieveMeta(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+
+              isRetrieveMeta_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return edu.usfca.cs.dfs.StorageMessages.internal_static_RetrieveMeta_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return edu.usfca.cs.dfs.StorageMessages.internal_static_RetrieveMeta_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.class, edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.Builder.class);
+    }
+
+    public static final int ISRETRIEVEMETA_FIELD_NUMBER = 1;
+    private boolean isRetrieveMeta_;
+    /**
+     * <code>bool isRetrieveMeta = 1;</code>
+     */
+    public boolean getIsRetrieveMeta() {
+      return isRetrieveMeta_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (isRetrieveMeta_ != false) {
+        output.writeBool(1, isRetrieveMeta_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (isRetrieveMeta_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, isRetrieveMeta_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof edu.usfca.cs.dfs.StorageMessages.RetrieveMeta)) {
+        return super.equals(obj);
+      }
+      edu.usfca.cs.dfs.StorageMessages.RetrieveMeta other = (edu.usfca.cs.dfs.StorageMessages.RetrieveMeta) obj;
+
+      boolean result = true;
+      result = result && (getIsRetrieveMeta()
+          == other.getIsRetrieveMeta());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + ISRETRIEVEMETA_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsRetrieveMeta());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static edu.usfca.cs.dfs.StorageMessages.RetrieveMeta parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.RetrieveMeta parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.RetrieveMeta parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.RetrieveMeta parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.RetrieveMeta parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.RetrieveMeta parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.RetrieveMeta parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.RetrieveMeta parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.RetrieveMeta parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.RetrieveMeta parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.RetrieveMeta parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.StorageMessages.RetrieveMeta parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(edu.usfca.cs.dfs.StorageMessages.RetrieveMeta prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code RetrieveMeta}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:RetrieveMeta)
+        edu.usfca.cs.dfs.StorageMessages.RetrieveMetaOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return edu.usfca.cs.dfs.StorageMessages.internal_static_RetrieveMeta_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return edu.usfca.cs.dfs.StorageMessages.internal_static_RetrieveMeta_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.class, edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.Builder.class);
+      }
+
+      // Construct using edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        isRetrieveMeta_ = false;
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return edu.usfca.cs.dfs.StorageMessages.internal_static_RetrieveMeta_descriptor;
+      }
+
+      public edu.usfca.cs.dfs.StorageMessages.RetrieveMeta getDefaultInstanceForType() {
+        return edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.getDefaultInstance();
+      }
+
+      public edu.usfca.cs.dfs.StorageMessages.RetrieveMeta build() {
+        edu.usfca.cs.dfs.StorageMessages.RetrieveMeta result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public edu.usfca.cs.dfs.StorageMessages.RetrieveMeta buildPartial() {
+        edu.usfca.cs.dfs.StorageMessages.RetrieveMeta result = new edu.usfca.cs.dfs.StorageMessages.RetrieveMeta(this);
+        result.isRetrieveMeta_ = isRetrieveMeta_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof edu.usfca.cs.dfs.StorageMessages.RetrieveMeta) {
+          return mergeFrom((edu.usfca.cs.dfs.StorageMessages.RetrieveMeta)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(edu.usfca.cs.dfs.StorageMessages.RetrieveMeta other) {
+        if (other == edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.getDefaultInstance()) return this;
+        if (other.getIsRetrieveMeta() != false) {
+          setIsRetrieveMeta(other.getIsRetrieveMeta());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        edu.usfca.cs.dfs.StorageMessages.RetrieveMeta parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (edu.usfca.cs.dfs.StorageMessages.RetrieveMeta) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private boolean isRetrieveMeta_ ;
+      /**
+       * <code>bool isRetrieveMeta = 1;</code>
+       */
+      public boolean getIsRetrieveMeta() {
+        return isRetrieveMeta_;
+      }
+      /**
+       * <code>bool isRetrieveMeta = 1;</code>
+       */
+      public Builder setIsRetrieveMeta(boolean value) {
+        
+        isRetrieveMeta_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool isRetrieveMeta = 1;</code>
+       */
+      public Builder clearIsRetrieveMeta() {
+        
+        isRetrieveMeta_ = false;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:RetrieveMeta)
+    }
+
+    // @@protoc_insertion_point(class_scope:RetrieveMeta)
+    private static final edu.usfca.cs.dfs.StorageMessages.RetrieveMeta DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new edu.usfca.cs.dfs.StorageMessages.RetrieveMeta();
+    }
+
+    public static edu.usfca.cs.dfs.StorageMessages.RetrieveMeta getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<RetrieveMeta>
+        PARSER = new com.google.protobuf.AbstractParser<RetrieveMeta>() {
+      public RetrieveMeta parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new RetrieveMeta(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<RetrieveMeta> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RetrieveMeta> getParserForType() {
+      return PARSER;
+    }
+
+    public edu.usfca.cs.dfs.StorageMessages.RetrieveMeta getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface StorageMessageWrapperOrBuilder extends
       // @@protoc_insertion_point(interface_extends:StorageMessageWrapper)
       com.google.protobuf.MessageOrBuilder {
@@ -1536,6 +1985,19 @@ public final class StorageMessages {
      * <code>.RetrieveFile retrieveFileMsg = 2;</code>
      */
     edu.usfca.cs.dfs.StorageMessages.RetrieveFileOrBuilder getRetrieveFileMsgOrBuilder();
+
+    /**
+     * <code>.RetrieveMeta retrieveMetaMsg = 3;</code>
+     */
+    boolean hasRetrieveMetaMsg();
+    /**
+     * <code>.RetrieveMeta retrieveMetaMsg = 3;</code>
+     */
+    edu.usfca.cs.dfs.StorageMessages.RetrieveMeta getRetrieveMetaMsg();
+    /**
+     * <code>.RetrieveMeta retrieveMetaMsg = 3;</code>
+     */
+    edu.usfca.cs.dfs.StorageMessages.RetrieveMetaOrBuilder getRetrieveMetaMsgOrBuilder();
 
     public edu.usfca.cs.dfs.StorageMessages.StorageMessageWrapper.MsgCase getMsgCase();
   }
@@ -1610,6 +2072,20 @@ public final class StorageMessages {
               msgCase_ = 2;
               break;
             }
+            case 26: {
+              edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.Builder subBuilder = null;
+              if (msgCase_ == 3) {
+                subBuilder = ((edu.usfca.cs.dfs.StorageMessages.RetrieveMeta) msg_).toBuilder();
+              }
+              msg_ =
+                  input.readMessage(edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((edu.usfca.cs.dfs.StorageMessages.RetrieveMeta) msg_);
+                msg_ = subBuilder.buildPartial();
+              }
+              msgCase_ = 3;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1640,6 +2116,7 @@ public final class StorageMessages {
         implements com.google.protobuf.Internal.EnumLite {
       STORECHUNKMSG(1),
       RETRIEVEFILEMSG(2),
+      RETRIEVEMETAMSG(3),
       MSG_NOT_SET(0);
       private final int value;
       private MsgCase(int value) {
@@ -1657,6 +2134,7 @@ public final class StorageMessages {
         switch (value) {
           case 1: return STORECHUNKMSG;
           case 2: return RETRIEVEFILEMSG;
+          case 3: return RETRIEVEMETAMSG;
           case 0: return MSG_NOT_SET;
           default: return null;
         }
@@ -1724,6 +2202,32 @@ public final class StorageMessages {
       return edu.usfca.cs.dfs.StorageMessages.RetrieveFile.getDefaultInstance();
     }
 
+    public static final int RETRIEVEMETAMSG_FIELD_NUMBER = 3;
+    /**
+     * <code>.RetrieveMeta retrieveMetaMsg = 3;</code>
+     */
+    public boolean hasRetrieveMetaMsg() {
+      return msgCase_ == 3;
+    }
+    /**
+     * <code>.RetrieveMeta retrieveMetaMsg = 3;</code>
+     */
+    public edu.usfca.cs.dfs.StorageMessages.RetrieveMeta getRetrieveMetaMsg() {
+      if (msgCase_ == 3) {
+         return (edu.usfca.cs.dfs.StorageMessages.RetrieveMeta) msg_;
+      }
+      return edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.getDefaultInstance();
+    }
+    /**
+     * <code>.RetrieveMeta retrieveMetaMsg = 3;</code>
+     */
+    public edu.usfca.cs.dfs.StorageMessages.RetrieveMetaOrBuilder getRetrieveMetaMsgOrBuilder() {
+      if (msgCase_ == 3) {
+         return (edu.usfca.cs.dfs.StorageMessages.RetrieveMeta) msg_;
+      }
+      return edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -1742,6 +2246,9 @@ public final class StorageMessages {
       if (msgCase_ == 2) {
         output.writeMessage(2, (edu.usfca.cs.dfs.StorageMessages.RetrieveFile) msg_);
       }
+      if (msgCase_ == 3) {
+        output.writeMessage(3, (edu.usfca.cs.dfs.StorageMessages.RetrieveMeta) msg_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1757,6 +2264,10 @@ public final class StorageMessages {
       if (msgCase_ == 2) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, (edu.usfca.cs.dfs.StorageMessages.RetrieveFile) msg_);
+      }
+      if (msgCase_ == 3) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, (edu.usfca.cs.dfs.StorageMessages.RetrieveMeta) msg_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1786,6 +2297,10 @@ public final class StorageMessages {
           result = result && getRetrieveFileMsg()
               .equals(other.getRetrieveFileMsg());
           break;
+        case 3:
+          result = result && getRetrieveMetaMsg()
+              .equals(other.getRetrieveMetaMsg());
+          break;
         case 0:
         default:
       }
@@ -1808,6 +2323,10 @@ public final class StorageMessages {
         case 2:
           hash = (37 * hash) + RETRIEVEFILEMSG_FIELD_NUMBER;
           hash = (53 * hash) + getRetrieveFileMsg().hashCode();
+          break;
+        case 3:
+          hash = (37 * hash) + RETRIEVEMETAMSG_FIELD_NUMBER;
+          hash = (53 * hash) + getRetrieveMetaMsg().hashCode();
           break;
         case 0:
         default:
@@ -1979,6 +2498,13 @@ public final class StorageMessages {
             result.msg_ = retrieveFileMsgBuilder_.build();
           }
         }
+        if (msgCase_ == 3) {
+          if (retrieveMetaMsgBuilder_ == null) {
+            result.msg_ = msg_;
+          } else {
+            result.msg_ = retrieveMetaMsgBuilder_.build();
+          }
+        }
         result.msgCase_ = msgCase_;
         onBuilt();
         return result;
@@ -2028,6 +2554,10 @@ public final class StorageMessages {
           }
           case RETRIEVEFILEMSG: {
             mergeRetrieveFileMsg(other.getRetrieveFileMsg());
+            break;
+          }
+          case RETRIEVEMETAMSG: {
+            mergeRetrieveMetaMsg(other.getRetrieveMetaMsg());
             break;
           }
           case MSG_NOT_SET: {
@@ -2347,6 +2877,142 @@ public final class StorageMessages {
         onChanged();;
         return retrieveFileMsgBuilder_;
       }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.StorageMessages.RetrieveMeta, edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.Builder, edu.usfca.cs.dfs.StorageMessages.RetrieveMetaOrBuilder> retrieveMetaMsgBuilder_;
+      /**
+       * <code>.RetrieveMeta retrieveMetaMsg = 3;</code>
+       */
+      public boolean hasRetrieveMetaMsg() {
+        return msgCase_ == 3;
+      }
+      /**
+       * <code>.RetrieveMeta retrieveMetaMsg = 3;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.RetrieveMeta getRetrieveMetaMsg() {
+        if (retrieveMetaMsgBuilder_ == null) {
+          if (msgCase_ == 3) {
+            return (edu.usfca.cs.dfs.StorageMessages.RetrieveMeta) msg_;
+          }
+          return edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.getDefaultInstance();
+        } else {
+          if (msgCase_ == 3) {
+            return retrieveMetaMsgBuilder_.getMessage();
+          }
+          return edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.RetrieveMeta retrieveMetaMsg = 3;</code>
+       */
+      public Builder setRetrieveMetaMsg(edu.usfca.cs.dfs.StorageMessages.RetrieveMeta value) {
+        if (retrieveMetaMsgBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          msg_ = value;
+          onChanged();
+        } else {
+          retrieveMetaMsgBuilder_.setMessage(value);
+        }
+        msgCase_ = 3;
+        return this;
+      }
+      /**
+       * <code>.RetrieveMeta retrieveMetaMsg = 3;</code>
+       */
+      public Builder setRetrieveMetaMsg(
+          edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.Builder builderForValue) {
+        if (retrieveMetaMsgBuilder_ == null) {
+          msg_ = builderForValue.build();
+          onChanged();
+        } else {
+          retrieveMetaMsgBuilder_.setMessage(builderForValue.build());
+        }
+        msgCase_ = 3;
+        return this;
+      }
+      /**
+       * <code>.RetrieveMeta retrieveMetaMsg = 3;</code>
+       */
+      public Builder mergeRetrieveMetaMsg(edu.usfca.cs.dfs.StorageMessages.RetrieveMeta value) {
+        if (retrieveMetaMsgBuilder_ == null) {
+          if (msgCase_ == 3 &&
+              msg_ != edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.getDefaultInstance()) {
+            msg_ = edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.newBuilder((edu.usfca.cs.dfs.StorageMessages.RetrieveMeta) msg_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            msg_ = value;
+          }
+          onChanged();
+        } else {
+          if (msgCase_ == 3) {
+            retrieveMetaMsgBuilder_.mergeFrom(value);
+          }
+          retrieveMetaMsgBuilder_.setMessage(value);
+        }
+        msgCase_ = 3;
+        return this;
+      }
+      /**
+       * <code>.RetrieveMeta retrieveMetaMsg = 3;</code>
+       */
+      public Builder clearRetrieveMetaMsg() {
+        if (retrieveMetaMsgBuilder_ == null) {
+          if (msgCase_ == 3) {
+            msgCase_ = 0;
+            msg_ = null;
+            onChanged();
+          }
+        } else {
+          if (msgCase_ == 3) {
+            msgCase_ = 0;
+            msg_ = null;
+          }
+          retrieveMetaMsgBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.RetrieveMeta retrieveMetaMsg = 3;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.Builder getRetrieveMetaMsgBuilder() {
+        return getRetrieveMetaMsgFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.RetrieveMeta retrieveMetaMsg = 3;</code>
+       */
+      public edu.usfca.cs.dfs.StorageMessages.RetrieveMetaOrBuilder getRetrieveMetaMsgOrBuilder() {
+        if ((msgCase_ == 3) && (retrieveMetaMsgBuilder_ != null)) {
+          return retrieveMetaMsgBuilder_.getMessageOrBuilder();
+        } else {
+          if (msgCase_ == 3) {
+            return (edu.usfca.cs.dfs.StorageMessages.RetrieveMeta) msg_;
+          }
+          return edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.RetrieveMeta retrieveMetaMsg = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.StorageMessages.RetrieveMeta, edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.Builder, edu.usfca.cs.dfs.StorageMessages.RetrieveMetaOrBuilder> 
+          getRetrieveMetaMsgFieldBuilder() {
+        if (retrieveMetaMsgBuilder_ == null) {
+          if (!(msgCase_ == 3)) {
+            msg_ = edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.getDefaultInstance();
+          }
+          retrieveMetaMsgBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              edu.usfca.cs.dfs.StorageMessages.RetrieveMeta, edu.usfca.cs.dfs.StorageMessages.RetrieveMeta.Builder, edu.usfca.cs.dfs.StorageMessages.RetrieveMetaOrBuilder>(
+                  (edu.usfca.cs.dfs.StorageMessages.RetrieveMeta) msg_,
+                  getParentForChildren(),
+                  isClean());
+          msg_ = null;
+        }
+        msgCase_ = 3;
+        onChanged();;
+        return retrieveMetaMsgBuilder_;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
@@ -2407,6 +3073,11 @@ public final class StorageMessages {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_RetrieveFile_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_RetrieveMeta_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_RetrieveMeta_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_StorageMessageWrapper_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -2424,10 +3095,12 @@ public final class StorageMessages {
       "\n\010fileName\030\001 \001(\t\022\017\n\007chunkId\030\002 \001(\005\022\014\n\004dat" +
       "a\030\003 \001(\014\022\016\n\006copies\030\004 \001(\005\022\020\n\010hostName\030\005 \003(" +
       "\t\"1\n\014RetrieveFile\022\020\n\010fileName\030\001 \001(\t\022\017\n\007c" +
-      "hunkId\030\002 \001(\005\"n\n\025StorageMessageWrapper\022$\n" +
-      "\rstoreChunkMsg\030\001 \001(\0132\013.StoreChunkH\000\022(\n\017r" +
-      "etrieveFileMsg\030\002 \001(\0132\r.RetrieveFileH\000B\005\n" +
-      "\003msgB\022\n\020edu.usfca.cs.dfsb\006proto3"
+      "hunkId\030\002 \001(\005\"&\n\014RetrieveMeta\022\026\n\016isRetrie" +
+      "veMeta\030\001 \001(\010\"\230\001\n\025StorageMessageWrapper\022$" +
+      "\n\rstoreChunkMsg\030\001 \001(\0132\013.StoreChunkH\000\022(\n\017" +
+      "retrieveFileMsg\030\002 \001(\0132\r.RetrieveFileH\000\022(" +
+      "\n\017retrieveMetaMsg\030\003 \001(\0132\r.RetrieveMetaH\000" +
+      "B\005\n\003msgB\022\n\020edu.usfca.cs.dfsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2453,12 +3126,18 @@ public final class StorageMessages {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_RetrieveFile_descriptor,
         new java.lang.String[] { "FileName", "ChunkId", });
-    internal_static_StorageMessageWrapper_descriptor =
+    internal_static_RetrieveMeta_descriptor =
       getDescriptor().getMessageTypes().get(2);
+    internal_static_RetrieveMeta_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_RetrieveMeta_descriptor,
+        new java.lang.String[] { "IsRetrieveMeta", });
+    internal_static_StorageMessageWrapper_descriptor =
+      getDescriptor().getMessageTypes().get(3);
     internal_static_StorageMessageWrapper_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_StorageMessageWrapper_descriptor,
-        new java.lang.String[] { "StoreChunkMsg", "RetrieveFileMsg", "Msg", });
+        new java.lang.String[] { "StoreChunkMsg", "RetrieveFileMsg", "RetrieveMetaMsg", "Msg", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

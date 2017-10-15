@@ -14,6 +14,10 @@ message MetaData {
     int32 chunkId = 2;
 }
 
+message RetrieveMetaData {
+    repeated MetaData meta = 1;
+}
+
 message HeartBeatSignal {
     repeated MetaData meta = 1;
     double freeSpace = 2;
@@ -30,6 +34,7 @@ message ControllerMessageWrapper {
         HeartBeatSignal heartBeatSignalMsg = 2;
         RetrieveFileRequest retrieveFileMsg = 3;
         GetFileListRequest getFileListMsg = 4;
+        RetrieveMetaData metaDataMsg = 5;
     }
 }
 

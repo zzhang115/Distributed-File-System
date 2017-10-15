@@ -14,10 +14,15 @@ message RetrieveFile {
     int32 chunkId = 2;
 }
 
+message RetrieveMeta {
+    bool isRetrieveMeta = 1;
+}
+
 message StorageMessageWrapper {
     oneof msg {
         StoreChunk storeChunkMsg = 1;
         RetrieveFile retrieveFileMsg = 2;
+        RetrieveMeta retrieveMetaMsg = 3;
     }
 }
 

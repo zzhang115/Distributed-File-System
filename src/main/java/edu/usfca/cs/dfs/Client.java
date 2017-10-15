@@ -212,14 +212,14 @@ public class Client {
                 StringBuffer buffer = new StringBuffer();
                 for (int i = 0; i < fileCount; i++) {
                     ClientMessages.DFSFile dfsFileMsg = dfsFileListMsg.getDfsFile(i);
-                    buffer.append("Client: File: " + dfsFileMsg.getFileName() + "\n");
+                    buffer.append("Client: File: " + dfsFileMsg.getFileName());
                     int chunkCount = dfsFileMsg.getDfsChunkCount();
                     for (int j = 0; j < chunkCount; j++) {
                         ClientMessages.DFSChunk dfsChunkMsg = dfsFileMsg.getDfsChunk(j);
                         buffer.append(" ChunkId: " + dfsChunkMsg.getChunkId() + "\n");
                         int storageNodeHostNameCount = dfsChunkMsg.getStorageNodeHostNameCount();
                         for (int k = 0; k < storageNodeHostNameCount; k++) {
-                            buffer.append(" Stored At " + dfsChunkMsg.getStorageNodeHostName(k));
+                            buffer.append("Stored At " + dfsChunkMsg.getStorageNodeHostName(k));
                         }
                     }
                     logger.info(buffer.toString());

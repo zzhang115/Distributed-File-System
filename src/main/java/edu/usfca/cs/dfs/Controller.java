@@ -19,13 +19,15 @@ public class Controller {
 
     private static Logger logger = Logger.getLogger("Log");
     private static volatile List<STNode> storageNodeList;  //storageNodeQueue sort STNode basic on their free space
-    private static Map<String, Map<Integer, Set<String>>> metaMap; // <fileName, <chunkId, <storageHostName>>>
+    private static volatile Map<String, Map<Integer, Set<String>>> metaMap; // <fileName, <chunkId, <storageHostName>>>
     private static Map<String, String> heartBeatMap;  // <storageNodeHostName, timeStamp>
     private static ServerSocket controllerSocket;
     private static DateFormat dateFormat;
     private static final int FAILURE_NODE_TIME = 10;
     private static final int MILLIS_PER_SEC = 1000;
     private static final int CONTROLLER_PORT = 40000;
+    private static final int STORAGENODE_PORT = 40010;
+    private static final int REPLY_WAITING_TIME = 10000;
     private static Random rand = new Random();
 
     private static class STNode {
@@ -44,7 +46,7 @@ public class Controller {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 //        logger.info("Controller: LocalHostName is " + getHostname());
         controllerInit();
         while (true) {
@@ -78,7 +80,7 @@ public class Controller {
         executor.scheduleAtFixedRate(failureDetect, 0, 2, TimeUnit.SECONDS);
     }
 
-    public static void handleMessage() throws IOException {
+    public static void handleMessage() throws IOException, InterruptedException {
         Socket socket = controllerSocket.accept();
         ControllerMessages.ControllerMessageWrapper msgWrapper
                 = ControllerMessages.ControllerMessageWrapper.parseDelimitedFrom(
@@ -100,6 +102,9 @@ public class Controller {
             logger.info("Controller: Received HeartBeat From " + storageHostName +
                     " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
 
+            if (!heartBeatMap.keySet().contains(storageHostName)) {
+                sendRetrieveMetaRequest(storageHostName);
+            }
             for (int i = 0; i < heartBeatSignalMsg.getMetaCount(); i++) {
                 String fileName = heartBeatSignalMsg.getMeta(i).getFilename();
                 int chunkId = heartBeatSignalMsg.getMeta(i).getChunkId();
@@ -213,6 +218,54 @@ public class Controller {
                         .build();
         msgWrapper.writeDelimitedTo(socket.getOutputStream());
         logger.info("Controller: Finished Sending Reply For Storing To Client");
+    }
+
+    public static void sendRetrieveMetaRequest(String storageHostName) throws IOException, InterruptedException {
+        Socket storageNodeSocket = new Socket(storageHostName, STORAGENODE_PORT);
+
+        StorageMessages.RetrieveMeta.Builder retrieveMetaMsg =
+                StorageMessages.RetrieveMeta.newBuilder();
+        retrieveMetaMsg.setIsRetrieveMeta(true);
+
+        StorageMessages.StorageMessageWrapper msgWrapper = StorageMessages
+                .StorageMessageWrapper.newBuilder()
+                .setRetrieveMetaMsg(retrieveMetaMsg)
+                .build();
+        msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
+        getFullMetaFromStorageNode(storageNodeSocket);
+    }
+
+    public static void getFullMetaFromStorageNode(Socket storageNodeSocket) throws IOException, InterruptedException {
+        long currentTime = System.currentTimeMillis();
+        long end = currentTime + REPLY_WAITING_TIME;
+        ControllerMessages.ControllerMessageWrapper msgWrapper =
+                ControllerMessages.ControllerMessageWrapper.parseDelimitedFrom(storageNodeSocket.getInputStream());
+
+        logger.info("Controller: Waiting For Reply Of Getting Meta From StorageNode");
+        while (System.currentTimeMillis() < end) {
+            if (msgWrapper.hasMetaDataMsg()) {
+
+                ControllerMessages.RetrieveMetaData metaDataMsg =
+                        msgWrapper.getMetaDataMsg();
+                String storageNodeHostName = storageNodeSocket.getInetAddress().getCanonicalHostName();
+                int metaCount = metaDataMsg.getMetaCount();
+                for (int i = 0; i < metaCount; i++) {
+                    String fileName = metaDataMsg.getMeta(i).getFilename();
+                    int chunkId = metaDataMsg.getMeta(i).getChunkId();
+
+                    logger.info("Controller: Receive MetaData FileName: " + fileName + " ChunkId: " +chunkId
+                                +" From " + storageNodeHostName);
+                    storeFileInfo(storageNodeHostName, fileName, chunkId);
+                }
+                return;
+            }
+            Thread.sleep(500);
+        }
+        if (System.currentTimeMillis() < end) {
+            logger.info("Controller: Cannot Get Meta From " + storageNodeSocket
+                    .getInetAddress().getCanonicalHostName() + "!");
+        }
+        controllerSocket.close();
     }
 
     public static void storeFileInfo(String storageHostName, String fileName, int chunkId) {
