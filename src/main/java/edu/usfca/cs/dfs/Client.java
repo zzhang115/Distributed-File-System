@@ -5,8 +5,6 @@ import com.google.protobuf.ByteString;
 
 import java.io.*;
 import java.net.Socket;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
@@ -85,7 +83,7 @@ public class Client {
 
     public static void clientStoreFile(String fileName) throws IOException, InterruptedException {
         fileMd5Map.put(fileName, CheckSum.fileCheckSum(filePath + fileName));
-        breakFiletoChunks(filePath + fileName);
+        breakFiletoChunks(fileName);
         sendStoreRequestToController();
     }
 
@@ -170,7 +168,7 @@ public class Client {
                 storeChunkMsg.addHostName(availStorageNodeHostNames.get(j));
             }
 
-            storeChunkMsg.setFileName(chunk.getChunkName()).setChunkId(chunk.getChunkID())
+            storeChunkMsg.setFileName(chunk.getFileName()).setChunkId(chunk.getChunkID())
                     .setData(chunk.getData())
                     .setCopies(copies)
                     .build();
@@ -385,7 +383,7 @@ public class Client {
 
     public static void breakFiletoChunks(String fileName) throws IOException {
         logger.info("Client: Start break file to chunks");
-        File file = new File(fileName);
+        File file = new File(filePath + fileName);
         byte[] buffer = new byte[SIZE_OF_CHUNK];
 
         try (FileInputStream fileInputStream = new FileInputStream(file);

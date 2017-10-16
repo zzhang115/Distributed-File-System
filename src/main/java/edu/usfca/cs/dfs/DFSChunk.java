@@ -13,7 +13,7 @@ public class DFSChunk {
     private ByteString data;
     private long chunkSize;
 
-    public String getChunkName() {
+    public String getFileName() {
         return filename;
     }
 
