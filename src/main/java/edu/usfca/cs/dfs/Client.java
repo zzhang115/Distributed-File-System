@@ -405,6 +405,7 @@ public class Client {
     }
 
     private static void verifyMd5(String fileName, String newMd5) {
+        logger.info("Client: Received File Md5: " + newMd5);
         if (fileMd5Map.keySet().contains(fileName)) {
             if (fileMd5Map.get(fileName).equals(newMd5)) {
                 logger.info("Client: New Generated Md5 is same with old one");
