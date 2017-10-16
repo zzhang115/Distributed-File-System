@@ -940,6 +940,44 @@ public final class StorageMessages {
      * <code>int32 chunkId = 2;</code>
      */
     int getChunkId();
+
+    /**
+     * <code>repeated string hostName = 3;</code>
+     */
+    java.util.List<java.lang.String>
+        getHostNameList();
+    /**
+     * <code>repeated string hostName = 3;</code>
+     */
+    int getHostNameCount();
+    /**
+     * <code>repeated string hostName = 3;</code>
+     */
+    java.lang.String getHostName(int index);
+    /**
+     * <code>repeated string hostName = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getHostNameBytes(int index);
+
+    /**
+     * <code>repeated string chunkCorruptedHostName = 4;</code>
+     */
+    java.util.List<java.lang.String>
+        getChunkCorruptedHostNameList();
+    /**
+     * <code>repeated string chunkCorruptedHostName = 4;</code>
+     */
+    int getChunkCorruptedHostNameCount();
+    /**
+     * <code>repeated string chunkCorruptedHostName = 4;</code>
+     */
+    java.lang.String getChunkCorruptedHostName(int index);
+    /**
+     * <code>repeated string chunkCorruptedHostName = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getChunkCorruptedHostNameBytes(int index);
   }
   /**
    * Protobuf type {@code RetrieveFile}
@@ -956,6 +994,8 @@ public final class StorageMessages {
     private RetrieveFile() {
       fileName_ = "";
       chunkId_ = 0;
+      hostName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      chunkCorruptedHostName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
 
     @java.lang.Override
@@ -997,6 +1037,24 @@ public final class StorageMessages {
               chunkId_ = input.readInt32();
               break;
             }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+                hostName_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              hostName_.add(s);
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+                chunkCorruptedHostName_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000008;
+              }
+              chunkCorruptedHostName_.add(s);
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1005,6 +1063,12 @@ public final class StorageMessages {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+          hostName_ = hostName_.getUnmodifiableView();
+        }
+        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+          chunkCorruptedHostName_ = chunkCorruptedHostName_.getUnmodifiableView();
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -1021,6 +1085,7 @@ public final class StorageMessages {
               edu.usfca.cs.dfs.StorageMessages.RetrieveFile.class, edu.usfca.cs.dfs.StorageMessages.RetrieveFile.Builder.class);
     }
 
+    private int bitField0_;
     public static final int FILENAME_FIELD_NUMBER = 1;
     private volatile java.lang.Object fileName_;
     /**
@@ -1064,6 +1129,64 @@ public final class StorageMessages {
       return chunkId_;
     }
 
+    public static final int HOSTNAME_FIELD_NUMBER = 3;
+    private com.google.protobuf.LazyStringList hostName_;
+    /**
+     * <code>repeated string hostName = 3;</code>
+     */
+    public com.google.protobuf.ProtocolStringList
+        getHostNameList() {
+      return hostName_;
+    }
+    /**
+     * <code>repeated string hostName = 3;</code>
+     */
+    public int getHostNameCount() {
+      return hostName_.size();
+    }
+    /**
+     * <code>repeated string hostName = 3;</code>
+     */
+    public java.lang.String getHostName(int index) {
+      return hostName_.get(index);
+    }
+    /**
+     * <code>repeated string hostName = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getHostNameBytes(int index) {
+      return hostName_.getByteString(index);
+    }
+
+    public static final int CHUNKCORRUPTEDHOSTNAME_FIELD_NUMBER = 4;
+    private com.google.protobuf.LazyStringList chunkCorruptedHostName_;
+    /**
+     * <code>repeated string chunkCorruptedHostName = 4;</code>
+     */
+    public com.google.protobuf.ProtocolStringList
+        getChunkCorruptedHostNameList() {
+      return chunkCorruptedHostName_;
+    }
+    /**
+     * <code>repeated string chunkCorruptedHostName = 4;</code>
+     */
+    public int getChunkCorruptedHostNameCount() {
+      return chunkCorruptedHostName_.size();
+    }
+    /**
+     * <code>repeated string chunkCorruptedHostName = 4;</code>
+     */
+    public java.lang.String getChunkCorruptedHostName(int index) {
+      return chunkCorruptedHostName_.get(index);
+    }
+    /**
+     * <code>repeated string chunkCorruptedHostName = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getChunkCorruptedHostNameBytes(int index) {
+      return chunkCorruptedHostName_.getByteString(index);
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -1082,6 +1205,12 @@ public final class StorageMessages {
       if (chunkId_ != 0) {
         output.writeInt32(2, chunkId_);
       }
+      for (int i = 0; i < hostName_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, hostName_.getRaw(i));
+      }
+      for (int i = 0; i < chunkCorruptedHostName_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, chunkCorruptedHostName_.getRaw(i));
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1096,6 +1225,22 @@ public final class StorageMessages {
       if (chunkId_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, chunkId_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < hostName_.size(); i++) {
+          dataSize += computeStringSizeNoTag(hostName_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getHostNameList().size();
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < chunkCorruptedHostName_.size(); i++) {
+          dataSize += computeStringSizeNoTag(chunkCorruptedHostName_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getChunkCorruptedHostNameList().size();
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1117,6 +1262,10 @@ public final class StorageMessages {
           .equals(other.getFileName());
       result = result && (getChunkId()
           == other.getChunkId());
+      result = result && getHostNameList()
+          .equals(other.getHostNameList());
+      result = result && getChunkCorruptedHostNameList()
+          .equals(other.getChunkCorruptedHostNameList());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -1132,6 +1281,14 @@ public final class StorageMessages {
       hash = (53 * hash) + getFileName().hashCode();
       hash = (37 * hash) + CHUNKID_FIELD_NUMBER;
       hash = (53 * hash) + getChunkId();
+      if (getHostNameCount() > 0) {
+        hash = (37 * hash) + HOSTNAME_FIELD_NUMBER;
+        hash = (53 * hash) + getHostNameList().hashCode();
+      }
+      if (getChunkCorruptedHostNameCount() > 0) {
+        hash = (37 * hash) + CHUNKCORRUPTEDHOSTNAME_FIELD_NUMBER;
+        hash = (53 * hash) + getChunkCorruptedHostNameList().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1265,6 +1422,10 @@ public final class StorageMessages {
 
         chunkId_ = 0;
 
+        hostName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        chunkCorruptedHostName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -1287,8 +1448,21 @@ public final class StorageMessages {
 
       public edu.usfca.cs.dfs.StorageMessages.RetrieveFile buildPartial() {
         edu.usfca.cs.dfs.StorageMessages.RetrieveFile result = new edu.usfca.cs.dfs.StorageMessages.RetrieveFile(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         result.fileName_ = fileName_;
         result.chunkId_ = chunkId_;
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          hostName_ = hostName_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000004);
+        }
+        result.hostName_ = hostName_;
+        if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          chunkCorruptedHostName_ = chunkCorruptedHostName_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000008);
+        }
+        result.chunkCorruptedHostName_ = chunkCorruptedHostName_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -1337,6 +1511,26 @@ public final class StorageMessages {
         if (other.getChunkId() != 0) {
           setChunkId(other.getChunkId());
         }
+        if (!other.hostName_.isEmpty()) {
+          if (hostName_.isEmpty()) {
+            hostName_ = other.hostName_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+          } else {
+            ensureHostNameIsMutable();
+            hostName_.addAll(other.hostName_);
+          }
+          onChanged();
+        }
+        if (!other.chunkCorruptedHostName_.isEmpty()) {
+          if (chunkCorruptedHostName_.isEmpty()) {
+            chunkCorruptedHostName_ = other.chunkCorruptedHostName_;
+            bitField0_ = (bitField0_ & ~0x00000008);
+          } else {
+            ensureChunkCorruptedHostNameIsMutable();
+            chunkCorruptedHostName_.addAll(other.chunkCorruptedHostName_);
+          }
+          onChanged();
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -1363,6 +1557,7 @@ public final class StorageMessages {
         }
         return this;
       }
+      private int bitField0_;
 
       private java.lang.Object fileName_ = "";
       /**
@@ -1455,6 +1650,194 @@ public final class StorageMessages {
       public Builder clearChunkId() {
         
         chunkId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList hostName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureHostNameIsMutable() {
+        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
+          hostName_ = new com.google.protobuf.LazyStringArrayList(hostName_);
+          bitField0_ |= 0x00000004;
+         }
+      }
+      /**
+       * <code>repeated string hostName = 3;</code>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getHostNameList() {
+        return hostName_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string hostName = 3;</code>
+       */
+      public int getHostNameCount() {
+        return hostName_.size();
+      }
+      /**
+       * <code>repeated string hostName = 3;</code>
+       */
+      public java.lang.String getHostName(int index) {
+        return hostName_.get(index);
+      }
+      /**
+       * <code>repeated string hostName = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getHostNameBytes(int index) {
+        return hostName_.getByteString(index);
+      }
+      /**
+       * <code>repeated string hostName = 3;</code>
+       */
+      public Builder setHostName(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureHostNameIsMutable();
+        hostName_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string hostName = 3;</code>
+       */
+      public Builder addHostName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureHostNameIsMutable();
+        hostName_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string hostName = 3;</code>
+       */
+      public Builder addAllHostName(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureHostNameIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, hostName_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string hostName = 3;</code>
+       */
+      public Builder clearHostName() {
+        hostName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string hostName = 3;</code>
+       */
+      public Builder addHostNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        ensureHostNameIsMutable();
+        hostName_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList chunkCorruptedHostName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureChunkCorruptedHostNameIsMutable() {
+        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
+          chunkCorruptedHostName_ = new com.google.protobuf.LazyStringArrayList(chunkCorruptedHostName_);
+          bitField0_ |= 0x00000008;
+         }
+      }
+      /**
+       * <code>repeated string chunkCorruptedHostName = 4;</code>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getChunkCorruptedHostNameList() {
+        return chunkCorruptedHostName_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string chunkCorruptedHostName = 4;</code>
+       */
+      public int getChunkCorruptedHostNameCount() {
+        return chunkCorruptedHostName_.size();
+      }
+      /**
+       * <code>repeated string chunkCorruptedHostName = 4;</code>
+       */
+      public java.lang.String getChunkCorruptedHostName(int index) {
+        return chunkCorruptedHostName_.get(index);
+      }
+      /**
+       * <code>repeated string chunkCorruptedHostName = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getChunkCorruptedHostNameBytes(int index) {
+        return chunkCorruptedHostName_.getByteString(index);
+      }
+      /**
+       * <code>repeated string chunkCorruptedHostName = 4;</code>
+       */
+      public Builder setChunkCorruptedHostName(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureChunkCorruptedHostNameIsMutable();
+        chunkCorruptedHostName_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string chunkCorruptedHostName = 4;</code>
+       */
+      public Builder addChunkCorruptedHostName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureChunkCorruptedHostNameIsMutable();
+        chunkCorruptedHostName_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string chunkCorruptedHostName = 4;</code>
+       */
+      public Builder addAllChunkCorruptedHostName(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureChunkCorruptedHostNameIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, chunkCorruptedHostName_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string chunkCorruptedHostName = 4;</code>
+       */
+      public Builder clearChunkCorruptedHostName() {
+        chunkCorruptedHostName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string chunkCorruptedHostName = 4;</code>
+       */
+      public Builder addChunkCorruptedHostNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        ensureChunkCorruptedHostNameIsMutable();
+        chunkCorruptedHostName_.add(value);
         onChanged();
         return this;
       }
@@ -3094,13 +3477,15 @@ public final class StorageMessages {
       "\n\026storage_messages.proto\"_\n\nStoreChunk\022\020" +
       "\n\010fileName\030\001 \001(\t\022\017\n\007chunkId\030\002 \001(\005\022\014\n\004dat" +
       "a\030\003 \001(\014\022\016\n\006copies\030\004 \001(\005\022\020\n\010hostName\030\005 \003(" +
-      "\t\"1\n\014RetrieveFile\022\020\n\010fileName\030\001 \001(\t\022\017\n\007c" +
-      "hunkId\030\002 \001(\005\"&\n\014RetrieveMeta\022\026\n\016isRetrie" +
-      "veMeta\030\001 \001(\010\"\230\001\n\025StorageMessageWrapper\022$" +
-      "\n\rstoreChunkMsg\030\001 \001(\0132\013.StoreChunkH\000\022(\n\017" +
-      "retrieveFileMsg\030\002 \001(\0132\r.RetrieveFileH\000\022(" +
-      "\n\017retrieveMetaMsg\030\003 \001(\0132\r.RetrieveMetaH\000" +
-      "B\005\n\003msgB\022\n\020edu.usfca.cs.dfsb\006proto3"
+      "\t\"c\n\014RetrieveFile\022\020\n\010fileName\030\001 \001(\t\022\017\n\007c" +
+      "hunkId\030\002 \001(\005\022\020\n\010hostName\030\003 \003(\t\022\036\n\026chunkC" +
+      "orruptedHostName\030\004 \003(\t\"&\n\014RetrieveMeta\022\026" +
+      "\n\016isRetrieveMeta\030\001 \001(\010\"\230\001\n\025StorageMessag" +
+      "eWrapper\022$\n\rstoreChunkMsg\030\001 \001(\0132\013.StoreC" +
+      "hunkH\000\022(\n\017retrieveFileMsg\030\002 \001(\0132\r.Retrie" +
+      "veFileH\000\022(\n\017retrieveMetaMsg\030\003 \001(\0132\r.Retr",
+      "ieveMetaH\000B\005\n\003msgB\022\n\020edu.usfca.cs.dfsb\006p" +
+      "roto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3125,7 +3510,7 @@ public final class StorageMessages {
     internal_static_RetrieveFile_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_RetrieveFile_descriptor,
-        new java.lang.String[] { "FileName", "ChunkId", });
+        new java.lang.String[] { "FileName", "ChunkId", "HostName", "ChunkCorruptedHostName", });
     internal_static_RetrieveMeta_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_RetrieveMeta_fieldAccessorTable = new

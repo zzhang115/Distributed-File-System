@@ -30,6 +30,7 @@ public class StorageNode {
     private static String storeFilePath = "/home2/zzhang115/";
     private static final int CONTROLLER_PORT = 40000;
     private static final int STORAGENODE_PORT= 40010;
+    private static final int REPLY_WAITING_TIME = 10000;
 
     public static void main(String[] args) throws Exception {
         storageNodeInit();
@@ -76,7 +77,7 @@ public class StorageNode {
         }
     }
 
-    public static void handleMessage() throws IOException {
+    public static void handleMessage() throws IOException, InterruptedException {
         Socket socket = nodeServerSocket.accept();
         StorageMessages.StorageMessageWrapper msgWrapper
                 = StorageMessages.StorageMessageWrapper.parseDelimitedFrom(
@@ -99,27 +100,8 @@ public class StorageNode {
             int chunkId = storeChunkMsg.getChunkId();
             int copies = storeChunkMsg.getCopies();
             ByteString data = storeChunkMsg.getData();
+            storeChunkToLocal(fileName, chunkId, data);
 
-            logger.info("StorageNode: Storing File Name: " + fileName + " ChunkId: " + chunkId);
-
-            if (fullMetaMap.keySet().contains(fileName)) {
-                fullMetaMap.get(fileName).add(chunkId);
-            } else {
-                List<Integer> chunkIdList = new ArrayList<Integer>();
-                chunkIdList.add(chunkId);
-                fullMetaMap.put(fileName, chunkIdList);
-            }
-
-            if (updateMetaMap.keySet().contains(fileName)) {
-                updateMetaMap.get(fileName).add(chunkId);
-            } else {
-                List<Integer> chunkIdList = new ArrayList<Integer>();
-                chunkIdList.add(chunkId);
-                updateMetaMap.put(fileName, chunkIdList);
-            }
-
-            writeFileToLocalMachine(fileName, chunkId, data);
-            logger.info("StorageNode: " + getHostname() + " Store Chunk Successfully!");
             socket.close();
             passChunkToPeer(copyChunkStorageNodeHostNames, fileName, chunkId, copies - 1, data);
             return;
@@ -130,9 +112,28 @@ public class StorageNode {
             logger.info("StorageNode: Received Retrieve File Request!");
             String fileName = retrieveFileMsg.getFileName();
             int chunkId = retrieveFileMsg.getChunkId();
+            List<String> storeCurrentChunkHostNames = new ArrayList<String>();
+            List<String> chunkCorruptedHostNames = new ArrayList<String>();
+
+            int storeCurrentChunkHostCount = retrieveFileMsg.getHostNameCount();
+            int chunkCorruptedHostCount = retrieveFileMsg.getChunkCorruptedHostNameCount();
+
+            for (int i = 0; i < storeCurrentChunkHostCount; i++) {
+                storeCurrentChunkHostNames.add(retrieveFileMsg.getHostName(i));
+            }
+            for (int i = 0; i < chunkCorruptedHostCount; i++) {
+                chunkCorruptedHostNames.add(retrieveFileMsg.getChunkCorruptedHostName(i));
+            }
+
             logger.info("StorageNode: Retrieve Request, FileName: " + fileName + " ChunkId: " + chunkId);
+
             if (fullMetaMap.containsKey(fileName) && fullMetaMap.get(fileName).contains(chunkId)) {
-                sendFileDataToClient(socket, fileName, chunkId);
+                if (!checkIfFileCorrupt(fileName, chunkId)) {
+                    sendFileDataToClient(socket, fileName, chunkId);
+                } else {
+                    retrieveChunkFromPeer(fileName, chunkId, storeCurrentChunkHostNames, chunkCorruptedHostNames);
+                    sendFileDataToClient(socket, fileName, chunkId);//send data
+                }
             }
             socket.close();
             return;
@@ -148,6 +149,29 @@ public class StorageNode {
             socket.close();
             return;
         }
+    }
+
+    public static void storeChunkToLocal(String fileName, int chunkId, ByteString data) throws IOException {
+        logger.info("StorageNode: Storing File Name: " + fileName + " ChunkId: " + chunkId);
+
+        if (fullMetaMap.keySet().contains(fileName)) {
+            fullMetaMap.get(fileName).add(chunkId);
+        } else {
+            List<Integer> chunkIdList = new ArrayList<Integer>();
+            chunkIdList.add(chunkId);
+            fullMetaMap.put(fileName, chunkIdList);
+        }
+
+        if (updateMetaMap.keySet().contains(fileName)) {
+            updateMetaMap.get(fileName).add(chunkId);
+        } else {
+            List<Integer> chunkIdList = new ArrayList<Integer>();
+            chunkIdList.add(chunkId);
+            updateMetaMap.put(fileName, chunkIdList);
+        }
+
+        writeFileToLocalMachine(fileName, chunkId, data);
+        logger.info("StorageNode: " + getHostname() + " Store Chunk Successfully!");
     }
 
     public static void sendMetaDataToController(Socket socket) throws IOException {
@@ -200,6 +224,70 @@ public class StorageNode {
         }
     }
 
+    public static void retrieveChunkFromPeer(String fileName, int chunkId, List<String> hostNames,
+                                             List<String> chunkCorruptedHostNames) throws IOException, InterruptedException{
+        if (hostNames.size() > 0) {
+            logger.info("StorageNode: Start Send Retrieve Chunk Info From Other StorageNode(" +
+                    hostNames.get(0) + ")");
+            String currentHostName = getHostname();
+            chunkCorruptedHostNames.add(currentHostName);
+
+            String retrieveHostName = hostNames.get(0);
+            Socket storageNodeSocket = new Socket(retrieveHostName, STORAGENODE_PORT);
+            hostNames.remove(0);
+
+            StorageMessages.RetrieveFile.Builder retrieveFileMsg =
+                    StorageMessages.RetrieveFile.newBuilder();
+
+            for (String hostName : hostNames) {
+                retrieveFileMsg.addHostName(hostName);
+            }
+            for (String chunkCorruptedHostName : chunkCorruptedHostNames) {
+                retrieveFileMsg.addChunkCorruptedHostName(chunkCorruptedHostName);
+            }
+
+            retrieveFileMsg.setFileName(fileName).setChunkId(chunkId).build();
+            StorageMessages.StorageMessageWrapper msgWrapper =
+                    StorageMessages.StorageMessageWrapper.newBuilder()
+                            .setRetrieveFileMsg(retrieveFileMsg)
+                            .build();
+            msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
+            logger.info("StorageNode: Finished Send Retrieve Chunk Info From Other StorageNode(" +
+                    retrieveHostName + ")");
+            getChunkReplyFromPeer(storageNodeSocket);
+
+        } else {
+            logger.info("StorageNode: No Other StorageNode Can Retrieve!");
+        }
+    }
+
+    public static void getChunkReplyFromPeer(Socket storageNodeSocket) throws IOException, InterruptedException{
+        long currentTime = System.currentTimeMillis();
+        long end = currentTime + REPLY_WAITING_TIME;
+
+        StorageMessages.StorageMessageWrapper msgWrapper =
+                StorageMessages.StorageMessageWrapper.parseDelimitedFrom(storageNodeSocket.getInputStream());
+
+        logger.info("StorageNode: Received Correct Chunk From Peer");
+        while (System.currentTimeMillis() < end) {
+            if (msgWrapper.hasStoreChunkMsg()) {
+                StorageMessages.StoreChunk storeChunkMsg =
+                        msgWrapper.getStoreChunkMsg();
+                String fileName = storeChunkMsg.getFileName();
+                int chunkId = storeChunkMsg.getChunkId();
+                ByteString data = storeChunkMsg.getData();
+                storeChunkToLocal(fileName, chunkId, data);
+                storageNodeSocket.close();
+                return;
+            }
+            Thread.sleep(500);
+        }
+        if (System.currentTimeMillis() < end) {
+            logger.info("StorageNode: Peer is out of service now!");
+        }
+        storageNodeSocket.close();
+    }
+
     public static void sendFileDataToClient(Socket socket, String fileName, int chunkId) throws IOException {
         logger.info("StorageNode: Start Sending File Data To Client");
         File file = new File(storeFilePath + fileName + "_Chunk" + chunkId);
@@ -220,7 +308,17 @@ public class StorageNode {
                         .setRetrieveFileDataMsg(retrieveFileDataMsg)
                         .build();
         msgWrapper.writeDelimitedTo(socket.getOutputStream());
+        socket.close();
         logger.info("StorageNode: Finished Sending File Data To Client");
+    }
+
+    public static boolean checkIfFileCorrupt(String fileName, int chunkId) throws IOException {
+        String currentMd5 = CheckSum.fileCheckSum(storeFilePath + fileName + "_Chunk" + chunkId);
+        if (md5Map.keySet().contains(fileName + "_" + chunkId) &&
+                md5Map.get(fileName + "_" + chunkId).equals(currentMd5)) {
+            return false;
+        }
+        return true;
     }
 
     public static void writeFileToLocalMachine

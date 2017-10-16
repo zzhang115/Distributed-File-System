@@ -4,7 +4,9 @@ package edu.usfca.cs.dfs;
 import com.google.protobuf.ByteString;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
@@ -221,7 +223,8 @@ public class Client {
                 ClientMessages.DFSFileList dfsFileListMsg =
                         msgWrapper.getDfsFileListMsg();
                 int fileCount = dfsFileListMsg.getDfsFileCount();
-                StringBuffer buffer = new StringBuffer();
+                StringBuffer buffer = new StringBuffer("\n------------------------------------------------" +
+                        "----------------------------------------\n");
                 for (int i = 0; i < fileCount; i++) {
                     ClientMessages.DFSFile dfsFileMsg = dfsFileListMsg.getDfsFile(i);
                     buffer.append("Client: File: " + dfsFileMsg.getFileName());
@@ -234,8 +237,10 @@ public class Client {
                             buffer.append("Stored At " + dfsChunkMsg.getStorageNodeHostName(k));
                         }
                     }
-                    logger.info(buffer.toString());
                 }
+                buffer.append("\n------------------------------------------------" +
+                        "----------------------------------------\n");
+                logger.info(buffer.toString());
                 return;
             }
             Thread.sleep(500);

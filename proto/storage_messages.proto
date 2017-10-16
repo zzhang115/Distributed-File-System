@@ -12,6 +12,8 @@ message StoreChunk {
 message RetrieveFile {
     string fileName = 1;
     int32 chunkId = 2;
+    repeated string hostName = 3;
+    repeated string chunkCorruptedHostName = 4;
 }
 
 message RetrieveMeta {
