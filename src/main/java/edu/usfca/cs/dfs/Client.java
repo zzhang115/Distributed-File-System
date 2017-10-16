@@ -84,8 +84,7 @@ public class Client {
     }
 
     public static void clientStoreFile(String fileName) throws IOException, InterruptedException {
-        fileMd5Map.put(fileName, CheckSum.fileCheckSum(fileName));
-
+        fileMd5Map.put(fileName, CheckSum.fileCheckSum(filePath + fileName));
         breakFiletoChunks(filePath + fileName);
         sendStoreRequestToController();
     }
