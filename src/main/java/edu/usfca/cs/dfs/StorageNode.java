@@ -24,6 +24,7 @@ public class StorageNode {
     private static DateFormat dateFormat;
     private static volatile Map<String, List<Integer>> updateMetaMap; // <fileName, <chunkId>>
     private static volatile Map<String, List<Integer>> fullMetaMap; // <fileName, <chunkId>>
+    private static volatile Map<String, String> md5Map; // <fileName, <chunkId>>
     private static ReentrantLock lock = new ReentrantLock();
     private static final String CONTROLLER_HOSTNAME = "bass01.cs.usfca.edu";
     private static String storeFilePath = "/home2/zzhang115/";
@@ -31,7 +32,6 @@ public class StorageNode {
     private static final int STORAGENODE_PORT= 40010;
 
     public static void main(String[] args) throws Exception {
-        String hostname = getHostname();
         storageNodeInit();
         while (true) {
             handleMessage();
@@ -47,6 +47,7 @@ public class StorageNode {
         dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         updateMetaMap = new HashMap<String, List<Integer>>();
         fullMetaMap = new HashMap<String, List<Integer>>();
+        md5Map = new HashMap<String, String>();
         clearStoreFilePath();
 
         Runnable heartBeat = new Runnable() {
@@ -120,11 +121,6 @@ public class StorageNode {
             writeFileToLocalMachine(fileName, chunkId, data);
             logger.info("StorageNode: " + getHostname() + " Store Chunk Successfully!");
             socket.close();
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             passChunkToPeer(copyChunkStorageNodeHostNames, fileName, chunkId, copies - 1, data);
             return;
         }
@@ -236,6 +232,9 @@ public class StorageNode {
         fileOutputStream.write(dataBytes);
         fileOutputStream.flush();
         fileOutputStream.close();
+        String fileNameChunkId = fileName + "_" +chunkId;
+        String md5 = CheckSum.fileCheckSum(storeFilePath + fileName + "_Chunk" + chunkId);
+        md5Map.put(fileNameChunkId, md5);
     }
 
     public static void sendHeartBeat() throws IOException {

@@ -13,15 +13,18 @@ import java.util.logging.Logger;
 
 public class Client {
     private static Logger logger = Logger.getLogger("Log");
-    private static String filePath = "p1-zzhang115/client.file/test.pdf";
-//    private static String retrieveFilePath = "p1-zzhang115/client.retrieve.file/";
+    private static String testFile1 = "test_file_1.bin";
+    private static String testFile2 = "test_file_2.bin";
+    private static String testFile3 = "test_file_3.bin";
+    private static String testFile4 = "test_file_4.bin";
+    private static String testFile5 = "test_file_5.bin";
+    private static String filePath = "testfile/";
+//    private static String filePath = "p1-zzhang115/client.file/";
     private static String retrieveFilePath = "/home2/zzhang115/";
-    private static String testRetrieveFileName = "test.pdf";
-//    private static String filePath = "client.file/data_co.csv";
-    private static List<DFSChunk> storeChunks = new ArrayList<DFSChunk>();
-    private static List<DFSChunk> retrieveChunks = new ArrayList<DFSChunk>();
-    private static Map<Integer, String> retrieveFileMap = new HashMap<Integer, String>();
-    private static long fileSize;
+    private static List<DFSChunk> storeChunks;
+    private static List<DFSChunk> retrieveChunks;
+    private static Map<Integer, String> retrieveFileMap;
+    private static Map<String, String> fileMd5Map;
     private static int retrieveChunkSum;
     private static final int SIZE_OF_CHUNK = 1024 * 1024; // 1MB
     private static final String CONTROLLER_HOSTNAME = "bass01.cs.usfca.edu";
@@ -33,28 +36,45 @@ public class Client {
     private static CountDownLatch latch;
 
     public static void main(String[] args) throws IOException, InterruptedException {
-
-        clientInit();
-        switch(args[0]) {
-            case "st":  // store file
-                clientStoreFile();
-                break;
-            case "gl":
-                clientGetDFSFileList();
-                break;
-            case "rt":  // retrieve file
-                clientRetrieveFile();
-                break;
+        Scanner scanner = new Scanner(System.in);
+        while (scanner.hasNext()) {
+            clientInit();
+            System.out.print("Please input: ");
+            String input = scanner.next();
+            switch(input) {
+                case "test1":
+                    clientStoreFile(testFile1);
+                    clientGetDFSFileList();
+                    clientRetrieveFile(testFile1);
+                    break;
+                case "test2":
+                    clientGetDFSFileList();
+                    break;
+                case "test3":
+                    clientRetrieveFile(testFile3);
+                    break;
+                case "test4":
+                    break;
+                case "test5":
+                    break;
+                case "quit":
+                    return;
+            }
         }
     }
 
     public static void clientInit() throws IOException {
+        storeChunks = new ArrayList<DFSChunk>();
+        retrieveChunks = new ArrayList<DFSChunk>();
+        retrieveFileMap = new HashMap<Integer, String>();
+        fileMd5Map = new HashMap<String, String>();
+
         System.setProperty("java.util.logging.SimpleFormatter.format",
                 "%5$s%6$s -- %1$tF %1$tT %4$s %2$s%n");
-        clearStoreFilePath();
+        clearStoreFilePath(retrieveFilePath);
     }
 
-    public static void clearStoreFilePath() throws IOException {
+    public static void clearStoreFilePath(String retrieveFilePath) throws IOException {
         File dir = new File(retrieveFilePath);
         for (File file : dir.listFiles()) {
             if (!file.isDirectory()) {
@@ -63,36 +83,26 @@ public class Client {
         }
     }
 
-    public static void clientStoreFile() throws IOException, InterruptedException {
-//        System.setProperty("java.util.logging.SimpleFormatter.format",
-//                "%1$tF %1$tT %4$s %2$s %5$s%6$s%n");
-        logger.info("Client: Start Send Storing File Request");
-        File file = new File(filePath);
-        fileSize = file.length();
-        logger.info("Client: FileSize is " + fileSize);
-        String md5Hash = fileCheckSum(file);
-        logger.info("Client: Start break file to chunks");
-        breakFiletoChunks(file);
-        logger.info("Client: Finish breaking chunks");
+    public static void clientStoreFile(String fileName) throws IOException, InterruptedException {
+        fileMd5Map.put(fileName, CheckSum.fileCheckSum(fileName));
 
+        breakFiletoChunks(filePath + fileName);
         sendStoreRequestToController();
     }
 
-    public static void clientRetrieveFile() throws IOException, InterruptedException {
-        logger.info("Client: Send Retrieving File Request: " + testRetrieveFileName);
-        sendRetrieveFileRequestToController(testRetrieveFileName);
-        logger.info("Client: Wait Msg For Retrievng File: " + testRetrieveFileName);
-//        getRetrievingReplyFromController();
-        sendRetrieveRequestToStorageNode(testRetrieveFileName);
-        writeReceivedFileDataToLocal();
+    public static void clientRetrieveFile(String fileName) throws IOException, InterruptedException {
+        sendRetrieveFileRequestToController(fileName);
+        sendRetrieveRequestToStorageNode(fileName);
+        writeReceivedFileDataToLocal(fileName);
+        String newMd5 = CheckSum.fileCheckSum(retrieveFilePath + fileName);
+        verifyMd5(retrieveFilePath + fileName, newMd5);
     }
 
     public static void sendStoreRequestToController() throws IOException, InterruptedException {
-//        for (DFSChunk chunk : storeChunks) {
-        DFSChunk chunk = storeChunks.get(0);
+        for (DFSChunk chunk : storeChunks) {
             List<String> availStorageNodeHostNames = new ArrayList<String>();
             Socket controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
-            logger.info("Client: Start Sending Store Request To Controller");
+            logger.info("Client: Start Send Store Request To Controller");
             ControllerMessages.StoreChunkRequest storeChunkRequestMsg = ControllerMessages
                     .StoreChunkRequest.newBuilder().setFileSize(chunk.getChunkSize()).build();
 
@@ -103,7 +113,8 @@ public class Client {
             msgWrapper.writeDelimitedTo(controllerSocket.getOutputStream());
             getStoringReplyFromController(controllerSocket, availStorageNodeHostNames);
             sendStoreRequestToStorageNode(chunk, availStorageNodeHostNames);
-//        }
+            logger.info("Client: Finished Send Store Request To Controller");
+        }
     }
 
     public static void getStoringReplyFromController(Socket controllerSocket, List<String> availStorageNodeHostNames)
@@ -236,7 +247,7 @@ public class Client {
 
     public static void sendRetrieveFileRequestToController(String fileName) throws IOException, InterruptedException {
         Socket controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
-        logger.info("Client: Start Sending Retrieve File Request To Controller");
+        logger.info("Client: Start Sending Retrieve " + fileName + " Request To Controller");
         ControllerMessages.RetrieveFileRequest retrieveFileMsg = ControllerMessages
                 .RetrieveFileRequest.newBuilder()
                 .setFilename(fileName)
@@ -359,11 +370,11 @@ public class Client {
         socket.close();
     }
 
-    public static void writeReceivedFileDataToLocal() throws IOException {
+    public static void writeReceivedFileDataToLocal(String fileName) throws IOException {
         if (retrieveChunks.size() > 0) {
             logger.info("Client: Start Writing Retrieved Data To Local Machine");
             Collections.sort(retrieveChunks, new ChunkComparator());
-            FileOutputStream fileOutputStream = new FileOutputStream(retrieveFilePath + testRetrieveFileName);
+            FileOutputStream fileOutputStream = new FileOutputStream(retrieveFilePath + fileName);
             for (DFSChunk chunk : retrieveChunks) {
                 fileOutputStream.write(chunk.getData().toByteArray());
             }
@@ -373,9 +384,11 @@ public class Client {
         }
     }
 
-    public static void breakFiletoChunks(File file) throws IOException {
+    public static void breakFiletoChunks(String fileName) throws IOException {
+        logger.info("Client: Start break file to chunks");
+        File file = new File(fileName);
         byte[] buffer = new byte[SIZE_OF_CHUNK];
-        String fileName = file.getName();
+
         try (FileInputStream fileInputStream = new FileInputStream(file);
              BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream)) {
             int chunksId = 0;
@@ -386,7 +399,19 @@ public class Client {
                 ByteString data = ByteString.copyFrom(newBuffer);
                 storeChunks.add(new DFSChunk(fileName, chunksId++, data));
             }
-            logger.info("Client: Chunks Size: " + storeChunks.size());
+        }
+        logger.info("Client: Finish breaking chunks");
+    }
+
+    private static void verifyMd5(String fileName, String newMd5) {
+        if (fileMd5Map.keySet().contains(fileName)) {
+            if (fileMd5Map.get(fileName).equals(newMd5)) {
+                logger.info("Client: New Generated Md5 is same with old one");
+            } else {
+                logger.info("Client: New Generated Md5 is not same with old one");
+            }
+        } else {
+            logger.info("Client: No This File Before!");
         }
     }
 
@@ -394,35 +419,5 @@ public class Client {
         public int compare(DFSChunk a, DFSChunk b) {
             return a.getChunkID() - b.getChunkID();
         }
-    }
-
-    public static String fileCheckSum(File file) throws IOException {
-        //Use MD5 algorithm
-        MessageDigest md5Digest = null;
-
-        try {
-            md5Digest = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
-        FileInputStream fileInputStream = new FileInputStream(file);
-        byte[] byteArray = new byte[1024]; //Create byte array to read data in chunks
-        int bytesCount = 0;
-        //Read file data and update in message digest
-        while ((bytesCount = fileInputStream.read(byteArray)) != -1) {
-            md5Digest.update(byteArray, 0, bytesCount);
-        };
-        fileInputStream.close();
-        //Get the hash's bytes
-        //This bytes[] has bytes in decimal format;
-        byte[] bytes = md5Digest.digest();
-
-        //Convert it to hexadecimal format
-        StringBuilder sb = new StringBuilder();
-        for(int i=0; i< bytes.length ;i++) {
-            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-        }
-        return sb.toString();
     }
 }
