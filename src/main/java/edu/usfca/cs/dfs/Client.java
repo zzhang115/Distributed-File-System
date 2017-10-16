@@ -17,7 +17,6 @@ public class Client {
     private static String testFile4 = "test_file_4.bin";
     private static String testFile5 = "test_file_5.bin";
     private static String filePath = "testfile/";
-//    private static String filePath = "p1-zzhang115/client.file/";
     private static String retrieveFilePath = "/home2/zzhang115/";
     private static List<DFSChunk> storeChunks;
     private static List<DFSChunk> retrieveChunks;
@@ -53,6 +52,10 @@ public class Client {
                     clientRetrieveFile(testFile3);
                     break;
                 case "test4":
+                    clientStoreFile(testFile4);
+                    Thread.sleep(RETRIEVE_WAITING_TIME);
+                    clientGetDFSFileList();
+                    clientRetrieveFile(testFile4);
                     break;
                 case "test5":
                     break;
@@ -93,7 +96,7 @@ public class Client {
         sendRetrieveRequestToStorageNode(fileName);
         writeReceivedFileDataToLocal(fileName);
         String newMd5 = CheckSum.fileCheckSum(retrieveFilePath + fileName);
-        verifyMd5(retrieveFilePath + fileName, newMd5);
+        verifyMd5(fileName, newMd5);
     }
 
     public static void sendStoreRequestToController() throws IOException, InterruptedException {
