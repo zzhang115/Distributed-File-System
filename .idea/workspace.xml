@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3df7ae5d-ae2e-4653-894d-d9189adc57ee" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java" afterPath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageNode.java" afterPath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageNode.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,8 +21,8 @@
           <file leaf-file-name="Client.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="750">
-                  <caret line="58" column="45" lean-forward="true" selection-start-line="58" selection-start-column="45" selection-end-line="58" selection-end-column="45" />
+                <state relative-caret-position="45">
+                  <caret line="38" column="33" lean-forward="false" selection-start-line="38" selection-start-column="33" selection-end-line="38" selection-end-column="33" />
                   <folding>
                     <element signature="e#4287#4295#0" expanded="true" />
                   </folding>
@@ -34,10 +34,10 @@
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageNode.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="390">
-                  <caret line="154" column="107" lean-forward="false" selection-start-line="154" selection-start-column="107" selection-end-line="154" selection-end-column="107" />
+                  <caret line="176" column="107" lean-forward="false" selection-start-line="176" selection-start-column="107" selection-end-line="176" selection-end-column="107" />
                   <folding>
-                    <element signature="e#6935#6944#0" expanded="true" />
-                    <element signature="e#7230#7239#0" expanded="true" />
+                    <element signature="e#7878#7887#0" expanded="true" />
+                    <element signature="e#8173#8182#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -70,8 +70,8 @@
           <file leaf-file-name="Controller.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-1315">
-                  <caret line="119" column="68" lean-forward="false" selection-start-line="119" selection-start-column="68" selection-end-line="119" selection-end-column="68" />
+                <state relative-caret-position="170">
+                  <caret line="218" column="24" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="323" selection-end-column="0" />
                   <folding>
                     <element signature="e#2589#2902#0" expanded="true" />
                     <element signature="e#2901#2902#0" expanded="true" />
@@ -83,14 +83,16 @@
           <file leaf-file-name="StorageNode.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageNode.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1680">
-                  <caret line="196" column="37" lean-forward="false" selection-start-line="196" selection-start-column="37" selection-end-line="196" selection-end-column="37" />
+                <state relative-caret-position="660">
+                  <caret line="125" column="12" lean-forward="false" selection-start-line="125" selection-start-column="12" selection-end-line="125" selection-end-column="12" />
                   <folding>
                     <element signature="e#2144#2542#0" expanded="true" />
                     <element signature="e#2541#2542#0" expanded="true" />
                     <element signature="e#3899#3907#0" expanded="true" />
-                    <element signature="e#4897#4905#0" expanded="true" />
-                    <element signature="e#4973#4981#0" expanded="true" />
+                    <element signature="e#4661#4670#0" expanded="true" />
+                    <element signature="e#4984#4993#0" expanded="true" />
+                    <element signature="e#5840#5848#0" expanded="true" />
+                    <element signature="e#5916#5924#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -158,8 +160,8 @@
         <option value="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/DFSChunk.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/CheckSum.java" />
         <option value="$PROJECT_DIR$/proto/storage_messages.proto" />
-        <option value="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageNode.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java" />
+        <option value="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageNode.java" />
       </list>
     </option>
   </component>
@@ -248,10 +250,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="46" />
-    <option name="y" value="-11" />
-    <option name="width" value="1875" />
-    <option name="height" value="1092" />
+    <option name="x" value="47" />
+    <option name="y" value="-4" />
+    <option name="width" value="1873" />
+    <option name="height" value="1084" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -915,14 +917,7 @@
       <workItem from="1507667378179" duration="663000" />
       <workItem from="1507747936002" duration="4334000" />
       <workItem from="1507919147648" duration="54084000" />
-      <workItem from="1508128458571" duration="22091000" />
-    </task>
-    <task id="LOCAL-00032" summary="start build pipeline">
-      <created>1507162666683</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1507162666683</updated>
+      <workItem from="1508128458571" duration="23114000" />
     </task>
     <task id="LOCAL-00033" summary="add bytecopy function">
       <created>1507183562796</created>
@@ -1260,11 +1255,18 @@
       <option name="project" value="LOCAL" />
       <updated>1508199437560</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="add repair chunk">
+      <created>1508200926907</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1508200926907</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="289798000" />
+    <option name="totallyTimeSpent" value="290821000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1276,7 +1278,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="46" y="-11" width="1875" height="1092" extended-state="6" />
+    <frame x="47" y="-4" width="1873" height="1084" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1432,8 +1434,13 @@
         <state relative-caret-position="285">
           <caret line="25" column="44" lean-forward="true" selection-start-line="25" selection-start-column="44" selection-end-line="25" selection-end-column="44" />
           <folding>
-            <element signature="e#6935#6944#0" expanded="true" />
-            <element signature="e#7230#7239#0" expanded="true" />
+            <element signature="e#2144#2542#0" expanded="true" />
+            <element signature="e#2541#2542#0" expanded="true" />
+            <element signature="e#3899#3907#0" expanded="true" />
+            <element signature="e#4661#4670#0" expanded="true" />
+            <element signature="e#4984#4993#0" expanded="true" />
+            <element signature="e#5840#5848#0" expanded="true" />
+            <element signature="e#5916#5924#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1465,8 +1472,13 @@
         <state relative-caret-position="435">
           <caret line="35" column="30" lean-forward="false" selection-start-line="35" selection-start-column="30" selection-end-line="35" selection-end-column="30" />
           <folding>
-            <element signature="e#6935#6944#0" expanded="true" />
-            <element signature="e#7230#7239#0" expanded="true" />
+            <element signature="e#2144#2542#0" expanded="true" />
+            <element signature="e#2541#2542#0" expanded="true" />
+            <element signature="e#3899#3907#0" expanded="true" />
+            <element signature="e#4661#4670#0" expanded="true" />
+            <element signature="e#4984#4993#0" expanded="true" />
+            <element signature="e#5840#5848#0" expanded="true" />
+            <element signature="e#5916#5924#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1508,8 +1520,13 @@
         <state relative-caret-position="45">
           <caret line="3" column="20" lean-forward="true" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
           <folding>
-            <element signature="e#6935#6944#0" expanded="true" />
-            <element signature="e#7230#7239#0" expanded="true" />
+            <element signature="e#2144#2542#0" expanded="true" />
+            <element signature="e#2541#2542#0" expanded="true" />
+            <element signature="e#3899#3907#0" expanded="true" />
+            <element signature="e#4661#4670#0" expanded="true" />
+            <element signature="e#4984#4993#0" expanded="true" />
+            <element signature="e#5840#5848#0" expanded="true" />
+            <element signature="e#5916#5924#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1656,17 +1673,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1315">
-          <caret line="119" column="68" lean-forward="false" selection-start-line="119" selection-start-column="68" selection-end-line="119" selection-end-column="68" />
-          <folding>
-            <element signature="e#2589#2902#0" expanded="true" />
-            <element signature="e#2901#2902#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/CheckSum.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -1701,23 +1707,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageNode.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="154" column="107" lean-forward="false" selection-start-line="154" selection-start-column="107" selection-end-line="154" selection-end-column="107" />
+        <state relative-caret-position="45">
+          <caret line="38" column="33" lean-forward="false" selection-start-line="38" selection-start-column="33" selection-end-line="38" selection-end-column="33" />
           <folding>
-            <element signature="e#6935#6944#0" expanded="true" />
-            <element signature="e#7230#7239#0" expanded="true" />
+            <element signature="e#4287#4295#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="750">
-          <caret line="58" column="45" lean-forward="true" selection-start-line="58" selection-start-column="45" selection-end-line="58" selection-end-column="45" />
+        <state relative-caret-position="170">
+          <caret line="218" column="24" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="323" selection-end-column="0" />
           <folding>
-            <element signature="e#4287#4295#0" expanded="true" />
+            <element signature="e#2589#2902#0" expanded="true" />
+            <element signature="e#2901#2902#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="660">
+          <caret line="125" column="12" lean-forward="false" selection-start-line="125" selection-start-column="12" selection-end-line="125" selection-end-column="12" />
+          <folding>
+            <element signature="e#2144#2542#0" expanded="true" />
+            <element signature="e#2541#2542#0" expanded="true" />
+            <element signature="e#3899#3907#0" expanded="true" />
+            <element signature="e#4661#4670#0" expanded="true" />
+            <element signature="e#4984#4993#0" expanded="true" />
+            <element signature="e#5840#5848#0" expanded="true" />
+            <element signature="e#5916#5924#0" expanded="true" />
           </folding>
         </state>
       </provider>

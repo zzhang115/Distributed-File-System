@@ -101,7 +101,29 @@ public class StorageNode {
             int chunkId = storeChunkMsg.getChunkId();
             int copies = storeChunkMsg.getCopies();
             ByteString data = storeChunkMsg.getData();
-            storeChunkToLocal(fileName, chunkId, data);
+//            storeChunkToLocal(fileName, chunkId, data);
+            // previous
+            logger.info("StorageNode: Storing File Name: " + fileName + " ChunkId: " + chunkId);
+
+            if (fullMetaMap.keySet().contains(fileName)) {
+                fullMetaMap.get(fileName).add(chunkId);
+            } else {
+                List<Integer> chunkIdList = new ArrayList<Integer>();
+                chunkIdList.add(chunkId);
+                fullMetaMap.put(fileName, chunkIdList);
+            }
+
+            if (updateMetaMap.keySet().contains(fileName)) {
+                updateMetaMap.get(fileName).add(chunkId);
+            } else {
+                List<Integer> chunkIdList = new ArrayList<Integer>();
+                chunkIdList.add(chunkId);
+                updateMetaMap.put(fileName, chunkIdList);
+            }
+
+            writeFileToLocalMachine(fileName, chunkId, data);
+            logger.info("StorageNode: " + getHostname() + " Store Chunk Successfully!");
+            // previous
 
             socket.close();
             passChunkToPeer(copyChunkStorageNodeHostNames, fileName, chunkId, copies - 1, data);
@@ -309,7 +331,6 @@ public class StorageNode {
                         .setRetrieveFileDataMsg(retrieveFileDataMsg)
                         .build();
         msgWrapper.writeDelimitedTo(socket.getOutputStream());
-        socket.close();
         logger.info("StorageNode: Finished Sending File Data To Client");
     }
 
