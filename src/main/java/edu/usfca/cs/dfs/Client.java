@@ -22,7 +22,7 @@ public class Client {
     private static String retrieveFilePath = "/home2/zzhang115/";
     private static volatile List<DFSChunk> storeChunks;
     private static volatile List<DFSChunk> retrieveChunks;
-    private static Map<Integer, String> retrieveFileMap;
+    private static Map<Integer, String> retrieveFileMap; // chunkId, storageNodeHostName
     private static Map<String, String> fileMd5Map;
     private static int retrieveChunkSum;
     private static final int SIZE_OF_CHUNK = 1024 * 1024; // 1MB
@@ -51,7 +51,7 @@ public class Client {
                     clientStoreFile(testFile1);
                     clientStoreFile(testFile2);
                     clientStoreFile(testFile3);
-                    Thread.sleep(2 * RETRIEVE_WAITING_TIME);
+                    Thread.sleep(RETRIEVE_WAITING_TIME);
                     clientGetDFSFileList();
                     clientRetrieveFile(testFile1);
                     clientRetrieveFile(testFile3);
@@ -78,8 +78,6 @@ public class Client {
     }
 
     public static void clientInit() throws IOException {
-        storeChunks = new ArrayList<DFSChunk>();
-        retrieveChunks = new ArrayList<DFSChunk>();
         fileMd5Map = new HashMap<String, String>();
 
         System.setProperty("java.util.logging.SimpleFormatter.format",
@@ -97,12 +95,15 @@ public class Client {
     }
 
     public static void clientStoreFile(String fileName) throws IOException, InterruptedException {
+        storeChunks = new ArrayList<DFSChunk>();
         fileMd5Map.put(fileName, CheckSum.fileCheckSum(filePath + fileName));
         breakFiletoChunks(fileName);
         sendStoreRequestToController();
     }
 
     public static void clientRetrieveFile(String fileName) throws IOException, InterruptedException {
+        retrieveChunks = new ArrayList<DFSChunk>();
+        retrieveFileMap = new HashMap<Integer, String>();
         sendRetrieveFileRequestToController(fileName);
         sendRetrieveRequestToStorageNode(fileName);
         writeReceivedFileDataToLocal(fileName);
@@ -283,7 +284,6 @@ public class Client {
     public static void getRetrievingReplyFromController(Socket controllerSocket) throws IOException, InterruptedException {
         long currentTime = System.currentTimeMillis();
         long end = currentTime + REPLY_WAITING_TIME;
-        retrieveFileMap = new HashMap<Integer, String>();
 
         ClientMessages.ClientMessageWrapper msgWrapper
                 = ClientMessages.ClientMessageWrapper.parseDelimitedFrom(
