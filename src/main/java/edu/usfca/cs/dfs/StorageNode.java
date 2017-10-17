@@ -85,7 +85,7 @@ public class StorageNode {
 
         if (msgWrapper.hasStoreChunkMsg()) {
             logger.info("Storage: Receive Store Chunk Request From " +
-                    socket.getInetAddress().getCanonicalHostName());
+                    socket.getInetAddress());
             StorageMessages.StoreChunk storeChunkMsg
                     = msgWrapper.getStoreChunkMsg();
 
