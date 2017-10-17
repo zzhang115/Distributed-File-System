@@ -102,7 +102,8 @@ public class Client {
     }
 
     public static void sendStoreRequestToController() throws IOException, InterruptedException {
-        for (DFSChunk chunk : storeChunks) {
+//        for (DFSChunk chunk : storeChunks) {
+        DFSChunk chunk = storeChunks.get(0);
             List<String> availStorageNodeHostNames = new ArrayList<String>();
             Socket controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
             logger.info("Client: Start Send Store Request To Controller");
@@ -117,7 +118,7 @@ public class Client {
             getStoringReplyFromController(controllerSocket, availStorageNodeHostNames);
             sendStoreRequestToStorageNode(chunk, availStorageNodeHostNames);
             logger.info("Client: Finished Send Store Request To Controller");
-        }
+//        }
     }
 
     public static void getStoringReplyFromController(Socket controllerSocket, List<String> availStorageNodeHostNames)
@@ -231,10 +232,10 @@ public class Client {
                     int chunkCount = dfsFileMsg.getDfsChunkCount();
                     for (int j = 0; j < chunkCount; j++) {
                         ClientMessages.DFSChunk dfsChunkMsg = dfsFileMsg.getDfsChunk(j);
-                        buffer.append(" ChunkId: " + dfsChunkMsg.getChunkId() + "\n");
+                        buffer.append("\nChunkId: " + dfsChunkMsg.getChunkId());
                         int storageNodeHostNameCount = dfsChunkMsg.getStorageNodeHostNameCount();
                         for (int k = 0; k < storageNodeHostNameCount; k++) {
-                            buffer.append("Stored At " + dfsChunkMsg.getStorageNodeHostName(k));
+                            buffer.append(" Stored At " + dfsChunkMsg.getStorageNodeHostName(k));
                         }
                     }
                 }
