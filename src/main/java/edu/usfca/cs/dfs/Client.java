@@ -38,7 +38,7 @@ public class Client {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNext()) {
             clientInit();
-            logger.info("Please input: ");
+            logger.info("Client: Please input...........................");
             String input = scanner.next();
             switch(input) {
                 case "test1":
@@ -51,14 +51,14 @@ public class Client {
                     clientStoreFile(testFile1);
                     clientStoreFile(testFile2);
                     clientStoreFile(testFile3);
-                    Thread.sleep(RETRIEVE_WAITING_TIME);
+                    Thread.sleep(2 * RETRIEVE_WAITING_TIME);
                     clientGetDFSFileList();
                     clientRetrieveFile(testFile1);
                     clientRetrieveFile(testFile3);
                     break;
                 case "test3":
                     clientStoreFile(testFile5);
-                    Thread.sleep(RETRIEVE_WAITING_TIME);
+                    Thread.sleep(5 * RETRIEVE_WAITING_TIME);
                     clientGetDFSFileList();
                     clientRetrieveFile(testFile5);
                     break;
