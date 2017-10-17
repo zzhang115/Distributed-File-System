@@ -66,7 +66,7 @@ public class Client {
                     clientStoreFile(testFile1);
                     Thread.sleep(RETRIEVE_WAITING_TIME);
                     clientGetDFSFileList();
-                    if (scanner.next().equals("RT")) {
+                    if (scanner.next().equals("rt")) {
                         clientRetrieveFile(testFile1);
                     }
                     break;
@@ -305,7 +305,7 @@ public class Client {
                     int storageNodeCount = retrievingFileMsg.getRetrieveFileInfo(i).getStorageNodeHostNameCount();
                     List<String> storageNodes = new ArrayList<String>();
                     for (int j = 0; j < storageNodeCount; j++) {
-                        storageNodeHostName = retrievingFileMsg.getRetrieveFileInfo(i).getStorageNodeHostName(i);
+                        storageNodeHostName = retrievingFileMsg.getRetrieveFileInfo(i).getStorageNodeHostName(j);
                         storageNodes.add(storageNodeHostName);
                         logger.info("Client: ChunkId: " + chunkId + " StorageNodeHostName: " + storageNodeHostName);
                     }
