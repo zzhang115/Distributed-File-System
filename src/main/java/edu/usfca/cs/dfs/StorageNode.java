@@ -85,7 +85,7 @@ public class StorageNode {
 
         if (msgWrapper.hasStoreChunkMsg()) {
             logger.info("Storage: Receive Store Chunk Request From " +
-                    socket.getInetAddress());
+                    socket.getInetAddress().getCanonicalHostName());
             StorageMessages.StoreChunk storeChunkMsg
                     = msgWrapper.getStoreChunkMsg();
 
@@ -129,8 +129,8 @@ public class StorageNode {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            socket.close();
             passChunkToPeer(copyChunkStorageNodeHostNames, fileName, chunkId, copies - 1, data);
+            socket.close();
             return;
         }
 
