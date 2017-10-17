@@ -319,7 +319,7 @@ public class Client {
         String fileName;
         int chunkId;
 
-        public MyRunnable (String storageNodeHostName, String fileName, int chunkId) throws IOException {
+        public MyRunnable(String storageNodeHostName, String fileName, int chunkId) throws IOException {
             socket = new Socket(storageNodeHostName, STORAGENODE_PORT);
             this.storageNodeHostName = storageNodeHostName;
             this.fileName = fileName;

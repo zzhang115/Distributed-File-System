@@ -124,8 +124,10 @@ public class StorageNode {
             writeFileToLocalMachine(fileName, chunkId, data);
             logger.info("StorageNode: " + getHostname() + " Store Chunk Successfully!");
             // previous
-            //passChunkToPeer(copyChunkStorageNodeHostNames, fileName, chunkId, copies - 1, data);
             socket.close();
+
+            new Thread(new MyRunnable(copyChunkStorageNodeHostNames, fileName, chunkId, copies, data))
+                    .start();
             return;
         }
 
@@ -213,6 +215,32 @@ public class StorageNode {
         msgWrapper.writeDelimitedTo(socket.getOutputStream());
         logger.info("StorageNode: Finished Send MetaData To Controller");
         socket.close();
+    }
+
+    private static class MyRunnable implements Runnable {
+        List<String> copyChunkStorageNodeHostNames;
+        String fileName;
+        int chunkId;
+        int copies;
+        ByteString data;
+
+        public MyRunnable(List<String> copyChunkStorageNodeHostNames, String fileName,
+                                            int chunkId, int copies, ByteString data) {
+            this.copyChunkStorageNodeHostNames = copyChunkStorageNodeHostNames;
+            this.fileName = fileName;
+            this.chunkId = chunkId;
+            this.copies = copies;
+            this.data = data;
+        }
+
+        public void run() {
+            try {
+                passChunkToPeer(copyChunkStorageNodeHostNames, fileName, chunkId, copies -1, data);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     public static void passChunkToPeer(List<String> copyChunkStorageNodeHostNames, String fileName,
