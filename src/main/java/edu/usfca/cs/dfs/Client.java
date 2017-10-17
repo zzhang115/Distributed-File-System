@@ -57,7 +57,7 @@ public class Client {
                     clientStoreFile(testFile4);
                     Thread.sleep(RETRIEVE_WAITING_TIME);
                     clientGetDFSFileList();
-//                    clientRetrieveFile(testFile4);
+                    clientRetrieveFile(testFile4);
                     break;
                 case "test5":
                     break;
