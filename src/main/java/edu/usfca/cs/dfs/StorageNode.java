@@ -316,17 +316,20 @@ public class StorageNode {
         long currentTime = System.currentTimeMillis();
         long end = currentTime + REPLY_WAITING_TIME;
 
-        StorageMessages.StorageMessageWrapper msgWrapper =
-                StorageMessages.StorageMessageWrapper.parseDelimitedFrom(storageNodeSocket.getInputStream());
+//        StorageMessages.StorageMessageWrapper msgWrapper =
+//                StorageMessages.StorageMessageWrapper.parseDelimitedFrom(storageNodeSocket.getInputStream());
+        ClientMessages.ClientMessageWrapper msgWrapper =
+                ClientMessages.ClientMessageWrapper.parseDelimitedFrom(storageNodeSocket.getInputStream());
 
-        logger.info("StorageNode: Received Correct Chunk From Peer");
+        logger.info("StorageNode: Received Correct Chunk Reply From Peer");
         while (System.currentTimeMillis() < end) {
-            if (msgWrapper.hasStoreChunkMsg()) {
-                StorageMessages.StoreChunk storeChunkMsg =
-                        msgWrapper.getStoreChunkMsg();
-                String fileName = storeChunkMsg.getFileName();
-                int chunkId = storeChunkMsg.getChunkId();
-                ByteString data = storeChunkMsg.getData();
+            logger.info("StorageNode: Waiting...");
+            if (msgWrapper.hasRetrieveFileDataMsg()) {
+                ClientMessages.RetrieveFileData retrieveFileDataMsg
+                        = msgWrapper.getRetrieveFileDataMsg();
+                String fileName = retrieveFileDataMsg.getFileName();
+                int chunkId = retrieveFileDataMsg.getChunkID();
+                ByteString data = retrieveFileDataMsg.getData();
                 storeChunkToLocal(fileName, chunkId, data);
                 storageNodeSocket.close();
                 return;
@@ -343,6 +346,7 @@ public class StorageNode {
         logger.info("StorageNode: Start Sending File Data To Client");
         File file = new File(storeFilePath + fileName + "_Chunk" + chunkId);
         byte[] dataBytes = new byte[(int)file.length()];
+
         FileInputStream fileInputStream = new FileInputStream(file);
         fileInputStream.read(dataBytes);
         fileInputStream.close();

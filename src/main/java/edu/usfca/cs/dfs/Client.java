@@ -394,7 +394,9 @@ public class Client {
             }
             Thread.sleep(500);
         }
-
+        if (System.currentTimeMillis() < end) {
+            logger.info("Client: StorageNode is of service now!");
+        }
         socket.close();
     }
 
@@ -409,6 +411,8 @@ public class Client {
             fileOutputStream.flush();
             fileOutputStream.close();
             logger.info("Client: Finished Writing Retrieved Data To Local Machine");
+        } else {
+            logger.info("Client: No Data Can Write To Local Machine");
         }
     }
 
