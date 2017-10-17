@@ -28,7 +28,7 @@ public class Client {
     private static final int SIZE_OF_CHUNK = 1024 * 1024; // 1MB
     private static final String CONTROLLER_HOSTNAME = "bass01.cs.usfca.edu";
     private static final int REPLY_WAITING_TIME = 10000;
-    private static final int RETRIEVE_WAITING_TIME = 3000;
+    private static final int RETRIEVE_WAITING_TIME = 6000;
     private static final int CONTROLLER_PORT = 40000;
     private static final int STORAGENODE_PORT = 40010;
     private static final int COPY_NUM = 3;
@@ -80,7 +80,6 @@ public class Client {
     public static void clientInit() throws IOException {
         storeChunks = new ArrayList<DFSChunk>();
         retrieveChunks = new ArrayList<DFSChunk>();
-        retrieveFileMap = new HashMap<Integer, String>();
         fileMd5Map = new HashMap<String, String>();
 
         System.setProperty("java.util.logging.SimpleFormatter.format",
@@ -284,6 +283,8 @@ public class Client {
     public static void getRetrievingReplyFromController(Socket controllerSocket) throws IOException, InterruptedException {
         long currentTime = System.currentTimeMillis();
         long end = currentTime + REPLY_WAITING_TIME;
+        retrieveFileMap = new HashMap<Integer, String>();
+
         ClientMessages.ClientMessageWrapper msgWrapper
                 = ClientMessages.ClientMessageWrapper.parseDelimitedFrom(
                         controllerSocket.getInputStream()); // wait here until there is a message
