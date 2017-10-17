@@ -124,7 +124,11 @@ public class StorageNode {
             writeFileToLocalMachine(fileName, chunkId, data);
             logger.info("StorageNode: " + getHostname() + " Store Chunk Successfully!");
             // previous
-
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             socket.close();
             passChunkToPeer(copyChunkStorageNodeHostNames, fileName, chunkId, copies - 1, data);
             return;
