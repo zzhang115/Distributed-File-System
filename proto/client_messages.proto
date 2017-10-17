@@ -21,7 +21,7 @@ message DFSFileList {
 
 message RetrieveFileInfo {
     int32 chunkId = 1;
-    string storageNodeHostName = 2;
+    repeated string storageNodeHostName = 2;
 }
 
 message ReplyForRetrieving {

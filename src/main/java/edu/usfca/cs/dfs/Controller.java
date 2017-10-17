@@ -174,31 +174,39 @@ public class Controller {
             Map<Integer, Set<String>> chunkMap = metaMap.get(retrieveFileName);
 
             for (int chunkId : chunkMap.keySet()) {
-                int i = 0;
-                int n = rand.nextInt(chunkMap.get(chunkId).size()) + 0;
+//                int i = 0;
+//                int n = rand.nextInt(chunkMap.get(chunkId).size()) + 0;
+                ClientMessages.RetrieveFileInfo.Builder retrieveFileInfoMsg =
+                        ClientMessages.RetrieveFileInfo.newBuilder();
+
+//                retrieveFileMsg.addRetrieveFileInfoBuilder().setChunkId(chunkId);
+                retrieveFileInfoMsg.setChunkId(chunkId);
                 for (String storageHostName : chunkMap.get(chunkId)) {
-                    // need to add if failure Node
-                    if (i == n) {
-                        retrieveFileMsg.addRetrieveFileInfoBuilder().setChunkId(chunkId)
-                                .setStorageNodeHostName(storageHostName);
+//                    if (i == n) {
+//                        retrieveFileMsg.addRetrieveFileInfoBuilder().setChunkId(chunkId)
+//                                .setStorageNodeHostName(storageHostName);
+                        retrieveFileInfoMsg.addStorageNodeHostName(storageHostName);
                         logger.info("Controller: Choose " + storageHostName +" For Chunk" + chunkId);
-                        break;
-                    }
-                    i++;
+//                        break;
+//                    }
+//                    i++;
                 }
+                retrieveFileMsg.addRetrieveFileInfo(retrieveFileInfoMsg);
             }
             ClientMessages.ClientMessageWrapper msgWrapper =
                     ClientMessages.ClientMessageWrapper.newBuilder()
                             .setReplyForRetrievingMsg(retrieveFileMsg)
                             .build();
             msgWrapper.writeDelimitedTo(socket.getOutputStream());
+            logger.info("Controller: Finished Reply For Retrievng File Request: " + retrieveFileName);
+        } else {
+            logger.info("Controller: No Such File In This DFS");
         }
-        ClientMessages.ClientMessageWrapper msgWrapper =
-                ClientMessages.ClientMessageWrapper.newBuilder()
-                        .setReplyForRetrievingMsg(retrieveFileMsg)
-                        .build();
-        msgWrapper.writeDelimitedTo(socket.getOutputStream());
-        logger.info("Controller: Finished Reply For Retrievng File Request: " + retrieveFileName);
+//        ClientMessages.ClientMessageWrapper msgWrapper =
+//                ClientMessages.ClientMessageWrapper.newBuilder()
+//                        .setReplyForRetrievingMsg(retrieveFileMsg)
+//                        .build();
+//        msgWrapper.writeDelimitedTo(socket.getOutputStream());
     }
 
     public static void sendReplyForStoring(Socket socket, double chunkSize) throws IOException {

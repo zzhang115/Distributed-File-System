@@ -22,7 +22,7 @@ public class Client {
     private static String retrieveFilePath = "/home2/zzhang115/";
     private static volatile List<DFSChunk> storeChunks;
     private static volatile List<DFSChunk> retrieveChunks;
-    private static Map<Integer, String> retrieveFileMap; // chunkId, storageNodeHostName
+    private static Map<Integer, List<String>> retrieveFileMap; // chunkId, storageNodeHostName
     private static Map<String, String> fileMd5Map;
     private static int retrieveChunkSum;
     private static final int SIZE_OF_CHUNK = 1024 * 1024; // 1MB
@@ -105,7 +105,7 @@ public class Client {
 
     public static void clientRetrieveFile(String fileName) throws IOException, InterruptedException {
         retrieveChunks = new ArrayList<DFSChunk>();
-        retrieveFileMap = new HashMap<Integer, String>();
+        retrieveFileMap = new HashMap<Integer, List<String>>();
         sendRetrieveFileRequestToController(fileName);
         sendRetrieveRequestToStorageNode(fileName);
         writeReceivedFileDataToLocal(fileName);
@@ -302,9 +302,14 @@ public class Client {
                 logger.info("Client: Chunk's Num: " + count);
                 for (int i = 0; i < count; i++) {
                     chunkId = retrievingFileMsg.getRetrieveFileInfo(i).getChunkId();
-                    storageNodeHostName = retrievingFileMsg.getRetrieveFileInfo(i).getStorageNodeHostName();
-                    logger.info("Client: ChunkId: " + chunkId + " StorageNodeHostName: " + storageNodeHostName);
-                    retrieveFileMap.put(chunkId, storageNodeHostName);
+                    int storageNodeCount = retrievingFileMsg.getRetrieveFileInfo(i).getStorageNodeHostNameCount();
+                    List<String> storageNodes = new ArrayList<String>();
+                    for (int j = 0; j < storageNodeCount; j++) {
+                        storageNodeHostName = retrievingFileMsg.getRetrieveFileInfo(i).getStorageNodeHostName(i);
+                        storageNodes.add(storageNodeHostName);
+                        logger.info("Client: ChunkId: " + chunkId + " StorageNodeHostName: " + storageNodeHostName);
+                    }
+                    retrieveFileMap.put(chunkId, storageNodes);
                 }
                 return;
             }
@@ -315,7 +320,7 @@ public class Client {
 
     public static void sendRetrieveRequestToStorageNode(String fileName) throws IOException, InterruptedException {
         latch = new CountDownLatch(retrieveFileMap.size());
-        for (Map.Entry<Integer, String> entry : retrieveFileMap.entrySet()) {
+        for (Map.Entry<Integer, List<String>> entry : retrieveFileMap.entrySet()) {
             logger.info("Client: Start Sending Retrieve Request To StorageNode " + entry.getValue());
             Runnable myRunnable = new MyRunnable(entry.getValue(), fileName, entry.getKey());
             Thread thread = new Thread(myRunnable);
@@ -327,12 +332,12 @@ public class Client {
 
     private static class MyRunnable implements Runnable {
         Socket socket;
-        String storageNodeHostName;
+        List<String> storageNodeHostName;
         String fileName;
         int chunkId;
 
-        public MyRunnable(String storageNodeHostName, String fileName, int chunkId) throws IOException {
-            socket = new Socket(storageNodeHostName, STORAGENODE_PORT);
+        public MyRunnable(List<String> storageNodeHostName, String fileName, int chunkId) throws IOException {
+            socket = new Socket(storageNodeHostName.get(0), STORAGENODE_PORT);
             this.storageNodeHostName = storageNodeHostName;
             this.fileName = fileName;
             this.chunkId = chunkId;
@@ -342,6 +347,9 @@ public class Client {
             try {
                 StorageMessages.RetrieveFile.Builder retrieveFileMsg =
                         StorageMessages.RetrieveFile.newBuilder();
+                for (int i = 1; i < storageNodeHostName.size(); i++) {
+                    retrieveFileMsg.addHostName(storageNodeHostName.get(i));
+                }
                 retrieveFileMsg.setFileName(fileName)
                         .setChunkId(chunkId)
                         .build();
@@ -350,11 +358,11 @@ public class Client {
                                 .setRetrieveFileMsg(retrieveFileMsg)
                                 .build();
                 msgWrapper.writeDelimitedTo(socket.getOutputStream());
-                logger.info("Client: Finished Sending Retrieve Request To StorageNode " + storageNodeHostName);
+                logger.info("Client: Finished Sending Retrieve Request To StorageNode " + storageNodeHostName.get(0));
 
-                logger.info("Client: Start Receving File Data From StorageNode " + storageNodeHostName);
+                logger.info("Client: Start Receving File Data From StorageNode " + storageNodeHostName.get(0));
                 receiveDataFromStorageNode(socket);
-                logger.info("Client: Finished Receving File Data From StorageNode " + storageNodeHostName);
+                logger.info("Client: Finished Receving File Data From StorageNode " + storageNodeHostName.get(0));
                 latch.countDown();
             } catch (IOException e) {
                 e.printStackTrace();
