@@ -63,10 +63,12 @@ public class Client {
                     clientRetrieveFile(testFile5);
                     break;
                 case "test4":
-//                    clientStoreFile(testFile4);
-//                    Thread.sleep(RETRIEVE_WAITING_TIME);
-//                    clientGetDFSFileList();
-                    clientRetrieveFile(testFile1);
+                    clientStoreFile(testFile1);
+                    Thread.sleep(RETRIEVE_WAITING_TIME);
+                    clientGetDFSFileList();
+                    if (scanner.next().equals("RT")) {
+                        clientRetrieveFile(testFile1);
+                    }
                     break;
                 case "test5":
                     break;
