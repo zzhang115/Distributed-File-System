@@ -38,7 +38,7 @@ public class Client {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNext()) {
             clientInit();
-            System.out.print("Please input: ");
+            logger.info("Please input: ");
             String input = scanner.next();
             switch(input) {
                 case "test1":
@@ -55,8 +55,8 @@ public class Client {
                     break;
                 case "test4":
                     clientStoreFile(testFile4);
-//                    Thread.sleep(RETRIEVE_WAITING_TIME);
-//                    clientGetDFSFileList();
+                    Thread.sleep(RETRIEVE_WAITING_TIME);
+                    clientGetDFSFileList();
 //                    clientRetrieveFile(testFile4);
                     break;
                 case "test5":
@@ -65,6 +65,7 @@ public class Client {
                     return;
             }
         }
+        logger.info("Client: Exit");
     }
 
     public static void clientInit() throws IOException {
@@ -187,6 +188,8 @@ public class Client {
 
             msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
             storageNodeSocket.close();
+            logger.info("Client: Finished Send Store Request To StorageNode: " + hostName
+                    + " To Store Chunk" + chunk.getChunkID());
         } else {
             logger.info("Client: No StorageNode Is Available!");
         }
