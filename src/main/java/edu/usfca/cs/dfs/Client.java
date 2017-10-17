@@ -20,8 +20,8 @@ public class Client {
     private static String testFile5 = "test_file_5.bin";
     private static String filePath = "testfile/";
     private static String retrieveFilePath = "/home2/zzhang115/";
-    private static List<DFSChunk> storeChunks;
-    private static List<DFSChunk> retrieveChunks;
+    private static volatile List<DFSChunk> storeChunks;
+    private static volatile List<DFSChunk> retrieveChunks;
     private static Map<Integer, String> retrieveFileMap;
     private static Map<String, String> fileMd5Map;
     private static int retrieveChunkSum;
@@ -55,9 +55,9 @@ public class Client {
                     break;
                 case "test4":
                     clientStoreFile(testFile4);
-                    Thread.sleep(RETRIEVE_WAITING_TIME);
-                    clientGetDFSFileList();
-                    clientRetrieveFile(testFile4);
+//                    Thread.sleep(RETRIEVE_WAITING_TIME);
+//                    clientGetDFSFileList();
+//                    clientRetrieveFile(testFile4);
                     break;
                 case "test5":
                     break;
@@ -364,9 +364,7 @@ public class Client {
                 String fileName = retrievingFileDataMsg.getFileName();
                 int chunkId = retrievingFileDataMsg.getChunkID();
                 ByteString data =  retrievingFileDataMsg.getData();
-                synchronized(retrieveChunks) {
-                    retrieveChunks.add(new DFSChunk(fileName, chunkId, data));
-                }
+                retrieveChunks.add(new DFSChunk(fileName, chunkId, data));
                 logger.info("Client: Received Chunk: FileName: " + fileName + " ChunkId: " + chunkId);
                 socket.close();
                 return;
