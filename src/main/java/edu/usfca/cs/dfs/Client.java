@@ -48,10 +48,19 @@ public class Client {
                     clientRetrieveFile(testFile1);
                     break;
                 case "test2":
+                    clientStoreFile(testFile1);
+                    clientStoreFile(testFile2);
+                    clientStoreFile(testFile3);
+                    Thread.sleep(RETRIEVE_WAITING_TIME);
                     clientGetDFSFileList();
+                    clientRetrieveFile(testFile1);
+                    clientRetrieveFile(testFile3);
                     break;
                 case "test3":
-                    clientRetrieveFile(testFile3);
+                    clientStoreFile(testFile5);
+                    Thread.sleep(RETRIEVE_WAITING_TIME);
+                    clientGetDFSFileList();
+                    clientRetrieveFile(testFile5);
                     break;
                 case "test4":
                     clientStoreFile(testFile4);
@@ -228,10 +237,10 @@ public class Client {
                         msgWrapper.getDfsFileListMsg();
                 int fileCount = dfsFileListMsg.getDfsFileCount();
                 StringBuffer buffer = new StringBuffer("\n------------------------------------------------" +
-                        "----------------------------------------\n");
+                        "----------------------------------------");
                 for (int i = 0; i < fileCount; i++) {
                     ClientMessages.DFSFile dfsFileMsg = dfsFileListMsg.getDfsFile(i);
-                    buffer.append("Client: File: " + dfsFileMsg.getFileName());
+                    buffer.append("\nClient: File: " + dfsFileMsg.getFileName());
                     int chunkCount = dfsFileMsg.getDfsChunkCount();
                     for (int j = 0; j < chunkCount; j++) {
                         ClientMessages.DFSChunk dfsChunkMsg = dfsFileMsg.getDfsChunk(j);

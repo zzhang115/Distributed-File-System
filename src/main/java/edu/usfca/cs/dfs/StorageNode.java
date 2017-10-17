@@ -155,6 +155,7 @@ public class StorageNode {
                 if (!checkIfFileCorrupt(fileName, chunkId)) {
                     sendFileDataToClient(socket, fileName, chunkId);
                 } else {
+                    logger.info("StorageNode: Current Chunk Is Corrupted");
                     retrieveChunkFromPeer(fileName, chunkId, storeCurrentChunkHostNames, chunkCorruptedHostNames);
                     sendFileDataToClient(socket, fileName, chunkId);//send data
                 }
