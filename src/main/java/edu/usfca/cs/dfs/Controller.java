@@ -399,6 +399,7 @@ public class Controller {
                 } catch(IOException e) {
                     logger.info("Controller: StorageNode " + aNodes.get(i) + " Also Crashed Down");
                     i++;
+                    continue;
                 }
                 if (!checkIfRepaired(storageNodeSocket)) {
                     j++;
@@ -407,6 +408,7 @@ public class Controller {
                 }
 //                storageNodeSocket.close();
             }
+            logger.info("Controller: Finished Repairing StorageNode");
         }
     }
 

@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3df7ae5d-ae2e-4653-894d-d9189adc57ee" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java" afterPath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java" afterPath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -88,8 +88,8 @@
           <file leaf-file-name="Controller.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="603">
-                  <caret line="375" column="49" lean-forward="false" selection-start-line="375" selection-start-column="49" selection-end-line="375" selection-end-column="49" />
+                <state relative-caret-position="785">
+                  <caret line="409" column="12" lean-forward="false" selection-start-line="409" selection-start-column="12" selection-end-line="409" selection-end-column="12" />
                   <folding>
                     <element signature="e#4518#4526#0" expanded="true" />
                     <element signature="e#16531#16539#0" expanded="true" />
@@ -151,8 +151,8 @@
         <option value="$PROJECT_DIR$/proto/storage_messages.proto" />
         <option value="$PROJECT_DIR$/proto/controller_messages.proto" />
         <option value="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageNode.java" />
-        <option value="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java" />
+        <option value="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java" />
       </list>
     </option>
   </component>
@@ -908,14 +908,7 @@
       <workItem from="1507667378179" duration="663000" />
       <workItem from="1507747936002" duration="4334000" />
       <workItem from="1507919147648" duration="54084000" />
-      <workItem from="1508128458571" duration="75573000" />
-    </task>
-    <task id="LOCAL-00067" summary="modify pipeline">
-      <created>1507965069550</created>
-      <option name="number" value="00067" />
-      <option name="presentableId" value="LOCAL-00067" />
-      <option name="project" value="LOCAL" />
-      <updated>1507965069550</updated>
+      <workItem from="1508128458571" duration="76074000" />
     </task>
     <task id="LOCAL-00068" summary="add get file list">
       <created>1508005844208</created>
@@ -1253,11 +1246,18 @@
       <option name="project" value="LOCAL" />
       <updated>1508341289881</updated>
     </task>
-    <option name="localTasksCounter" value="116" />
+    <task id="LOCAL-00116" summary="add repair node">
+      <created>1508341506206</created>
+      <option name="number" value="00116" />
+      <option name="presentableId" value="LOCAL-00116" />
+      <option name="project" value="LOCAL" />
+      <updated>1508341506206</updated>
+    </task>
+    <option name="localTasksCounter" value="117" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="343280000" />
+    <option name="totallyTimeSpent" value="343781000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1718,18 +1718,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="366" column="83" lean-forward="false" selection-start-line="366" selection-start-column="83" selection-end-line="366" selection-end-column="83" />
-          <folding>
-            <element signature="e#4518#4526#0" expanded="true" />
-            <element signature="e#16531#16539#0" expanded="true" />
-            <element signature="e#16590#16598#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="623">
@@ -1737,6 +1725,18 @@
           <folding>
             <element signature="e#5025#5033#0" expanded="true" />
             <element signature="e#14878#14886#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="785">
+          <caret line="409" column="12" lean-forward="false" selection-start-line="409" selection-start-column="12" selection-end-line="409" selection-end-column="12" />
+          <folding>
+            <element signature="e#4518#4526#0" expanded="true" />
+            <element signature="e#16531#16539#0" expanded="true" />
+            <element signature="e#16590#16598#0" expanded="true" />
           </folding>
         </state>
       </provider>
