@@ -48,7 +48,6 @@ public class Controller {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-//        logger.info("Controller: LocalHostName is " + getHostname());
         controllerInit();
         while (true) {
             handleMessage();
@@ -103,8 +102,8 @@ public class Controller {
                     msgWrapper.getHeartBeatSignalMsg();
 
             String storageHostName = socket.getInetAddress().getCanonicalHostName();
-//            logger.info("Controller: Received HeartBeat From " + storageHostName +
-//                    " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
+            logger.info("Controller: Received HeartBeat From " + storageHostName +
+                    " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
             if (!hostMetaMap.keySet().contains(storageHostName)) {
                 List<String> fileAndChunk = new ArrayList<String>();
                 hostMetaMap.put(storageHostName, fileAndChunk);
