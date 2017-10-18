@@ -193,8 +193,10 @@ public class Controller {
 //                    if (i == n) {
 //                        retrieveFileMsg.addRetrieveFileInfoBuilder().setChunkId(chunkId)
 //                                .setStorageNodeHostName(storageHostName);
+                    if (heartBeatMap.keySet().contains(storageHostName)) {
                         retrieveFileInfoMsg.addStorageNodeHostName(storageHostName);
-                        logger.info("Controller: Choose " + storageHostName +" For Chunk" + chunkId);
+                        logger.info("Controller: Choose " + storageHostName + " For Chunk" + chunkId);
+                    }
 //                        break;
 //                    }
 //                    i++;
