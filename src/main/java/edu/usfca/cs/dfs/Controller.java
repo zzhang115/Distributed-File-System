@@ -80,7 +80,7 @@ public class Controller {
         };
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(failureDetect, 0, 2, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(failureDetect, 0, 5, TimeUnit.SECONDS);
     }
 
     public static void handleMessage() throws IOException, InterruptedException {
@@ -102,8 +102,8 @@ public class Controller {
                     msgWrapper.getHeartBeatSignalMsg();
 
             String storageHostName = socket.getInetAddress().getCanonicalHostName();
-            logger.info("Controller: Received HeartBeat From " + storageHostName +
-                    " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
+//            logger.info("Controller: Received HeartBeat From " + storageHostName +
+//                    " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
             if (!hostMetaMap.keySet().contains(storageHostName)) {
                 List<String> fileAndChunk = new ArrayList<String>();
                 hostMetaMap.put(storageHostName, fileAndChunk);
@@ -358,10 +358,11 @@ public class Controller {
             logger.info("Controller: aNode size " + aNodes.size() + " bNode size " + bNodes.size() + " host: " + hostMetaMap.size());
             int i = 0, j = 0;
             while (i < aNodes.size() && j < bNodes.size()) {
-                logger.info("Controller: Start Send Message To StorageNode " + aNodes.get(i)
-                        + " To Repair StorageNode " + storageNodeHostName);
                 Socket storageNodeSocket = null;
                 try {
+                    logger.info("Controller: Start Send Message To StorageNode " + aNodes.get(i)
+                            + " To Repair StorageNode " + storageNodeHostName);
+
                     storageNodeSocket = new Socket(aNodes.get(i), STORAGENODE_PORT);
                     StorageMessages.RepairNode.Builder repairNodeMsg =
                             StorageMessages.RepairNode.newBuilder();
@@ -385,7 +386,7 @@ public class Controller {
                 } else {
                     break;
                 }
-                storageNodeSocket.close();
+//                storageNodeSocket.close();
             }
         }
     }
@@ -397,8 +398,10 @@ public class Controller {
         if (msgWrapper.hasRepairNodeMsg()) {
             ControllerMessages.SendRepairNode repairNodeMsg =
                     msgWrapper.getRepairNodeMsg();
+            socket.close();
             return repairNodeMsg.getIsSend();
         }
+        socket.close();
         return false;
     }
     /**
