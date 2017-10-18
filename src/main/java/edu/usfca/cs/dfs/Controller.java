@@ -352,6 +352,7 @@ public class Controller {
                     bNodes.add(storageNodeName);
                 }
             }
+            logger.info("Controller: aNode size " + aNodes.size() + " bNode size " + bNodes.size() + " host: " + hostMetaMap.size());
             int i = 0, j = 0;
             while (i < aNodes.size() && j < bNodes.size()) {
                 logger.info("Controller: Start Send Message To StorageNode " + aNodes.get(i)
