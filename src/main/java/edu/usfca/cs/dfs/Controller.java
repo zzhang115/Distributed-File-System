@@ -365,12 +365,9 @@ public class Controller {
                             + " To Repair StorageNode " + storageNodeHostName);
 
                     storageNodeSocket = new Socket(aNodes.get(i), STORAGENODE_PORT);
-                    logger.info("Controller: Get socket");
 
                     StorageMessages.RepairNode.Builder repairNodeMsg =
                             StorageMessages.RepairNode.newBuilder();
-
-                    logger.info("Controller: Get Builder");
 
                     String fileName = filechunk.split("&")[0];
                     int chunkId = Integer.parseInt(filechunk.split("&")[1]);
@@ -383,15 +380,11 @@ public class Controller {
                             .setChunkId(chunkId)
                             .setHostName(hostName)
                             .build();
-                    logger.info("Controller: Set Message FileName: " + filechunk.split("&")[0]
-                            + " ChunkId: " + Integer.parseInt(filechunk.split("&")[1])
-                            + " HostName: " + bNodes.get(j));
 
                     StorageMessages.StorageMessageWrapper msgWrapper =
                             StorageMessages.StorageMessageWrapper.newBuilder()
                                     .setRepairNodeMsg(repairNodeMsg)
                                     .build();
-                    logger.info("Controller: Set RepairMessage");
 
                     msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
                     logger.info("Controller: Finished Send Message To StorageNode " + aNodes.get(i)
@@ -406,7 +399,6 @@ public class Controller {
                 } else {
                     break;
                 }
-//                storageNodeSocket.close();
             }
             logger.info("Controller: Finished Repairing StorageNode");
         }
