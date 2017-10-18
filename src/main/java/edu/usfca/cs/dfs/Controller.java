@@ -20,6 +20,7 @@ public class Controller {
     private static Logger logger = Logger.getLogger("Log");
     private static volatile List<STNode> storageNodeList;  //storageNodeQueue sort STNode basic on their free space
     private static volatile Map<String, Map<Integer, Set<String>>> metaMap; // <fileName, <chunkId, <storageHostName>>>
+    private static volatile Map<String, List<String>> hostMetaMap; // <hostName, <fileName_chunkId>>
     private static Map<String, String> heartBeatMap;  // <storageNodeHostName, timeStamp>
     private static ServerSocket controllerSocket;
     private static DateFormat dateFormat;
@@ -61,6 +62,7 @@ public class Controller {
 
         storageNodeList= new ArrayList<STNode>();
         metaMap = new HashMap<String, Map<Integer, Set<String>>>();
+        hostMetaMap = new HashMap<String, List<String>>();
         heartBeatMap = new HashMap<String, String>();
         controllerSocket = new ServerSocket(CONTROLLER_PORT);
         dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -71,6 +73,8 @@ public class Controller {
 //                    logger.info("Controller: Detecting Failure Node...");
                     detectFailureNode();
                 } catch (ParseException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -290,6 +294,14 @@ public class Controller {
             storageHostNames.add(storageHostName);
             chunkMap.put(chunkId, storageHostNames);
         }
+
+        if (!hostMetaMap.keySet().contains(storageHostName)) {
+            List<String> fileAndChunk = new ArrayList<String>();
+            fileAndChunk.add(fileName + "_" + chunkId);
+            hostMetaMap.put(storageHostName, fileAndChunk);
+        } else {
+            hostMetaMap.get(storageHostName).add(fileName + "_" + chunkId);
+        }
     }
 
     public static void storeStorageNodeInfo(String storageHostName, double freeSpace, String timeStamp) {
@@ -303,7 +315,7 @@ public class Controller {
         heartBeatMap.put(storageHostName, timeStamp);
     }
 
-    public static void detectFailureNode() throws ParseException {
+    public static void detectFailureNode() throws ParseException, IOException {
         Date currentDate = new Date();
 
         for (int i = 0; i < storageNodeList.size(); i++) {
@@ -312,13 +324,73 @@ public class Controller {
             Date storageNodeDate = dateFormat.parse(heartBeatMap.get(storageNodeHostName));
             long dateDiff = (currentDate.getTime() - storageNodeDate.getTime()) / MILLIS_PER_SEC;
             if (dateDiff >= FAILURE_NODE_TIME) {
-                logger.info("Controller: " + storageNodeHostName + " crashed down!");
+                logger.info("Controller: StorageNode " + storageNodeHostName + " Crashed Down!");
                 storageNodeList.remove(stNode);
+                heartBeatMap.remove(storageNodeHostName);
+                repairStorageNode(storageNodeHostName);
                 i--;
             }
         }
     }
 
+    public static void repairStorageNode(String storageNodeHostName) throws IOException {
+        List<String> fileAndChunk = hostMetaMap.get(storageNodeHostName);
+        hostMetaMap.remove(storageNodeHostName);
+        for (String filechunk : fileAndChunk) {
+            List<String> aNodes = new ArrayList<String>();
+            List<String> bNodes = new ArrayList<String>();
+            for (String storageNodeName : hostMetaMap.keySet()) {
+                if (hostMetaMap.get(storageNodeName).contains(filechunk)) {
+                    aNodes.add(storageNodeName);
+                } else {
+                    bNodes.add(storageNodeName);
+                }
+            }
+            int i = 0, j = 0;
+            while (i < aNodes.size() && j < bNodes.size()) {
+                logger.info("Controller: Start Send Message To StorageNode " + aNodes.get(i)
+                        + " To Repair StorageNode " + storageNodeHostName);
+                Socket storageNodeSocket = null;
+                try {
+                    storageNodeSocket = new Socket(aNodes.get(i), STORAGENODE_PORT);
+                    StorageMessages.RepairNode.Builder repairNodeMsg =
+                            StorageMessages.RepairNode.newBuilder();
+                    repairNodeMsg.setFileName(filechunk.split("_")[0])
+                            .setChunkId(Integer.parseInt(filechunk.split("_")[1]))
+                            .setHostName(bNodes.get(j))
+                            .build();
+                    StorageMessages.StorageMessageWrapper msgWrapper =
+                            StorageMessages.StorageMessageWrapper.newBuilder()
+                                    .setRepairNodeMsg(repairNodeMsg)
+                                    .build();
+                    msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
+                    logger.info("Controller: Finished Send Message To StorageNode " + aNodes.get(i)
+                            + " To Repair StorageNode " + storageNodeHostName);
+                } catch(IOException e) {
+                    logger.info("Controller: StorageNode " + aNodes.get(i) + " Also Crashed Down");
+                    i++;
+                }
+                if (!checkIfRepaired(storageNodeSocket)) {
+                    j++;
+                } else {
+                    break;
+                }
+                storageNodeSocket.close();
+            }
+        }
+    }
+
+    public static boolean checkIfRepaired(Socket socket) throws IOException{
+        ControllerMessages.ControllerMessageWrapper msgWrapper =
+                ControllerMessages.ControllerMessageWrapper.parseDelimitedFrom(
+                        socket.getInputStream());
+        if (msgWrapper.hasRepairNodeMsg()) {
+            ControllerMessages.SendRepairNode repairNodeMsg =
+                    msgWrapper.getRepairNodeMsg();
+            return repairNodeMsg.getIsSend();
+        }
+        return false;
+    }
     /**
      * Retrieves the short host name of the current host.
      *

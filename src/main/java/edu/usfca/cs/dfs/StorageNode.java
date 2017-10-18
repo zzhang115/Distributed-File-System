@@ -174,6 +174,49 @@ public class StorageNode {
             socket.close();
             return;
         }
+
+        if (msgWrapper.hasRepairNodeMsg()) {
+            StorageMessages.RepairNode repairNodeMsg =
+                    msgWrapper.getRepairNodeMsg();
+            repairStorageNode(socket, repairNodeMsg.getFileName(), repairNodeMsg.getChunkId(),
+                    repairNodeMsg.getHostName());
+            socket.close();
+            return;
+        }
+    }
+
+    public static void repairStorageNode(Socket socket, String fileName, int chunkId, String hostName)
+            throws IOException {
+        logger.info("StorageNode: Received Repair Node Request");
+        List<String> copyChunkStorageNodeHostNames = new ArrayList<String>();
+        copyChunkStorageNodeHostNames.add(hostName);
+
+        File file = new File(storeFilePath + fileName + "_Chunk" + chunkId);
+        byte[] dataBytes = new byte[(int)file.length()];
+
+        FileInputStream fileInputStream = new FileInputStream(file);
+        fileInputStream.read(dataBytes);
+        fileInputStream.close();
+        ByteString data = ByteString.copyFrom(dataBytes);
+        boolean isSend = true;
+
+        try {
+            passChunkToPeer(copyChunkStorageNodeHostNames, fileName, chunkId, 1, data);
+        } catch (IOException e) {
+            logger.info("StorageNode: Destination StorageNode" + hostName + "Crashed Down");
+            isSend = false;
+        }
+
+        logger.info("StorageNode: Start Send Reply For Repairing To Controller");
+        ControllerMessages.SendRepairNode.Builder sendRepairNodeMsg =
+                ControllerMessages.SendRepairNode.newBuilder();
+        sendRepairNodeMsg.setIsSend(isSend).build();
+        ControllerMessages.ControllerMessageWrapper msgWrapper =
+                ControllerMessages.ControllerMessageWrapper.newBuilder()
+                        .setRepairNodeMsg(sendRepairNodeMsg)
+                        .build();
+        msgWrapper.writeDelimitedTo(socket.getOutputStream());
+        logger.info("StorageNode: Finished Send Reply For Repairing To Controller");
     }
 
     public static void storeChunkToLocal(String fileName, int chunkId, ByteString data) throws IOException {

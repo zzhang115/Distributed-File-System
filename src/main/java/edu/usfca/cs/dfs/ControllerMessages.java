@@ -3733,6 +3733,455 @@ public final class ControllerMessages {
 
   }
 
+  public interface SendRepairNodeOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:SendRepairNode)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>bool isSend = 1;</code>
+     */
+    boolean getIsSend();
+  }
+  /**
+   * Protobuf type {@code SendRepairNode}
+   */
+  public  static final class SendRepairNode extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:SendRepairNode)
+      SendRepairNodeOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use SendRepairNode.newBuilder() to construct.
+    private SendRepairNode(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private SendRepairNode() {
+      isSend_ = false;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private SendRepairNode(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+
+              isSend_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return edu.usfca.cs.dfs.ControllerMessages.internal_static_SendRepairNode_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return edu.usfca.cs.dfs.ControllerMessages.internal_static_SendRepairNode_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.class, edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.Builder.class);
+    }
+
+    public static final int ISSEND_FIELD_NUMBER = 1;
+    private boolean isSend_;
+    /**
+     * <code>bool isSend = 1;</code>
+     */
+    public boolean getIsSend() {
+      return isSend_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (isSend_ != false) {
+        output.writeBool(1, isSend_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (isSend_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, isSend_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof edu.usfca.cs.dfs.ControllerMessages.SendRepairNode)) {
+        return super.equals(obj);
+      }
+      edu.usfca.cs.dfs.ControllerMessages.SendRepairNode other = (edu.usfca.cs.dfs.ControllerMessages.SendRepairNode) obj;
+
+      boolean result = true;
+      result = result && (getIsSend()
+          == other.getIsSend());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + ISSEND_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsSend());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static edu.usfca.cs.dfs.ControllerMessages.SendRepairNode parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.SendRepairNode parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.SendRepairNode parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.SendRepairNode parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.SendRepairNode parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.SendRepairNode parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.SendRepairNode parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.SendRepairNode parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.SendRepairNode parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.SendRepairNode parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.SendRepairNode parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static edu.usfca.cs.dfs.ControllerMessages.SendRepairNode parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(edu.usfca.cs.dfs.ControllerMessages.SendRepairNode prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code SendRepairNode}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:SendRepairNode)
+        edu.usfca.cs.dfs.ControllerMessages.SendRepairNodeOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return edu.usfca.cs.dfs.ControllerMessages.internal_static_SendRepairNode_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return edu.usfca.cs.dfs.ControllerMessages.internal_static_SendRepairNode_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.class, edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.Builder.class);
+      }
+
+      // Construct using edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        isSend_ = false;
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return edu.usfca.cs.dfs.ControllerMessages.internal_static_SendRepairNode_descriptor;
+      }
+
+      public edu.usfca.cs.dfs.ControllerMessages.SendRepairNode getDefaultInstanceForType() {
+        return edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.getDefaultInstance();
+      }
+
+      public edu.usfca.cs.dfs.ControllerMessages.SendRepairNode build() {
+        edu.usfca.cs.dfs.ControllerMessages.SendRepairNode result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public edu.usfca.cs.dfs.ControllerMessages.SendRepairNode buildPartial() {
+        edu.usfca.cs.dfs.ControllerMessages.SendRepairNode result = new edu.usfca.cs.dfs.ControllerMessages.SendRepairNode(this);
+        result.isSend_ = isSend_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof edu.usfca.cs.dfs.ControllerMessages.SendRepairNode) {
+          return mergeFrom((edu.usfca.cs.dfs.ControllerMessages.SendRepairNode)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(edu.usfca.cs.dfs.ControllerMessages.SendRepairNode other) {
+        if (other == edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.getDefaultInstance()) return this;
+        if (other.getIsSend() != false) {
+          setIsSend(other.getIsSend());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        edu.usfca.cs.dfs.ControllerMessages.SendRepairNode parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (edu.usfca.cs.dfs.ControllerMessages.SendRepairNode) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private boolean isSend_ ;
+      /**
+       * <code>bool isSend = 1;</code>
+       */
+      public boolean getIsSend() {
+        return isSend_;
+      }
+      /**
+       * <code>bool isSend = 1;</code>
+       */
+      public Builder setIsSend(boolean value) {
+        
+        isSend_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool isSend = 1;</code>
+       */
+      public Builder clearIsSend() {
+        
+        isSend_ = false;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:SendRepairNode)
+    }
+
+    // @@protoc_insertion_point(class_scope:SendRepairNode)
+    private static final edu.usfca.cs.dfs.ControllerMessages.SendRepairNode DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new edu.usfca.cs.dfs.ControllerMessages.SendRepairNode();
+    }
+
+    public static edu.usfca.cs.dfs.ControllerMessages.SendRepairNode getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<SendRepairNode>
+        PARSER = new com.google.protobuf.AbstractParser<SendRepairNode>() {
+      public SendRepairNode parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new SendRepairNode(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<SendRepairNode> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SendRepairNode> getParserForType() {
+      return PARSER;
+    }
+
+    public edu.usfca.cs.dfs.ControllerMessages.SendRepairNode getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface ControllerMessageWrapperOrBuilder extends
       // @@protoc_insertion_point(interface_extends:ControllerMessageWrapper)
       com.google.protobuf.MessageOrBuilder {
@@ -3801,6 +4250,19 @@ public final class ControllerMessages {
      * <code>.RetrieveMetaData metaDataMsg = 5;</code>
      */
     edu.usfca.cs.dfs.ControllerMessages.RetrieveMetaDataOrBuilder getMetaDataMsgOrBuilder();
+
+    /**
+     * <code>.SendRepairNode repairNodeMsg = 6;</code>
+     */
+    boolean hasRepairNodeMsg();
+    /**
+     * <code>.SendRepairNode repairNodeMsg = 6;</code>
+     */
+    edu.usfca.cs.dfs.ControllerMessages.SendRepairNode getRepairNodeMsg();
+    /**
+     * <code>.SendRepairNode repairNodeMsg = 6;</code>
+     */
+    edu.usfca.cs.dfs.ControllerMessages.SendRepairNodeOrBuilder getRepairNodeMsgOrBuilder();
 
     public edu.usfca.cs.dfs.ControllerMessages.ControllerMessageWrapper.MsgCase getMsgCase();
   }
@@ -3917,6 +4379,20 @@ public final class ControllerMessages {
               msgCase_ = 5;
               break;
             }
+            case 50: {
+              edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.Builder subBuilder = null;
+              if (msgCase_ == 6) {
+                subBuilder = ((edu.usfca.cs.dfs.ControllerMessages.SendRepairNode) msg_).toBuilder();
+              }
+              msg_ =
+                  input.readMessage(edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((edu.usfca.cs.dfs.ControllerMessages.SendRepairNode) msg_);
+                msg_ = subBuilder.buildPartial();
+              }
+              msgCase_ = 6;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -3950,6 +4426,7 @@ public final class ControllerMessages {
       RETRIEVEFILEMSG(3),
       GETFILELISTMSG(4),
       METADATAMSG(5),
+      REPAIRNODEMSG(6),
       MSG_NOT_SET(0);
       private final int value;
       private MsgCase(int value) {
@@ -3970,6 +4447,7 @@ public final class ControllerMessages {
           case 3: return RETRIEVEFILEMSG;
           case 4: return GETFILELISTMSG;
           case 5: return METADATAMSG;
+          case 6: return REPAIRNODEMSG;
           case 0: return MSG_NOT_SET;
           default: return null;
         }
@@ -4115,6 +4593,32 @@ public final class ControllerMessages {
       return edu.usfca.cs.dfs.ControllerMessages.RetrieveMetaData.getDefaultInstance();
     }
 
+    public static final int REPAIRNODEMSG_FIELD_NUMBER = 6;
+    /**
+     * <code>.SendRepairNode repairNodeMsg = 6;</code>
+     */
+    public boolean hasRepairNodeMsg() {
+      return msgCase_ == 6;
+    }
+    /**
+     * <code>.SendRepairNode repairNodeMsg = 6;</code>
+     */
+    public edu.usfca.cs.dfs.ControllerMessages.SendRepairNode getRepairNodeMsg() {
+      if (msgCase_ == 6) {
+         return (edu.usfca.cs.dfs.ControllerMessages.SendRepairNode) msg_;
+      }
+      return edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.getDefaultInstance();
+    }
+    /**
+     * <code>.SendRepairNode repairNodeMsg = 6;</code>
+     */
+    public edu.usfca.cs.dfs.ControllerMessages.SendRepairNodeOrBuilder getRepairNodeMsgOrBuilder() {
+      if (msgCase_ == 6) {
+         return (edu.usfca.cs.dfs.ControllerMessages.SendRepairNode) msg_;
+      }
+      return edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -4141,6 +4645,9 @@ public final class ControllerMessages {
       }
       if (msgCase_ == 5) {
         output.writeMessage(5, (edu.usfca.cs.dfs.ControllerMessages.RetrieveMetaData) msg_);
+      }
+      if (msgCase_ == 6) {
+        output.writeMessage(6, (edu.usfca.cs.dfs.ControllerMessages.SendRepairNode) msg_);
       }
       unknownFields.writeTo(output);
     }
@@ -4169,6 +4676,10 @@ public final class ControllerMessages {
       if (msgCase_ == 5) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(5, (edu.usfca.cs.dfs.ControllerMessages.RetrieveMetaData) msg_);
+      }
+      if (msgCase_ == 6) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, (edu.usfca.cs.dfs.ControllerMessages.SendRepairNode) msg_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -4210,6 +4721,10 @@ public final class ControllerMessages {
           result = result && getMetaDataMsg()
               .equals(other.getMetaDataMsg());
           break;
+        case 6:
+          result = result && getRepairNodeMsg()
+              .equals(other.getRepairNodeMsg());
+          break;
         case 0:
         default:
       }
@@ -4244,6 +4759,10 @@ public final class ControllerMessages {
         case 5:
           hash = (37 * hash) + METADATAMSG_FIELD_NUMBER;
           hash = (53 * hash) + getMetaDataMsg().hashCode();
+          break;
+        case 6:
+          hash = (37 * hash) + REPAIRNODEMSG_FIELD_NUMBER;
+          hash = (53 * hash) + getRepairNodeMsg().hashCode();
           break;
         case 0:
         default:
@@ -4436,6 +4955,13 @@ public final class ControllerMessages {
             result.msg_ = metaDataMsgBuilder_.build();
           }
         }
+        if (msgCase_ == 6) {
+          if (repairNodeMsgBuilder_ == null) {
+            result.msg_ = msg_;
+          } else {
+            result.msg_ = repairNodeMsgBuilder_.build();
+          }
+        }
         result.msgCase_ = msgCase_;
         onBuilt();
         return result;
@@ -4497,6 +5023,10 @@ public final class ControllerMessages {
           }
           case METADATAMSG: {
             mergeMetaDataMsg(other.getMetaDataMsg());
+            break;
+          }
+          case REPAIRNODEMSG: {
+            mergeRepairNodeMsg(other.getRepairNodeMsg());
             break;
           }
           case MSG_NOT_SET: {
@@ -5224,6 +5754,142 @@ public final class ControllerMessages {
         onChanged();;
         return metaDataMsgBuilder_;
       }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.ControllerMessages.SendRepairNode, edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.Builder, edu.usfca.cs.dfs.ControllerMessages.SendRepairNodeOrBuilder> repairNodeMsgBuilder_;
+      /**
+       * <code>.SendRepairNode repairNodeMsg = 6;</code>
+       */
+      public boolean hasRepairNodeMsg() {
+        return msgCase_ == 6;
+      }
+      /**
+       * <code>.SendRepairNode repairNodeMsg = 6;</code>
+       */
+      public edu.usfca.cs.dfs.ControllerMessages.SendRepairNode getRepairNodeMsg() {
+        if (repairNodeMsgBuilder_ == null) {
+          if (msgCase_ == 6) {
+            return (edu.usfca.cs.dfs.ControllerMessages.SendRepairNode) msg_;
+          }
+          return edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.getDefaultInstance();
+        } else {
+          if (msgCase_ == 6) {
+            return repairNodeMsgBuilder_.getMessage();
+          }
+          return edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.SendRepairNode repairNodeMsg = 6;</code>
+       */
+      public Builder setRepairNodeMsg(edu.usfca.cs.dfs.ControllerMessages.SendRepairNode value) {
+        if (repairNodeMsgBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          msg_ = value;
+          onChanged();
+        } else {
+          repairNodeMsgBuilder_.setMessage(value);
+        }
+        msgCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.SendRepairNode repairNodeMsg = 6;</code>
+       */
+      public Builder setRepairNodeMsg(
+          edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.Builder builderForValue) {
+        if (repairNodeMsgBuilder_ == null) {
+          msg_ = builderForValue.build();
+          onChanged();
+        } else {
+          repairNodeMsgBuilder_.setMessage(builderForValue.build());
+        }
+        msgCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.SendRepairNode repairNodeMsg = 6;</code>
+       */
+      public Builder mergeRepairNodeMsg(edu.usfca.cs.dfs.ControllerMessages.SendRepairNode value) {
+        if (repairNodeMsgBuilder_ == null) {
+          if (msgCase_ == 6 &&
+              msg_ != edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.getDefaultInstance()) {
+            msg_ = edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.newBuilder((edu.usfca.cs.dfs.ControllerMessages.SendRepairNode) msg_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            msg_ = value;
+          }
+          onChanged();
+        } else {
+          if (msgCase_ == 6) {
+            repairNodeMsgBuilder_.mergeFrom(value);
+          }
+          repairNodeMsgBuilder_.setMessage(value);
+        }
+        msgCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.SendRepairNode repairNodeMsg = 6;</code>
+       */
+      public Builder clearRepairNodeMsg() {
+        if (repairNodeMsgBuilder_ == null) {
+          if (msgCase_ == 6) {
+            msgCase_ = 0;
+            msg_ = null;
+            onChanged();
+          }
+        } else {
+          if (msgCase_ == 6) {
+            msgCase_ = 0;
+            msg_ = null;
+          }
+          repairNodeMsgBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.SendRepairNode repairNodeMsg = 6;</code>
+       */
+      public edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.Builder getRepairNodeMsgBuilder() {
+        return getRepairNodeMsgFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.SendRepairNode repairNodeMsg = 6;</code>
+       */
+      public edu.usfca.cs.dfs.ControllerMessages.SendRepairNodeOrBuilder getRepairNodeMsgOrBuilder() {
+        if ((msgCase_ == 6) && (repairNodeMsgBuilder_ != null)) {
+          return repairNodeMsgBuilder_.getMessageOrBuilder();
+        } else {
+          if (msgCase_ == 6) {
+            return (edu.usfca.cs.dfs.ControllerMessages.SendRepairNode) msg_;
+          }
+          return edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.SendRepairNode repairNodeMsg = 6;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          edu.usfca.cs.dfs.ControllerMessages.SendRepairNode, edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.Builder, edu.usfca.cs.dfs.ControllerMessages.SendRepairNodeOrBuilder> 
+          getRepairNodeMsgFieldBuilder() {
+        if (repairNodeMsgBuilder_ == null) {
+          if (!(msgCase_ == 6)) {
+            msg_ = edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.getDefaultInstance();
+          }
+          repairNodeMsgBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              edu.usfca.cs.dfs.ControllerMessages.SendRepairNode, edu.usfca.cs.dfs.ControllerMessages.SendRepairNode.Builder, edu.usfca.cs.dfs.ControllerMessages.SendRepairNodeOrBuilder>(
+                  (edu.usfca.cs.dfs.ControllerMessages.SendRepairNode) msg_,
+                  getParentForChildren(),
+                  isClean());
+          msg_ = null;
+        }
+        msgCase_ = 6;
+        onChanged();;
+        return repairNodeMsgBuilder_;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
@@ -5304,6 +5970,11 @@ public final class ControllerMessages {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_GetFileListRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_SendRepairNode_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_SendRepairNode_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ControllerMessageWrapper_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -5324,15 +5995,17 @@ public final class ControllerMessages {
       "trieveMetaData\022\027\n\004meta\030\001 \003(\0132\t.MetaData\"" +
       "P\n\017HeartBeatSignal\022\027\n\004meta\030\001 \003(\0132\t.MetaD" +
       "ata\022\021\n\tfreeSpace\030\002 \001(\001\022\021\n\ttimestamp\030\003 \001(" +
-      "\t\"#\n\022GetFileListRequest\022\r\n\005isGet\030\001 \001(\010\"\217" +
-      "\002\n\030ControllerMessageWrapper\0222\n\024storeChun" +
-      "kRequestMsg\030\001 \001(\0132\022.StoreChunkRequestH\000\022",
-      ".\n\022heartBeatSignalMsg\030\002 \001(\0132\020.HeartBeatS" +
-      "ignalH\000\022/\n\017retrieveFileMsg\030\003 \001(\0132\024.Retri" +
-      "eveFileRequestH\000\022-\n\016getFileListMsg\030\004 \001(\013" +
-      "2\023.GetFileListRequestH\000\022(\n\013metaDataMsg\030\005" +
-      " \001(\0132\021.RetrieveMetaDataH\000B\005\n\003msgB\022\n\020edu." +
-      "usfca.cs.dfsb\006proto3"
+      "\t\"#\n\022GetFileListRequest\022\r\n\005isGet\030\001 \001(\010\" " +
+      "\n\016SendRepairNode\022\016\n\006isSend\030\001 \001(\010\"\271\002\n\030Con" +
+      "trollerMessageWrapper\0222\n\024storeChunkReque",
+      "stMsg\030\001 \001(\0132\022.StoreChunkRequestH\000\022.\n\022hea" +
+      "rtBeatSignalMsg\030\002 \001(\0132\020.HeartBeatSignalH" +
+      "\000\022/\n\017retrieveFileMsg\030\003 \001(\0132\024.RetrieveFil" +
+      "eRequestH\000\022-\n\016getFileListMsg\030\004 \001(\0132\023.Get" +
+      "FileListRequestH\000\022(\n\013metaDataMsg\030\005 \001(\0132\021" +
+      ".RetrieveMetaDataH\000\022(\n\rrepairNodeMsg\030\006 \001" +
+      "(\0132\017.SendRepairNodeH\000B\005\n\003msgB\022\n\020edu.usfc" +
+      "a.cs.dfsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5382,12 +6055,18 @@ public final class ControllerMessages {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_GetFileListRequest_descriptor,
         new java.lang.String[] { "IsGet", });
-    internal_static_ControllerMessageWrapper_descriptor =
+    internal_static_SendRepairNode_descriptor =
       getDescriptor().getMessageTypes().get(6);
+    internal_static_SendRepairNode_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_SendRepairNode_descriptor,
+        new java.lang.String[] { "IsSend", });
+    internal_static_ControllerMessageWrapper_descriptor =
+      getDescriptor().getMessageTypes().get(7);
     internal_static_ControllerMessageWrapper_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ControllerMessageWrapper_descriptor,
-        new java.lang.String[] { "StoreChunkRequestMsg", "HeartBeatSignalMsg", "RetrieveFileMsg", "GetFileListMsg", "MetaDataMsg", "Msg", });
+        new java.lang.String[] { "StoreChunkRequestMsg", "HeartBeatSignalMsg", "RetrieveFileMsg", "GetFileListMsg", "MetaDataMsg", "RepairNodeMsg", "Msg", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

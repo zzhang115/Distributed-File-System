@@ -20,11 +20,18 @@ message RetrieveMeta {
     bool isRetrieveMeta = 1;
 }
 
+message RepairNode {
+    string fileName = 1;
+    int32 chunkId = 2;
+    string hostName = 3;
+}
+
 message StorageMessageWrapper {
     oneof msg {
         StoreChunk storeChunkMsg = 1;
         RetrieveFile retrieveFileMsg = 2;
         RetrieveMeta retrieveMetaMsg = 3;
+        RepairNode repairNodeMsg = 4;
     }
 }
 

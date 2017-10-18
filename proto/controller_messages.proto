@@ -28,6 +28,10 @@ message GetFileListRequest {
     bool isGet = 1;
 }
 
+message SendRepairNode {
+    bool isSend = 1;
+}
+
 message ControllerMessageWrapper {
     oneof msg {
         StoreChunkRequest storeChunkRequestMsg = 1;
@@ -35,6 +39,7 @@ message ControllerMessageWrapper {
         RetrieveFileRequest retrieveFileMsg = 3;
         GetFileListRequest getFileListMsg = 4;
         RetrieveMetaData metaDataMsg = 5;
+        SendRepairNode repairNodeMsg = 6;
     }
 }
 
