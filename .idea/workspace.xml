@@ -3,12 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3df7ae5d-ae2e-4653-894d-d9189adc57ee" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/proto/controller_messages.proto" afterPath="$PROJECT_DIR$/proto/controller_messages.proto" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/proto/storage_messages.proto" afterPath="$PROJECT_DIR$/proto/storage_messages.proto" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java" afterPath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/ControllerMessages.java" afterPath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/ControllerMessages.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageMessages.java" afterPath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageMessages.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageNode.java" afterPath="$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageNode.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,7 +34,7 @@
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageNode.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="3475">
-                  <caret line="393" column="40" lean-forward="false" selection-start-line="393" selection-start-column="40" selection-end-line="393" selection-end-column="40" />
+                  <caret line="393" column="40" lean-forward="false" selection-start-line="187" selection-start-column="23" selection-end-line="187" selection-end-column="40" />
                   <folding>
                     <element signature="e#4661#4670#0" expanded="true" />
                     <element signature="e#4984#4993#0" expanded="true" />
@@ -76,11 +70,11 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="Controller.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="Controller.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="90">
-                  <caret line="335" column="39" lean-forward="false" selection-start-line="335" selection-start-column="23" selection-end-line="335" selection-end-column="40" />
+                <state relative-caret-position="259">
+                  <caret line="354" column="36" lean-forward="false" selection-start-line="354" selection-start-column="36" selection-end-line="354" selection-end-column="36" />
                   <folding>
                     <element signature="e#2749#3147#0" expanded="true" />
                     <element signature="e#3146#3147#0" expanded="true" />
@@ -92,11 +86,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="StorageNode.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="StorageNode.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageNode.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-239">
-                  <caret line="187" column="39" lean-forward="false" selection-start-line="187" selection-start-column="39" selection-end-line="187" selection-end-column="39" />
+                <state relative-caret-position="211">
+                  <caret line="187" column="39" lean-forward="false" selection-start-line="187" selection-start-column="23" selection-end-line="187" selection-end-column="40" />
                   <folding>
                     <element signature="e#2144#2542#0" expanded="true" />
                     <element signature="e#2541#2542#0" expanded="true" />
@@ -920,14 +914,7 @@
       <workItem from="1507667378179" duration="663000" />
       <workItem from="1507747936002" duration="4334000" />
       <workItem from="1507919147648" duration="54084000" />
-      <workItem from="1508128458571" duration="61587000" />
-    </task>
-    <task id="LOCAL-00052" summary="delete file in store file path of storagenode">
-      <created>1507614487407</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1507614487407</updated>
+      <workItem from="1508128458571" duration="61712000" />
     </task>
     <task id="LOCAL-00053" summary="change chunk retrieve random">
       <created>1507615941468</created>
@@ -1265,11 +1252,18 @@
       <option name="project" value="LOCAL" />
       <updated>1508267777773</updated>
     </task>
-    <option name="localTasksCounter" value="101" />
+    <task id="LOCAL-00101" summary="add repair node">
+      <created>1508292901181</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1508292901181</updated>
+    </task>
+    <option name="localTasksCounter" value="102" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="329294000" />
+    <option name="totallyTimeSpent" value="329419000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1295,7 +1289,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18267223" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14822547" sideWeight="0.49808428" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17536534" sideWeight="0.49808428" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17536534" sideWeight="0.49808428" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16967706" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1382,7 +1376,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add failure detecting function" />
     <MESSAGE value="add md5 checksum" />
     <MESSAGE value="add correct beatsignal" />
     <MESSAGE value="add store file info" />
@@ -1407,7 +1400,8 @@
     <MESSAGE value="add get file list" />
     <MESSAGE value="debug" />
     <MESSAGE value="add repair chunk" />
-    <option name="LAST_COMMIT_MESSAGE" value="add repair chunk" />
+    <MESSAGE value="add repair node" />
+    <option name="LAST_COMMIT_MESSAGE" value="add repair node" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1735,10 +1729,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="354" column="36" lean-forward="false" selection-start-line="354" selection-start-column="36" selection-end-line="354" selection-end-column="36" />
+          <folding>
+            <element signature="e#2749#3147#0" expanded="true" />
+            <element signature="e#3146#3147#0" expanded="true" />
+            <element signature="e#14107#14115#0" expanded="true" />
+            <element signature="e#15936#15944#0" expanded="true" />
+            <element signature="e#15995#16003#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/StorageNode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-239">
-          <caret line="187" column="39" lean-forward="false" selection-start-line="187" selection-start-column="39" selection-end-line="187" selection-end-column="39" />
+        <state relative-caret-position="211">
+          <caret line="187" column="39" lean-forward="false" selection-start-line="187" selection-start-column="23" selection-end-line="187" selection-end-column="40" />
           <folding>
             <element signature="e#2144#2542#0" expanded="true" />
             <element signature="e#2541#2542#0" expanded="true" />
@@ -1748,20 +1756,6 @@
             <element signature="e#5876#5884#0" expanded="true" />
             <element signature="e#5952#5960#0" expanded="true" />
             <element signature="e#8233#8241#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="335" column="39" lean-forward="false" selection-start-line="335" selection-start-column="23" selection-end-line="335" selection-end-column="40" />
-          <folding>
-            <element signature="e#2749#3147#0" expanded="true" />
-            <element signature="e#3146#3147#0" expanded="true" />
-            <element signature="e#14107#14115#0" expanded="true" />
-            <element signature="e#15936#15944#0" expanded="true" />
-            <element signature="e#15995#16003#0" expanded="true" />
           </folding>
         </state>
       </provider>
