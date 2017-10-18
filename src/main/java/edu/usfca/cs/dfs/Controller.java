@@ -237,6 +237,7 @@ public class Controller {
     }
 
     public static void sendRetrieveMetaRequest(String storageHostName) throws IOException, InterruptedException {
+        logger.info("Controller: Start Send Retrieve Meta Request To StorageNode");
         Socket storageNodeSocket = new Socket(storageHostName, STORAGENODE_PORT);
 
         StorageMessages.RetrieveMeta.Builder retrieveMetaMsg =
@@ -248,7 +249,10 @@ public class Controller {
                 .setRetrieveMetaMsg(retrieveMetaMsg)
                 .build();
         msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
+        logger.info("Controller: Finished Send Retrieve Meta Request To StorageNode");
         getFullMetaFromStorageNode(storageNodeSocket);
+        logger.info("Controller: Get Meta From StorageNode");
+        storageNodeSocket.close();
     }
 
     public static void getFullMetaFromStorageNode(Socket storageNodeSocket) throws IOException, InterruptedException {
@@ -281,7 +285,7 @@ public class Controller {
             logger.info("Controller: Cannot Get Meta From " + storageNodeSocket
                     .getInetAddress().getCanonicalHostName() + "!");
         }
-        controllerSocket.close();
+//        controllerSocket.close();
     }
 
     public static void storeFileInfo(String storageHostName, String fileName, int chunkId) {
