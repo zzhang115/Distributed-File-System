@@ -51,7 +51,7 @@
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="335">
-                  <caret line="366" column="83" lean-forward="false" selection-start-line="366" selection-start-column="83" selection-end-line="366" selection-end-column="83" />
+                  <caret line="366" column="83" lean-forward="false" selection-start-line="375" selection-start-column="42" selection-end-line="375" selection-end-column="50" />
                   <folding>
                     <element signature="e#4518#4526#0" expanded="true" />
                     <element signature="e#16531#16539#0" expanded="true" />
@@ -88,8 +88,8 @@
           <file leaf-file-name="Controller.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="200">
-                  <caret line="347" column="61" lean-forward="false" selection-start-line="347" selection-start-column="61" selection-end-line="347" selection-end-column="61" />
+                <state relative-caret-position="603">
+                  <caret line="375" column="49" lean-forward="false" selection-start-line="375" selection-start-column="42" selection-end-line="375" selection-end-column="50" />
                   <folding>
                     <element signature="e#4518#4526#0" expanded="true" />
                     <element signature="e#16531#16539#0" expanded="true" />
@@ -908,14 +908,7 @@
       <workItem from="1507667378179" duration="663000" />
       <workItem from="1507747936002" duration="4334000" />
       <workItem from="1507919147648" duration="54084000" />
-      <workItem from="1508128458571" duration="75105000" />
-    </task>
-    <task id="LOCAL-00065" summary="modify pipeline">
-      <created>1507952087877</created>
-      <option name="number" value="00065" />
-      <option name="presentableId" value="LOCAL-00065" />
-      <option name="project" value="LOCAL" />
-      <updated>1507952087877</updated>
+      <workItem from="1508128458571" duration="75357000" />
     </task>
     <task id="LOCAL-00066" summary="modify pipeline">
       <created>1507952375929</created>
@@ -1253,11 +1246,18 @@
       <option name="project" value="LOCAL" />
       <updated>1508340967003</updated>
     </task>
-    <option name="localTasksCounter" value="114" />
+    <task id="LOCAL-00114" summary="add repair node">
+      <created>1508341037354</created>
+      <option name="number" value="00114" />
+      <option name="presentableId" value="LOCAL-00114" />
+      <option name="project" value="LOCAL" />
+      <updated>1508341037354</updated>
+    </task>
+    <option name="localTasksCounter" value="115" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="342812000" />
+    <option name="totallyTimeSpent" value="343064000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1731,8 +1731,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="347" column="61" lean-forward="false" selection-start-line="347" selection-start-column="61" selection-end-line="347" selection-end-column="61" />
+        <state relative-caret-position="603">
+          <caret line="375" column="49" lean-forward="false" selection-start-line="375" selection-start-column="42" selection-end-line="375" selection-end-column="50" />
           <folding>
             <element signature="e#4518#4526#0" expanded="true" />
             <element signature="e#16531#16539#0" expanded="true" />

@@ -308,7 +308,7 @@ public class Controller {
 //            fileAndChunk.add(fileName + "_" + chunkId);
 //            hostMetaMap.put(storageHostName, fileAndChunk);
 //        } else {
-            hostMetaMap.get(storageHostName).add(fileName + "_" + chunkId);
+            hostMetaMap.get(storageHostName).add(fileName + "&" + chunkId);
 //        }
     }
 
@@ -372,8 +372,8 @@ public class Controller {
 
                     logger.info("Controller: Get Builder");
 
-                    String fileName = filechunk.split("_")[0];
-                    int chunkId = Integer.parseInt(filechunk.split("_")[1]);
+                    String fileName = filechunk.split("&")[0];
+                    int chunkId = Integer.parseInt(filechunk.split("&")[1]);
                     String hostName = bNodes.get(j);
                     logger.info("Controller: Set Message FileName: " + fileName
                             + " ChunkId: " + chunkId
@@ -383,8 +383,8 @@ public class Controller {
                             .setChunkId(chunkId)
                             .setHostName(hostName)
                             .build();
-                    logger.info("Controller: Set Message FileName: " + filechunk.split("_")[0]
-                            + " ChunkId: " + Integer.parseInt(filechunk.split("_")[1])
+                    logger.info("Controller: Set Message FileName: " + filechunk.split("&")[0]
+                            + " ChunkId: " + Integer.parseInt(filechunk.split("&")[1])
                             + " HostName: " + bNodes.get(j));
 
                     StorageMessages.StorageMessageWrapper msgWrapper =
