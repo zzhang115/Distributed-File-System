@@ -72,6 +72,9 @@ public class Client {
                     break;
                 case "test5":
                     break;
+                case "gl":
+                    clientGetDFSFileList();
+                    break;
                 case "quit":
                     return;
             }
