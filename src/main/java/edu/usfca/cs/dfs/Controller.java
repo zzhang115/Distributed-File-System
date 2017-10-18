@@ -102,8 +102,8 @@ public class Controller {
                     msgWrapper.getHeartBeatSignalMsg();
 
             String storageHostName = socket.getInetAddress().getCanonicalHostName();
-//            logger.info("Controller: Received HeartBeat From " + storageHostName +
-//                    " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
+            logger.info("Controller: Received HeartBeat From " + storageHostName +
+                    " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
             if (!hostMetaMap.keySet().contains(storageHostName)) {
                 List<String> fileAndChunk = new ArrayList<String>();
                 hostMetaMap.put(storageHostName, fileAndChunk);
@@ -364,8 +364,12 @@ public class Controller {
                             + " To Repair StorageNode " + storageNodeHostName);
 
                     storageNodeSocket = new Socket(aNodes.get(i), STORAGENODE_PORT);
+                    logger.info("Controller: Get socket");
+
                     StorageMessages.RepairNode.Builder repairNodeMsg =
                             StorageMessages.RepairNode.newBuilder();
+
+                    logger.info("Controller: Get Builder");
 
                     repairNodeMsg.setFileName(filechunk.split("_")[0])
                             .setChunkId(Integer.parseInt(filechunk.split("_")[1]))
