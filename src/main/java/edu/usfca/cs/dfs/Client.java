@@ -23,7 +23,7 @@ public class Client {
     private static volatile List<DFSChunk> storeChunks;
     private static volatile List<DFSChunk> retrieveChunks;
     private static Map<Integer, List<String>> retrieveFileMap; // chunkId, storageNodeHostName
-    private static Map<String, String> fileMd5Map;
+    private static Map<String, String> fileMd5Map = new HashMap<String, String>();
     private static int retrieveChunkSum;
     private static final int SIZE_OF_CHUNK = 1024 * 1024; // 1MB
     private static final String CONTROLLER_HOSTNAME = "bass01.cs.usfca.edu";

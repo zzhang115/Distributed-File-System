@@ -21,11 +21,12 @@
           <file leaf-file-name="Client.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="280">
-                  <caret line="88" column="0" lean-forward="true" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+                <state relative-caret-position="255">
+                  <caret line="25" column="48" lean-forward="false" selection-start-line="25" selection-start-column="39" selection-end-line="25" selection-end-column="49" />
                   <folding>
-                    <element signature="e#5122#5130#0" expanded="true" />
-                    <element signature="e#15057#15065#0" expanded="true" />
+                    <element signature="e#1031#1047#0" expanded="true" />
+                    <element signature="e#5154#5162#0" expanded="true" />
+                    <element signature="e#15089#15097#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -918,14 +919,7 @@
       <workItem from="1507667378179" duration="663000" />
       <workItem from="1507747936002" duration="4334000" />
       <workItem from="1507919147648" duration="54084000" />
-      <workItem from="1508128458571" duration="78660000" />
-    </task>
-    <task id="LOCAL-00073" summary="add get file list">
-      <created>1508129015703</created>
-      <option name="number" value="00073" />
-      <option name="presentableId" value="LOCAL-00073" />
-      <option name="project" value="LOCAL" />
-      <updated>1508129015704</updated>
+      <workItem from="1508128458571" duration="78860000" />
     </task>
     <task id="LOCAL-00074" summary="add get file list">
       <created>1508129322863</created>
@@ -1263,11 +1257,18 @@
       <option name="project" value="LOCAL" />
       <updated>1508344004567</updated>
     </task>
-    <option name="localTasksCounter" value="122" />
+    <task id="LOCAL-00122" summary="add repair node">
+      <created>1508344592167</created>
+      <option name="number" value="00122" />
+      <option name="presentableId" value="LOCAL-00122" />
+      <option name="project" value="LOCAL" />
+      <updated>1508344592167</updated>
+    </task>
+    <option name="localTasksCounter" value="123" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="346367000" />
+    <option name="totallyTimeSpent" value="346567000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1449,8 +1450,9 @@
         <state relative-caret-position="825">
           <caret line="55" column="0" lean-forward="true" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
           <folding>
-            <element signature="e#5122#5130#0" expanded="true" />
-            <element signature="e#15057#15065#0" expanded="true" />
+            <element signature="e#1031#1047#0" expanded="true" />
+            <element signature="e#5154#5162#0" expanded="true" />
+            <element signature="e#15089#15097#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1498,8 +1500,9 @@
         <state relative-caret-position="30">
           <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
           <folding>
-            <element signature="e#5122#5130#0" expanded="true" />
-            <element signature="e#15057#15065#0" expanded="true" />
+            <element signature="e#1031#1047#0" expanded="true" />
+            <element signature="e#5154#5162#0" expanded="true" />
+            <element signature="e#15089#15097#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1742,11 +1745,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/usfca/cs/dfs/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="88" column="0" lean-forward="true" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+        <state relative-caret-position="255">
+          <caret line="25" column="48" lean-forward="false" selection-start-line="25" selection-start-column="39" selection-end-line="25" selection-end-column="49" />
           <folding>
-            <element signature="e#5122#5130#0" expanded="true" />
-            <element signature="e#15057#15065#0" expanded="true" />
+            <element signature="e#1031#1047#0" expanded="true" />
+            <element signature="e#5154#5162#0" expanded="true" />
+            <element signature="e#15089#15097#0" expanded="true" />
           </folding>
         </state>
       </provider>
