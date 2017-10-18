@@ -156,9 +156,11 @@ public class Controller {
                 ClientMessages.DFSChunk.Builder dfsChunkMsg = ClientMessages.DFSChunk.newBuilder();
                 dfsChunkMsg.setChunkId(chunkId);
                 Set<String> storageNodeHostNames = chunkMap.get(chunkId);
+                int i = 0;
                 for (String storageNodeHostName : storageNodeHostNames) {
                     if (heartBeatMap.keySet().contains(storageNodeHostName)) {
                         dfsChunkMsg.addStorageNodeHostName(storageNodeHostName);
+                        dfsChunkMsg.addFreespace(storageNodeList.get(i++).freeSpace);
                     }
                 }
                 dfsFileMsg.addDfsChunk(dfsChunkMsg);

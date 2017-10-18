@@ -8,6 +8,7 @@ message AvailStorageNode {
 message DFSChunk {
     int32 chunkId = 1;
     repeated string storageNodeHostName = 2;
+    repeated double freespace = 3;
 }
 
 message DFSFile {

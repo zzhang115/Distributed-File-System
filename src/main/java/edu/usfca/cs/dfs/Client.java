@@ -254,7 +254,8 @@ public class Client {
                         buffer.append("\nChunkId: " + dfsChunkMsg.getChunkId());
                         int storageNodeHostNameCount = dfsChunkMsg.getStorageNodeHostNameCount();
                         for (int k = 0; k < storageNodeHostNameCount; k++) {
-                            buffer.append(" Stored At " + dfsChunkMsg.getStorageNodeHostName(k));
+                            buffer.append(" Stored At " + dfsChunkMsg.getStorageNodeHostName(k) +
+                            "(FreeSpace: " + dfsChunkMsg.getFreespace(k) + ") ");
                         }
                     }
                 }

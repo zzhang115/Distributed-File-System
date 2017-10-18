@@ -617,6 +617,19 @@ public final class ClientMessages {
      */
     com.google.protobuf.ByteString
         getStorageNodeHostNameBytes(int index);
+
+    /**
+     * <code>repeated double freespace = 3;</code>
+     */
+    java.util.List<java.lang.Double> getFreespaceList();
+    /**
+     * <code>repeated double freespace = 3;</code>
+     */
+    int getFreespaceCount();
+    /**
+     * <code>repeated double freespace = 3;</code>
+     */
+    double getFreespace(int index);
   }
   /**
    * Protobuf type {@code DFSChunk}
@@ -633,6 +646,7 @@ public final class ClientMessages {
     private DFSChunk() {
       chunkId_ = 0;
       storageNodeHostName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      freespace_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -677,6 +691,27 @@ public final class ClientMessages {
               storageNodeHostName_.add(s);
               break;
             }
+            case 25: {
+              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+                freespace_ = new java.util.ArrayList<java.lang.Double>();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              freespace_.add(input.readDouble());
+              break;
+            }
+            case 26: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004) && input.getBytesUntilLimit() > 0) {
+                freespace_ = new java.util.ArrayList<java.lang.Double>();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                freespace_.add(input.readDouble());
+              }
+              input.popLimit(limit);
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -687,6 +722,9 @@ public final class ClientMessages {
       } finally {
         if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
           storageNodeHostName_ = storageNodeHostName_.getUnmodifiableView();
+        }
+        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+          freespace_ = java.util.Collections.unmodifiableList(freespace_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -743,6 +781,29 @@ public final class ClientMessages {
       return storageNodeHostName_.getByteString(index);
     }
 
+    public static final int FREESPACE_FIELD_NUMBER = 3;
+    private java.util.List<java.lang.Double> freespace_;
+    /**
+     * <code>repeated double freespace = 3;</code>
+     */
+    public java.util.List<java.lang.Double>
+        getFreespaceList() {
+      return freespace_;
+    }
+    /**
+     * <code>repeated double freespace = 3;</code>
+     */
+    public int getFreespaceCount() {
+      return freespace_.size();
+    }
+    /**
+     * <code>repeated double freespace = 3;</code>
+     */
+    public double getFreespace(int index) {
+      return freespace_.get(index);
+    }
+    private int freespaceMemoizedSerializedSize = -1;
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -755,11 +816,19 @@ public final class ClientMessages {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      getSerializedSize();
       if (chunkId_ != 0) {
         output.writeInt32(1, chunkId_);
       }
       for (int i = 0; i < storageNodeHostName_.size(); i++) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, storageNodeHostName_.getRaw(i));
+      }
+      if (getFreespaceList().size() > 0) {
+        output.writeUInt32NoTag(26);
+        output.writeUInt32NoTag(freespaceMemoizedSerializedSize);
+      }
+      for (int i = 0; i < freespace_.size(); i++) {
+        output.writeDoubleNoTag(freespace_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -781,6 +850,17 @@ public final class ClientMessages {
         size += dataSize;
         size += 1 * getStorageNodeHostNameList().size();
       }
+      {
+        int dataSize = 0;
+        dataSize = 8 * getFreespaceList().size();
+        size += dataSize;
+        if (!getFreespaceList().isEmpty()) {
+          size += 1;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        freespaceMemoizedSerializedSize = dataSize;
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -801,6 +881,8 @@ public final class ClientMessages {
           == other.getChunkId());
       result = result && getStorageNodeHostNameList()
           .equals(other.getStorageNodeHostNameList());
+      result = result && getFreespaceList()
+          .equals(other.getFreespaceList());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -817,6 +899,10 @@ public final class ClientMessages {
       if (getStorageNodeHostNameCount() > 0) {
         hash = (37 * hash) + STORAGENODEHOSTNAME_FIELD_NUMBER;
         hash = (53 * hash) + getStorageNodeHostNameList().hashCode();
+      }
+      if (getFreespaceCount() > 0) {
+        hash = (37 * hash) + FREESPACE_FIELD_NUMBER;
+        hash = (53 * hash) + getFreespaceList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -951,6 +1037,8 @@ public final class ClientMessages {
 
         storageNodeHostName_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
+        freespace_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -981,6 +1069,11 @@ public final class ClientMessages {
           bitField0_ = (bitField0_ & ~0x00000002);
         }
         result.storageNodeHostName_ = storageNodeHostName_;
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          freespace_ = java.util.Collections.unmodifiableList(freespace_);
+          bitField0_ = (bitField0_ & ~0x00000004);
+        }
+        result.freespace_ = freespace_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1033,6 +1126,16 @@ public final class ClientMessages {
           } else {
             ensureStorageNodeHostNameIsMutable();
             storageNodeHostName_.addAll(other.storageNodeHostName_);
+          }
+          onChanged();
+        }
+        if (!other.freespace_.isEmpty()) {
+          if (freespace_.isEmpty()) {
+            freespace_ = other.freespace_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+          } else {
+            ensureFreespaceIsMutable();
+            freespace_.addAll(other.freespace_);
           }
           onChanged();
         }
@@ -1180,6 +1283,72 @@ public final class ClientMessages {
   checkByteStringIsUtf8(value);
         ensureStorageNodeHostNameIsMutable();
         storageNodeHostName_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<java.lang.Double> freespace_ = java.util.Collections.emptyList();
+      private void ensureFreespaceIsMutable() {
+        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
+          freespace_ = new java.util.ArrayList<java.lang.Double>(freespace_);
+          bitField0_ |= 0x00000004;
+         }
+      }
+      /**
+       * <code>repeated double freespace = 3;</code>
+       */
+      public java.util.List<java.lang.Double>
+          getFreespaceList() {
+        return java.util.Collections.unmodifiableList(freespace_);
+      }
+      /**
+       * <code>repeated double freespace = 3;</code>
+       */
+      public int getFreespaceCount() {
+        return freespace_.size();
+      }
+      /**
+       * <code>repeated double freespace = 3;</code>
+       */
+      public double getFreespace(int index) {
+        return freespace_.get(index);
+      }
+      /**
+       * <code>repeated double freespace = 3;</code>
+       */
+      public Builder setFreespace(
+          int index, double value) {
+        ensureFreespaceIsMutable();
+        freespace_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated double freespace = 3;</code>
+       */
+      public Builder addFreespace(double value) {
+        ensureFreespaceIsMutable();
+        freespace_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated double freespace = 3;</code>
+       */
+      public Builder addAllFreespace(
+          java.lang.Iterable<? extends java.lang.Double> values) {
+        ensureFreespaceIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, freespace_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated double freespace = 3;</code>
+       */
+      public Builder clearFreespace() {
+        freespace_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000004);
         onChanged();
         return this;
       }
@@ -6300,23 +6469,23 @@ public final class ClientMessages {
   static {
     java.lang.String[] descriptorData = {
       "\n\025client_messages.proto\"/\n\020AvailStorageN" +
-      "ode\022\033\n\023storageNodeHostName\030\001 \003(\t\"8\n\010DFSC" +
+      "ode\022\033\n\023storageNodeHostName\030\001 \003(\t\"K\n\010DFSC" +
       "hunk\022\017\n\007chunkId\030\001 \001(\005\022\033\n\023storageNodeHost" +
-      "Name\030\002 \003(\t\"8\n\007DFSFile\022\020\n\010fileName\030\001 \001(\t\022" +
-      "\033\n\010dfsChunk\030\002 \003(\0132\t.DFSChunk\"(\n\013DFSFileL" +
-      "ist\022\031\n\007dfsFile\030\001 \003(\0132\010.DFSFile\"@\n\020Retrie" +
-      "veFileInfo\022\017\n\007chunkId\030\001 \001(\005\022\033\n\023storageNo" +
-      "deHostName\030\002 \003(\t\"A\n\022ReplyForRetrieving\022+" +
-      "\n\020retrieveFileInfo\030\001 \003(\0132\021.RetrieveFileI" +
-      "nfo\"C\n\020RetrieveFileData\022\020\n\010fileName\030\001 \001(",
-      "\t\022\017\n\007chunkID\030\002 \001(\005\022\014\n\004data\030\003 \001(\014\"\337\001\n\024Cli" +
-      "entMessageWrapper\0220\n\023availstorageNodeMsg" +
-      "\030\001 \001(\0132\021.AvailStorageNodeH\000\022&\n\016dfsFileLi" +
-      "stMsg\030\002 \001(\0132\014.DFSFileListH\000\0224\n\025replyForR" +
-      "etrievingMsg\030\003 \001(\0132\023.ReplyForRetrievingH" +
-      "\000\0220\n\023retrieveFileDataMsg\030\004 \001(\0132\021.Retriev" +
-      "eFileDataH\000B\005\n\003msgB\022\n\020edu.usfca.cs.dfsb\006" +
-      "proto3"
+      "Name\030\002 \003(\t\022\021\n\tfreespace\030\003 \003(\001\"8\n\007DFSFile" +
+      "\022\020\n\010fileName\030\001 \001(\t\022\033\n\010dfsChunk\030\002 \003(\0132\t.D" +
+      "FSChunk\"(\n\013DFSFileList\022\031\n\007dfsFile\030\001 \003(\0132" +
+      "\010.DFSFile\"@\n\020RetrieveFileInfo\022\017\n\007chunkId" +
+      "\030\001 \001(\005\022\033\n\023storageNodeHostName\030\002 \003(\t\"A\n\022R" +
+      "eplyForRetrieving\022+\n\020retrieveFileInfo\030\001 " +
+      "\003(\0132\021.RetrieveFileInfo\"C\n\020RetrieveFileDa",
+      "ta\022\020\n\010fileName\030\001 \001(\t\022\017\n\007chunkID\030\002 \001(\005\022\014\n" +
+      "\004data\030\003 \001(\014\"\337\001\n\024ClientMessageWrapper\0220\n\023" +
+      "availstorageNodeMsg\030\001 \001(\0132\021.AvailStorage" +
+      "NodeH\000\022&\n\016dfsFileListMsg\030\002 \001(\0132\014.DFSFile" +
+      "ListH\000\0224\n\025replyForRetrievingMsg\030\003 \001(\0132\023." +
+      "ReplyForRetrievingH\000\0220\n\023retrieveFileData" +
+      "Msg\030\004 \001(\0132\021.RetrieveFileDataH\000B\005\n\003msgB\022\n" +
+      "\020edu.usfca.cs.dfsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -6341,7 +6510,7 @@ public final class ClientMessages {
     internal_static_DFSChunk_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_DFSChunk_descriptor,
-        new java.lang.String[] { "ChunkId", "StorageNodeHostName", });
+        new java.lang.String[] { "ChunkId", "StorageNodeHostName", "Freespace", });
     internal_static_DFSFile_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_DFSFile_fieldAccessorTable = new
