@@ -85,7 +85,7 @@ public class Client {
     }
 
     public static void clientInit() throws IOException {
-        fileMd5Map = new HashMap<String, String>();
+//        fileMd5Map = new HashMap<String, String>();
 
         System.setProperty("java.util.logging.SimpleFormatter.format",
                 "%5$s%6$s -- %1$tF %1$tT %4$s %2$s%n");
