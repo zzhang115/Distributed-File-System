@@ -345,6 +345,7 @@ public class Controller {
         List<String> fileAndChunk = hostMetaMap.get(storageNodeHostName);
         hostMetaMap.remove(storageNodeHostName);
         for (String filechunk : fileAndChunk) {
+            logger.info("Controller: filechunk: " + filechunk);
             List<String> aNodes = new ArrayList<String>();
             List<String> bNodes = new ArrayList<String>();
             for (String storageNodeName : hostMetaMap.keySet()) {
