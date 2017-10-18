@@ -366,14 +366,21 @@ public class Controller {
                     storageNodeSocket = new Socket(aNodes.get(i), STORAGENODE_PORT);
                     StorageMessages.RepairNode.Builder repairNodeMsg =
                             StorageMessages.RepairNode.newBuilder();
+
                     repairNodeMsg.setFileName(filechunk.split("_")[0])
                             .setChunkId(Integer.parseInt(filechunk.split("_")[1]))
                             .setHostName(bNodes.get(j))
                             .build();
+                    logger.info("Controller: Set Message FileName: " + filechunk.split("_")[0]
+                            + " ChunkId: " + Integer.parseInt(filechunk.split("_")[1])
+                            + " HostName: " + bNodes.get(j));
+
                     StorageMessages.StorageMessageWrapper msgWrapper =
                             StorageMessages.StorageMessageWrapper.newBuilder()
                                     .setRepairNodeMsg(repairNodeMsg)
                                     .build();
+                    logger.info("Controller: Set RepairMessage");
+
                     msgWrapper.writeDelimitedTo(storageNodeSocket.getOutputStream());
                     logger.info("Controller: Finished Send Message To StorageNode " + aNodes.get(i)
                             + " To Repair StorageNode " + storageNodeHostName);
@@ -392,6 +399,7 @@ public class Controller {
     }
 
     public static boolean checkIfRepaired(Socket socket) throws IOException{
+        logger.info("Controller: Check If It Repaired");
         ControllerMessages.ControllerMessageWrapper msgWrapper =
                 ControllerMessages.ControllerMessageWrapper.parseDelimitedFrom(
                         socket.getInputStream());
@@ -399,6 +407,7 @@ public class Controller {
             ControllerMessages.SendRepairNode repairNodeMsg =
                     msgWrapper.getRepairNodeMsg();
             socket.close();
+            logger.info("Controller: Get If It Repaired Reply: " + repairNodeMsg.getIsSend());
             return repairNodeMsg.getIsSend();
         }
         socket.close();

@@ -89,8 +89,8 @@ public class StorageNode {
             StorageMessages.StoreChunk storeChunkMsg
                     = msgWrapper.getStoreChunkMsg();
 
-            // storing chunk info into map in order to update info to controller
-            // still need to solve a problem that is that if chunk stored failed, don't update info to controller
+//             storing chunk info into map in order to update info to controller
+//             still need to solve a problem that is that if chunk stored failed, don't update info to controller
             int storageHostNameCount = storeChunkMsg.getHostNameCount();
             List<String> copyChunkStorageNodeHostNames = new ArrayList<String>();
             for (int i = 0; i < storageHostNameCount; i++) {
@@ -102,7 +102,7 @@ public class StorageNode {
             int copies = storeChunkMsg.getCopies();
             ByteString data = storeChunkMsg.getData();
 //            storeChunkToLocal(fileName, chunkId, data);
-            // previous
+//             previous
             logger.info("StorageNode: Storing File Name: " + fileName + " ChunkId: " + chunkId);
 
             if (fullMetaMap.keySet().contains(fileName)) {
@@ -123,7 +123,7 @@ public class StorageNode {
 
             writeFileToLocalMachine(fileName, chunkId, data);
             logger.info("StorageNode: " + getHostname() + " Store Chunk Successfully!");
-            // previous
+//             previous
             socket.close();
 
             new Thread(new MyRunnable(copyChunkStorageNodeHostNames, fileName, chunkId, copies, data))
@@ -359,8 +359,6 @@ public class StorageNode {
         long currentTime = System.currentTimeMillis();
         long end = currentTime + REPLY_WAITING_TIME;
 
-//        StorageMessages.StorageMessageWrapper msgWrapper =
-//                StorageMessages.StorageMessageWrapper.parseDelimitedFrom(storageNodeSocket.getInputStream());
         ClientMessages.ClientMessageWrapper msgWrapper =
                 ClientMessages.ClientMessageWrapper.parseDelimitedFrom(storageNodeSocket.getInputStream());
 
