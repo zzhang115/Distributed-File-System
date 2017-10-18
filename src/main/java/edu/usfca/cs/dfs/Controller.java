@@ -371,9 +371,16 @@ public class Controller {
 
                     logger.info("Controller: Get Builder");
 
-                    repairNodeMsg.setFileName(filechunk.split("_")[0])
-                            .setChunkId(Integer.parseInt(filechunk.split("_")[1]))
-                            .setHostName(bNodes.get(j))
+                    String fileName = filechunk.split("_")[0];
+                    int chunkId = Integer.parseInt(filechunk.split("_")[1]);
+                    String hostName = bNodes.get(j);
+                    logger.info("Controller: Set Message FileName: " + fileName
+                            + " ChunkId: " + chunkId
+                            + " HostName: " + hostName);
+
+                    repairNodeMsg.setFileName(fileName)
+                            .setChunkId(chunkId)
+                            .setHostName(hostName)
                             .build();
                     logger.info("Controller: Set Message FileName: " + filechunk.split("_")[0]
                             + " ChunkId: " + Integer.parseInt(filechunk.split("_")[1])
