@@ -70,7 +70,7 @@ public class Controller {
         Runnable failureDetect = new Runnable() {
             public void run() {
                 try {
-//                    logger.info("Controller: Detecting Failure Node...");
+                    logger.info("Controller: Detecting Failure Node...");
                     detectFailureNode();
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -345,7 +345,7 @@ public class Controller {
             List<String> aNodes = new ArrayList<String>();
             List<String> bNodes = new ArrayList<String>();
             for (String storageNodeName : hostMetaMap.keySet()) {
-                logger.info("Controller: Still Alived StorageNode: " + storageNodeName);
+                logger.info("Controller: Still Alive StorageNode: " + storageNodeName);
                 if (hostMetaMap.get(storageNodeName).contains(filechunk)) {
                     aNodes.add(storageNodeName);
                 } else {

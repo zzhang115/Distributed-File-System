@@ -176,6 +176,7 @@ public class StorageNode {
         }
 
         if (msgWrapper.hasRepairNodeMsg()) {
+            logger.info("StorageNode: Received Repair Node Request");
             StorageMessages.RepairNode repairNodeMsg =
                     msgWrapper.getRepairNodeMsg();
             repairStorageNode(socket, repairNodeMsg.getFileName(), repairNodeMsg.getChunkId(),
@@ -187,7 +188,6 @@ public class StorageNode {
 
     public static void repairStorageNode(Socket socket, String fileName, int chunkId, String hostName)
             throws IOException {
-        logger.info("StorageNode: Received Repair Node Request");
         List<String> copyChunkStorageNodeHostNames = new ArrayList<String>();
         copyChunkStorageNodeHostNames.add(hostName);
 
