@@ -71,6 +71,7 @@ public class Client {
                     }
                     break;
                 case "test5":
+                    clientGetDFSFileList();
                     clientRetrieveFile(testFile1);
                     break;
                 case "gl":
