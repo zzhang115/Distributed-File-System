@@ -155,7 +155,9 @@ public class Controller {
                 dfsChunkMsg.setChunkId(chunkId);
                 Set<String> storageNodeHostNames = chunkMap.get(chunkId);
                 for (String storageNodeHostName : storageNodeHostNames) {
-                    dfsChunkMsg.addStorageNodeHostName(storageNodeHostName);
+                    if (heartBeatMap.keySet().contains(storageNodeHostName)) {
+                        dfsChunkMsg.addStorageNodeHostName(storageNodeHostName);
+                    }
                 }
                 dfsFileMsg.addDfsChunk(dfsChunkMsg);
             }
@@ -340,6 +342,7 @@ public class Controller {
             List<String> aNodes = new ArrayList<String>();
             List<String> bNodes = new ArrayList<String>();
             for (String storageNodeName : hostMetaMap.keySet()) {
+                logger.info("Controller: Still Alived StorageNode: " + storageNodeName);
                 if (hostMetaMap.get(storageNodeName).contains(filechunk)) {
                     aNodes.add(storageNodeName);
                 } else {
