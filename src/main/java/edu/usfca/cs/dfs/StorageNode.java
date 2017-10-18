@@ -174,7 +174,7 @@ public class StorageNode {
             socket.close();
             return;
         }
-
+        logger.info("link in");
         if (msgWrapper.hasRepairNodeMsg()) {
             logger.info("StorageNode: Received Repair Node Request");
             StorageMessages.RepairNode repairNodeMsg =
