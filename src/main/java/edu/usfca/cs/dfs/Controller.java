@@ -21,7 +21,7 @@ public class Controller {
     private static volatile List<STNode> storageNodeList;  //storageNodeQueue sort STNode basic on their free space
     private static volatile Map<String, Map<Integer, Set<String>>> metaMap; // <fileName, <chunkId, <storageHostName>>>
     private static volatile Map<String, List<String>> hostMetaMap; // <hostName, <fileName_chunkId>>
-    private static Map<String, String> heartBeatMap;  // <storageNodeHostName, timeStamp>
+    private static volatile Map<String, String> heartBeatMap;  // <storageNodeHostName, timeStamp>
     private static ServerSocket controllerSocket;
     private static DateFormat dateFormat;
     private static final int FAILURE_NODE_TIME = 10;
@@ -105,7 +105,10 @@ public class Controller {
             String storageHostName = socket.getInetAddress().getCanonicalHostName();
 //            logger.info("Controller: Received HeartBeat From " + storageHostName +
 //                    " FreeSpace: " + heartBeatSignalMsg.getFreeSpace());
-
+            if (!hostMetaMap.keySet().contains(storageHostName)) {
+                List<String> fileAndChunk = new ArrayList<String>();
+                hostMetaMap.put(storageHostName, fileAndChunk);
+            }
             if (!heartBeatMap.keySet().contains(storageHostName)) {
                 sendRetrieveMetaRequest(storageHostName);
             }
@@ -297,13 +300,13 @@ public class Controller {
             chunkMap.put(chunkId, storageHostNames);
         }
 
-        if (!hostMetaMap.keySet().contains(storageHostName)) {
-            List<String> fileAndChunk = new ArrayList<String>();
-            fileAndChunk.add(fileName + "_" + chunkId);
-            hostMetaMap.put(storageHostName, fileAndChunk);
-        } else {
+//        if (!hostMetaMap.keySet().contains(storageHostName)) {
+//            List<String> fileAndChunk = new ArrayList<String>();
+//            fileAndChunk.add(fileName + "_" + chunkId);
+//            hostMetaMap.put(storageHostName, fileAndChunk);
+//        } else {
             hostMetaMap.get(storageHostName).add(fileName + "_" + chunkId);
-        }
+//        }
     }
 
     public static void storeStorageNodeInfo(String storageHostName, double freeSpace, String timeStamp) {
