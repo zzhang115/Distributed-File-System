@@ -80,7 +80,7 @@ public class Controller {
         };
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(failureDetect, 0, 5, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(failureDetect, 0, 10, TimeUnit.SECONDS);
     }
 
     public static void handleMessage() throws IOException, InterruptedException {
