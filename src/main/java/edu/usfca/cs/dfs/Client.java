@@ -67,12 +67,12 @@ public class Client {
 //                    Thread.sleep(RETRIEVE_WAITING_TIME);
                     clientGetDFSFileList();
                     if (scanner.next().equals("rt")) {
-                        clientRetrieveFile(testFile1);
+                        clientRetrieveFile(testFile2);
                     }
                     break;
                 case "test5":
                     clientGetDFSFileList();
-                    clientRetrieveFile(testFile1);
+                    clientRetrieveFile(testFile2);
                     break;
                 case "gl":
                     clientGetDFSFileList();
