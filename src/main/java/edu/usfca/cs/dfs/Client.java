@@ -63,8 +63,8 @@ public class Client {
                     clientRetrieveFile(testFile5);
                     break;
                 case "test4":
-                    clientStoreFile(testFile1);
-                    Thread.sleep(RETRIEVE_WAITING_TIME);
+//                    clientStoreFile(testFile1);
+//                    Thread.sleep(RETRIEVE_WAITING_TIME);
                     clientGetDFSFileList();
                     if (scanner.next().equals("rt")) {
                         clientRetrieveFile(testFile1);
@@ -85,8 +85,6 @@ public class Client {
     }
 
     public static void clientInit() throws IOException {
-//        fileMd5Map = new HashMap<String, String>();
-
         System.setProperty("java.util.logging.SimpleFormatter.format",
                 "%5$s%6$s -- %1$tF %1$tT %4$s %2$s%n");
         clearStoreFilePath(retrieveFilePath);
@@ -120,7 +118,6 @@ public class Client {
 
     public static void sendStoreRequestToController() throws IOException, InterruptedException {
         for (DFSChunk chunk : storeChunks) {
-//        DFSChunk chunk = storeChunks.get(0);
             List<String> availStorageNodeHostNames = new ArrayList<String>();
             Socket controllerSocket = new Socket(CONTROLLER_HOSTNAME, CONTROLLER_PORT);
             logger.info("Client: Start Send Store Request To Controller");

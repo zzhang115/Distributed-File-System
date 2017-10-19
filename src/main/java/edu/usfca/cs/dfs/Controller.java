@@ -29,7 +29,6 @@ public class Controller {
     private static final int CONTROLLER_PORT = 40000;
     private static final int STORAGENODE_PORT = 40010;
     private static final int REPLY_WAITING_TIME = 10000;
-    private static Random rand = new Random();
 
     private static class STNode {
         String storageNodeHostName;
@@ -184,24 +183,15 @@ public class Controller {
             Map<Integer, Set<String>> chunkMap = metaMap.get(retrieveFileName);
 
             for (int chunkId : chunkMap.keySet()) {
-//                int i = 0;
-//                int n = rand.nextInt(chunkMap.get(chunkId).size()) + 0;
                 ClientMessages.RetrieveFileInfo.Builder retrieveFileInfoMsg =
                         ClientMessages.RetrieveFileInfo.newBuilder();
 
-//                retrieveFileMsg.addRetrieveFileInfoBuilder().setChunkId(chunkId);
                 retrieveFileInfoMsg.setChunkId(chunkId);
                 for (String storageHostName : chunkMap.get(chunkId)) {
-//                    if (i == n) {
-//                        retrieveFileMsg.addRetrieveFileInfoBuilder().setChunkId(chunkId)
-//                                .setStorageNodeHostName(storageHostName);
                     if (heartBeatMap.keySet().contains(storageHostName)) {
                         retrieveFileInfoMsg.addStorageNodeHostName(storageHostName);
                         logger.info("Controller: Choose " + storageHostName + " For Chunk" + chunkId);
                     }
-//                        break;
-//                    }
-//                    i++;
                 }
                 retrieveFileMsg.addRetrieveFileInfo(retrieveFileInfoMsg);
             }
@@ -214,11 +204,6 @@ public class Controller {
         } else {
             logger.info("Controller: No Such File In This DFS");
         }
-//        ClientMessages.ClientMessageWrapper msgWrapper =
-//                ClientMessages.ClientMessageWrapper.newBuilder()
-//                        .setReplyForRetrievingMsg(retrieveFileMsg)
-//                        .build();
-//        msgWrapper.writeDelimitedTo(socket.getOutputStream());
     }
 
     public static void sendReplyForStoring(Socket socket, double chunkSize) throws IOException {
@@ -289,7 +274,6 @@ public class Controller {
             logger.info("Controller: Cannot Get Meta From " + storageNodeSocket
                     .getInetAddress().getCanonicalHostName() + "!");
         }
-//        controllerSocket.close();
     }
 
     public static void storeFileInfo(String storageHostName, String fileName, int chunkId) {
@@ -307,13 +291,7 @@ public class Controller {
             chunkMap.put(chunkId, storageHostNames);
         }
 
-//        if (!hostMetaMap.keySet().contains(storageHostName)) {
-//            List<String> fileAndChunk = new ArrayList<String>();
-//            fileAndChunk.add(fileName + "_" + chunkId);
-//            hostMetaMap.put(storageHostName, fileAndChunk);
-//        } else {
             hostMetaMap.get(storageHostName).add(fileName + "&" + chunkId);
-//        }
     }
 
     public static void storeStorageNodeInfo(String storageHostName, double freeSpace, String timeStamp) {
@@ -423,14 +401,5 @@ public class Controller {
         }
         socket.close();
         return false;
-    }
-    /**
-     * Retrieves the short host name of the current host.
-     *
-     * @return name of the current host
-     */
-    private static String getHostname()
-            throws UnknownHostException {
-        return InetAddress.getLocalHost().getHostName();
     }
 }
